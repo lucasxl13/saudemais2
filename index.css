@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+:root {
+    --color1: #67f7aa;
+    --color2: #acf8d4;
+    --color3: #1e5134;
+    --color4: #838383;
+    --color5: #a9c5b6;
+    --color6: #3adb85;
+    --black: #000000;
+    --white: #fff;
+    --fonte-logo: "Comfortaa", system-ui;
+    
+}
+
+body a{
+    text-decoration: none;
+}

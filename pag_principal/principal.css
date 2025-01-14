@@ -1,0 +1,19 @@
+@import url('../index.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    font-family: var(--fonte-logo);
+    background-image: url('../Backgrounds/0.png'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rem; 
+}

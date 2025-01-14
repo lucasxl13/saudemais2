@@ -1,0 +1,378 @@
+@import url('../index.css');
+
+/* Reset do CSS, para padronizar todos os navegadores */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    outline: none;
+    -webkit-user-drag: none;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container {
+    display: none;
+}
+input[type="password"]::-ms-reveal {
+    display: none;
+  }
+
+body {
+    font-family: var(--fonte-logo);
+    background-image: url('../Backgrounds/0.png'); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rem; 
+    font-size: 0.5rem;
+}
+
+.container-principal {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 25px;
+    width: 23rem;
+    text-align: center;
+    border: 2px solid #000;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.logo_icon {
+    width: 5rem;
+}
+
+.titulo {
+    font-size: 2.5rem;
+    color: #000000;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.subtitulo {
+    font-size: 3rem;
+    color: var(--color1);
+    -webkit-text-stroke: 0.5px black;
+}
+
+.header{
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.formulario {
+    position: relative;
+    padding-bottom: 1.4rem; 
+}
+
+.formulario input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.formulario input:focus{
+outline: 2px solid black;   
+}
+
+
+.forca_senha {
+  transition: background-color 0.5s ease;
+  transition: width 0.5s ease;
+  position: absolute;
+  margin-top: 0.3rem;
+  height: 0.4rem;
+  border-radius: 5px;
+  overflow: hidden;
+  display: none;
+  border: none;
+  z-index:2;
+}
+
+
+.requisitos_senha {
+    margin-top: 1rem;
+    width: 100%;
+    height: 5rem;
+    visibility: hidden;
+    background-color: #ffffff;
+    text-align: left;
+    position: absolute;
+    z-index:2;
+  }
+
+  .requisitos_senha.active {
+    visibility: visible; 
+  }
+
+  .requisito {
+    font-size: 0.8rem;
+    color: red;
+  }
+
+  .requisito.valido {
+    display: none;
+  }
+
+  .mensagem-erro {
+    color: red;
+    font-size:0.7rem;
+    display: none; /* Oculta a mensagem de erro por padrão */
+    position: absolute; /* Remove a mensagem de erro do fluxo do documento */
+    padding:0.1rem;
+    width: 100%; /* Garante que a mensagem de erro tenha a largura do campo de entrada */
+    text-align: left; /* Alinha o texto à esquerda */
+  }
+  
+  input.erro {
+    background-color: rgba(255, 0, 0, 0.055);
+    border-color: #ff0000;
+  }
+
+.btns {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: nowrap;
+  }
+  
+  .btn_progresso {
+    font-size: 40px;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    background: none;
+    border: none;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  
+  .btn_progresso:hover {
+    color: aqua;
+  }
+
+.progresso_cadastro{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .dot1, .dot2, .dot3, .dot4 {
+    width: 10px;
+    height: 10px;
+    background-color: #c4c4c4;
+    border-radius: 50%;
+  }
+  
+  .dot1.active, .dot2.active, .dot3.active, .dot4.active {
+    background-color: #444444;
+  }
+
+
+@media (max-width: 768px) {
+    .container-principal {
+        width: 95%; 
+    }
+
+    .titulo, .subtitulo {
+        font-size: 2rem; 
+    }
+
+    .logo_icon {
+        width: 4rem;
+    }
+}
+.pag1{
+  display: block;
+}
+
+.pag2{
+  display: none;
+}
+.pag3{
+  display: none;
+}
+.pag4{
+  display: none;
+}
+
+.texto_cadastro {
+  font-size: 0.8rem;
+  text-align: left;
+  display:flex;
+}
+
+.peso_box{
+  display: flex; 
+  align-items: center;
+  gap: 0.6rem;
+  font-size:1rem;
+}
+
+#menos_peso:hover{
+  cursor:pointer;
+  color:var(--color6);
+}
+
+#mais_peso:hover{
+  cursor:pointer;
+  color:var(--color6);
+}
+
+#peso{
+  outline:none;
+}
+
+#peso.erro{
+  box-shadow: 0 0 0 1.5px red; /* Simula o outline */
+  border-radius: 5px; /* Adiciona bordas arredondadas, se necessário */
+}
+
+#altura.erro{
+  box-shadow: 0 0 0 1.5px red; /* Simula o outline */
+  border-radius: 5px; /* Adiciona bordas arredondadas, se necessário */
+}
+
+
+input[type="range"] {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none; 
+  width: 100%;
+  height: 0.8rem;
+  background: var(--color2);
+  border-radius: 5px;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none; /* Fallback */
+  -webkit-appearance: none; /* Para WebKit */
+  width: 1rem;
+  height: 1rem;
+  background: var(--color6);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#peso-valor{
+  margin-left:0.6rem;
+}
+
+.altura_box{
+  display: flex; 
+  align-items: center;
+  gap: 0.6rem;
+  font-size:1rem;
+}
+
+#menos_altura:hover{
+  cursor:pointer;
+  color:var(--color6);
+}
+
+#mais_altura:hover{
+  cursor:pointer;
+  color:var(--color6);
+}
+
+#altura{
+  outline:none;
+}
+
+#altura-valor{
+  margin-left:0.6rem;
+}
+.sexo-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Espaçamento entre os botões */
+}
+
+.sexo-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+  font-size: 18px; /* Ajuste o tamanho da fonte conforme necessário */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre a imagem e o texto */
+}
+
+.sexo-btn svg {
+  width: 2rem;
+  height: 2rem;
+  fill: #000; /* Cor padrão do SVG */
+}
+
+#sexo-feminino svg:hover{
+  transition: fill 0.2s ease;
+  fill: violet;
+}
+#sexo-feminino.ativo svg {
+  transition: fill 0.5s ease;
+  fill: rgb(255, 0, 255);
+}
+
+#sexo-masculino svg:hover{
+  transition: fill 0.2s ease;
+  fill: powderblue;
+}
+#sexo-masculino.ativo svg {
+  transition: fill 0.5s ease;
+  fill: rgb(0, 225, 255);
+}
+
+#sexo{
+  margin-left:0.3rem;
+}
+
+.metas {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 15px; 
+}
+
+#metaicon{
+  width: 50px;
+  height: 50px;
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+}
+
+#meta,#meta2,#meta3{
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+}
+
+#meta:hover,#meta2:hover,#meta3:hover{
+  color: var(--color6);
+}
+
+#subtexto {
+  font-size: 11px;
+  font-weight: normal;
+  margin-top: 5px;
+  text-align: justify; 
+  text-align-last: left; 
+}

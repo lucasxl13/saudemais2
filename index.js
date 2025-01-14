@@ -1,0 +1,1 @@
+window.location.href = "pag_login/login.html";

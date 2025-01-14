@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TESTE</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
+</head>
+
+<body>
+    <div class="container-principal">
+
+        <div class ="logo">
+            <img src="..\Icones\logo.png" alt="Saúde mais" class="logo_icon">
+            <h1 class="titulo">SAÚDE <strong class="subtitulo">+</strong></h1>
+        </div>
+
+        <h1 class="header" id="dcadastrais">DADOS CADASTRAIS</h1>
+    
+        <form id="dados" autocomplete="off">
+
+            <div class="pag1" id="pag1">
+            <div class="formulario">
+                <input type="text" id="usuario" name="usuario" placeholder="Usuário" maxlength="25">
+                <span class="mensagem-erro" id="usuario-erro"></span>
+            </div>
+
+            <div class="formulario">
+                <input type="text" id="email" name="email" placeholder="Email" maxlength="30">
+                <span class="mensagem-erro" id="email-erro"></span>
+            </div>
+
+            <div class="formulario">
+                <input type="text" id="c_email" name="c_email" placeholder="Confirme o Email" maxlength="30">
+                <span class="mensagem-erro" id="cemail-erro"></span>
+            </div>
+    
+            <div class="formulario">
+                <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="25">
+                <span class="mensagem-erro" id="senha-erro"></span>
+                <div class="forca_senha"></div>
+               
+                <div class="requisitos_senha" id="requisitos_senha">
+                    <p class="requisito" id="tamanho">* Oito caracteres</p>
+                    <p class="requisito" id="maiusculo">* Maiúscula</p>
+                    <p class="requisito" id="minusculo">* Minúscula</p>
+                    <p class="requisito" id="numero">* Número</p>
+                    <p class="requisito" id="especial">* Especial</p>
+                </div>
+                
+            </div>
+
+            <div class="formulario">
+                <input type="password" id="c_senha" name="c_senha" placeholder="Confirmar senha" maxlength="25">
+                <span class="mensagem-erro" id="csenha-erro"></span>
+            </div>
+            
+            </div>
+
+            <div class="pag2" id="pag2">
+
+                <div class="formulario">
+                    <h1 class="texto_cadastro">Data de nascimento</h1>
+                    <input type="text" id="nascimento" name="nascimento">
+                    <span class="mensagem-erro" id="nascimento-erro"></span>
+                </div>
+
+                <div class="formulario">
+                    <h1 class="texto_cadastro">Peso (kg): <span id="peso-valor"></span></h1>
+                    <div class="peso_box">
+                        <h1 id="menos_peso" onmousedown="inicia_ajustepeso(-0.1)" onmouseup="finaliza_ajustepeso()" onmouseleave="finaliza_ajustepeso()">-</h1>
+                        <input type="range" id="peso" name="peso" min="30" max="300" step="0.1" oninput="atualizaPeso(this.value)">
+                        <h1 id="mais_peso" onmousedown="inicia_ajustepeso(0.1)" onmouseup="finaliza_ajustepeso()" onmouseleave="finaliza_ajustepeso()">+</h1>
+                    </div>
+                    <span class="mensagem-erro" id="peso-erro"></span>
+                </div>
+
+                <div class="formulario">
+                    <h1 class="texto_cadastro">Altura (cm): <span id="altura-valor"></span></h1>
+                    <div class="altura_box">
+                        <h1 id="menos_altura" onmousedown="inicia_ajustealtura(-1)" onmouseup="finaliza_ajustealtura()" onmouseleave="finaliza_ajustealtura()">-</h1>
+                        <input type="range" id="altura" name="altura" min="60" max="250" step="1" oninput="atualizaAltura(this.value)">
+                        <h1 id="mais_altura" onmousedown="inicia_ajustealtura(1)" onmouseup="finaliza_ajustealtura()" onmouseleave="finaliza_ajustealtura()">+</h1>
+                    </div>
+                    <span class="mensagem-erro" id="altura-erro"></span>
+                </div>
+
+                <div class="formulario">
+                    <h1 class="texto_cadastro">Sexo:<span id="sexo"></span></h1>
+                    <div class="sexo-container">
+
+                        <button type="button" class="sexo-btn" id="sexo-feminino">
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg width="800px" height="800px" viewBox="-4.5 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="m15.426 7.714c0 .03.001.065.001.1 0 1.951-.751 3.727-1.98 5.054l.004-.005c-1.217 1.383-2.925 2.31-4.848 2.509l-.032.003v3.482h3 .016c.228 0 .413.185.413.413v.017-.001.857.016c0 .228-.185.413-.413.413-.006 0-.011 0-.017 0h.001-3v3 .016c0 .228-.185.413-.413.413-.006 0-.011 0-.017 0h.001-.857c-.005 0-.011 0-.016 0-.228 0-.413-.185-.413-.413 0-.006 0-.011 0-.017v.001-3h-3c-.005 0-.011 0-.016 0-.228 0-.413-.185-.413-.413 0-.006 0-.011 0-.017v.001-.857c0-.005 0-.011 0-.016 0-.228.185-.413.413-.413h.017-.001 3v-3.482c-1.378-.143-2.619-.639-3.658-1.394l.022.015c-1.96-1.42-3.22-3.701-3.22-6.277 0-.223.009-.444.028-.662l-.002.028c.102-1.245.49-2.381 1.099-3.367l-.019.033c.621-1.024 1.439-1.867 2.408-2.499l.03-.018c.934-.619 2.051-1.039 3.254-1.175l.034-.003c.273-.034.589-.054.909-.054 4.245 0 7.686 3.441 7.686 7.686v.03-.002zm-13.716 0c0 .026-.001.056-.001.087 0 1.629.674 3.101 1.759 4.152l.002.001c1.083 1.089 2.583 1.762 4.24 1.762s3.157-.674 4.24-1.762c1.086-1.052 1.761-2.524 1.761-4.153 0-.031 0-.061-.001-.092v.005c0-.026.001-.056.001-.087 0-1.629-.674-3.101-1.759-4.152l-.002-.001c-1.083-1.089-2.583-1.762-4.24-1.762s-3.157.674-4.24 1.762c-1.085 1.052-1.758 2.523-1.758 4.151 0 .031 0 .063.001.094v-.005z" />
+                            </svg>
+                        </button>
+
+                        <button type="button" class="sexo-btn" id="sexo-masculino">
+                            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                            <svg width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="m23 0c.549.008.992.451 1 .999v6.501.02c0 .265-.215.48-.48.48-.007 0-.014 0-.021 0h.001-1c-.006 0-.013 0-.02 0-.265 0-.48-.215-.48-.48 0-.007 0-.014 0-.021v.001-4.094l-5.969 5.984c1.226 1.485 1.969 3.407 1.969 5.503 0 .037 0 .075-.001.112v-.006.026c0 1.253-.262 2.444-.733 3.522l.022-.057c-.92 2.18-2.62 3.88-4.742 4.778l-.058.022c-1.03.449-2.231.711-3.492.711s-2.462-.261-3.55-.733l.058.022c-2.18-.92-3.88-2.62-4.778-4.742l-.022-.058c-.449-1.03-.711-2.231-.711-3.492s.261-2.462.733-3.55l-.022.058c.92-2.18 2.62-3.88 4.742-4.778l.058-.022c1.022-.45 2.213-.711 3.466-.711h.028-.001c.032 0 .069-.001.106-.001 2.096 0 4.019.744 5.518 1.981l-.015-.012 5.969-5.969h-4.08c-.006 0-.013 0-.02 0-.265 0-.48-.215-.48-.48 0-.007 0-.014 0-.021v.001-1c0-.006 0-.013 0-.02 0-.265.215-.48.48-.48h.021-.001zm-14 22h.015c3.874 0 7.015-3.141 7.015-7.015s-3.141-7.015-7.015-7.015-7.015 3.141-7.015 7.015c0 1.937.785 3.691 2.055 4.961 1.227 1.268 2.945 2.055 4.846 2.055.035 0 .07 0 .105-.001h-.005z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="mensagem-erro" id="sexo-erro"></span>
+                </div>
+
+            </div>
+
+            <div class="pag3" id="pag3">
+
+                <div class="formulario">
+                    <div class="metas">
+                        <img src="..\Icones\perca.png" id="metaicon">
+                        <div class="meta-text">
+                            <h1 id="meta">Perca de peso</h1>
+                            <p id="subtexto">Para aqueles que desejam emagrecer e chegar ao peso ideal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metas">
+                        <img src="..\Icones\ganho.png" id="metaicon">
+                        <div class="meta-text">
+                            <h1 id="meta2">Ganho de massa</h1>
+                            <p id="subtexto">Para aqueles que desejam construir músculos e ficarem mais fortes</p>
+                        </div>
+                    </div>
+                    
+                    <div class="metas">
+                        <img src="..\Icones\igual.png" id="metaicon">
+                        <div class="meta-text">
+                            <h1 id="meta3">Manutenção do peso</h1>
+                            <p id="subtexto">Para aqueles que conseguiram alcançar seu corpo ideal, e agora necessitam de mantê-lo</p>
+                        </div>
+                    
+                    </div>
+                <span class="mensagem-erro" id="meta-erro">Por favor, selecione seu objetivo.</span>
+                </div> 
+
+            </div>
+
+            <div class="btns">
+                <button type="button" class="btn_progresso" id="btn_back">˂</button>
+                <button type="button" class="btn_progresso" id="btn_go">˃</button>
+            </div>
+
+            <div class="progresso_cadastro">
+                <span class="dot1" id="dot1"></span>
+                <span class="dot2" id="dot2"></span>
+                <span class="dot3" id="dot3"></span>
+                <span class="dot4" id="dot4"></span>
+            </div>
+            
+        </form>
+    
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+    <script src="cadastro.js"></script>      
+</body>
+
+</html>
