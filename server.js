@@ -16,11 +16,38 @@ app.use(cors());
 
 // Conexão com o banco de dados
 const db = mysql.createConnection({
-  host: "10.100.39.38",
+  host: "10.100.63.48",
   user: "root", // Substitua pelo usuário do banco
-  password: "admin", // Substitua pela senha do banco
+  password: "BLLtml74124", // Substitua pela senha do banco
   database: "saudemais", // Nome do banco de dados
+  
+    // host: "localhost",
+    // user: "root", // Substitua pelo usuário do banco
+    // password: "admin", // Substitua pela senha do banco
+    // database: "saudemais", // Nome do banco de dados
 });
+
+// Função para garantir que a conexão está ativa
+function verificarConexao() {
+  return new Promise((resolve, reject) => {
+    db.ping((err) => {
+      if (err) {
+        console.log('Conexão perdida, tentando reconectar...');
+        db.connect((err) => {
+          if (err) {
+            console.error('Erro ao tentar reconectar:', err);
+            return reject('Erro ao reconectar ao banco de dados');
+          } else {
+            console.log('Reconectado ao banco de dados!');
+            return resolve();
+          }
+        });
+      } else {
+        resolve(); // Se a conexão ainda estiver ativa, resolve a promise
+      }
+    });
+  }); // Aqui estava faltando fechar a chave da função verificarConexao
+}
 
 // Teste de conexão com o banco
 db.connect((err) => {
@@ -49,8 +76,10 @@ const verificarToken = (req, res, next) => {
   });
 };
 
-app.get("/verificar-usuario/:usuario", (req, res) => {
+app.get("/verificar-usuario/:usuario", async (req, res) => {
   const { usuario } = req.params;
+
+  await verificarConexao();
 
   const query = "SELECT id FROM usuarios WHERE usuario = ?";
   db.query(query, [usuario], (err, result) => {
@@ -67,8 +96,10 @@ app.get("/verificar-usuario/:usuario", (req, res) => {
   });
 });
 
-app.get("/verificar-email/:email", (req, res) => {
+app.get("/verificar-email/:email", async (req, res) => {
   const { email } = req.params;
+
+  await verificarConexao();
 
   const query = "SELECT id FROM usuarios WHERE email = ?";
   db.query(query, [email], (err, result) => {
@@ -85,8 +116,10 @@ app.get("/verificar-email/:email", (req, res) => {
   });
 });
 // Rota de cadastro de usuário
-app.post("/cadastro", (req, res) => {
+app.post("/cadastro", async (req, res) => {
   const { usuario, senha, confirmarSenha, email, altura, peso, data, nascimento, sexo, objetivo } = req.body;
+
+  await verificarConexao();
 
   // Verificar se o usuário já existe
   const queryUsuario = "SELECT id FROM usuarios WHERE usuario = ?";
@@ -143,8 +176,10 @@ app.post("/cadastro", (req, res) => {
 });
 
 // Rota de login
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { usuario, senha } = req.body;
+
+  await verificarConexao();
 
   const query = "SELECT id, usuario, senha FROM usuarios WHERE usuario = ? OR email = ?";
   db.query(query, [usuario, usuario], (err, results) => {
@@ -178,8 +213,10 @@ app.post("/login", (req, res) => {
 
 // Rota para obter dados do usuário
 // Endpoint para retornar dados do usuário
-app.get("/dados-usuario", verificarToken, (req, res) => {
+app.get("/dados-usuario", verificarToken, async (req, res) => {
   const usuarioId = req.usuarioId; // 'usuarioId' vem do token JWT
+
+  await verificarConexao();
 
   const query = `
     SELECT u.usuario, u.email, u.data_nascimento, u.sexo, u.objetivo, m.altura, m.peso, m.data AS data_medida

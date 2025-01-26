@@ -1,3 +1,16 @@
+const campoLogo = document.querySelector('.style_logo');
+const itemLogo = document.getElementById('itemMais_logo');
+const itemSideBar = document.querySelectorAll('.item__sidebar'); // Alterado para querySelectorAll
+const toggleSidebar = document.getElementById('toggleSidebar');
+const sidebar = document.getElementById('sidebar');
+
+const botaoHome = document.getElementById('homeLink');
+const botaoHidratacao = document.getElementById('hidratacaoLink');
+const botaoCalorias = document.getElementById('calorialink');
+const botaoDieta = document.getElementById('dietalink');
+const botaoPerfil= document.getElementById('perfilLink');
+const botaoLogout = document.getElementById('logoutlink');
+
 function formatDate(dateString) {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -32,8 +45,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
+//https://apisaudemais.danielhatz.com.br/dados-usuario
+//http://localhost:3000/dados-usuario
   try {
-    const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
+    const response = await fetch("//https://apisaudemais.danielhatz.com.br/dados-usuario", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${jwt}`,
@@ -133,4 +148,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Erro ao carregar os dados:", error);
     window.location.href = "../pag_login/login.html";
   }
+});
+
+
+document.getElementById('button_menu').addEventListener('click', (event) => {
+  event.preventDefault(); 
+  window.location.href = '../pag_principal/principal.html';  
+});
+
+toggleSidebar.addEventListener('click', () => {
+  sidebar.classList.toggle('expanded');
 });

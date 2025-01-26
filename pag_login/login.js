@@ -68,6 +68,9 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
 
   try {
     // Envia os dados do login para o backend
+
+    //http://localhost:3000/login
+    //https://apisaudemais.danielhatz.com.br/login
     const response = await fetch("https://apisaudemais.danielhatz.com.br/login", {
       method: "POST",
       headers: {
