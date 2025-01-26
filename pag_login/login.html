@@ -19,11 +19,13 @@
 
     <form id="dados">
         <div class="formulario">
-            <input type="text" id="usuario" name="usuario" placeholder="Usuário" maxlength="25" required>
+            <input type="text" id="usuario" name="usuario" placeholder="Usuário" maxlength="25">
+            <span class="mensagem-erro" id="usuario-erro"></span>
         </div>
 
         <div class="formulario">
-            <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="25" required>
+            <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="25">
+            <span class="mensagem-erro" id="senha-erro"></span>
         </div>
 
         <div class="remember">

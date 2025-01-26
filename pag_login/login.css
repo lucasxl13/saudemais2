@@ -54,12 +54,20 @@ body {
     -webkit-text-stroke: 0.5px black;
 }
 
+.formulario {
+    position: relative;
+    padding-bottom: 1.4rem; 
+}
+
 .formulario input {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #cccccc;
     border-radius: 4px;
-    margin-bottom: 1rem;
+}
+
+.formulario input:focus{
+outline: 2px solid black;   
 }
 
 .remember {
@@ -143,3 +151,17 @@ button.registro:hover {
     }
 }
 
+.mensagem-erro {
+    color: red;
+    font-size:0.7rem;
+    display: none; /* Oculta a mensagem de erro por padrão */
+    position: absolute; /* Remove a mensagem de erro do fluxo do documento */
+    padding:0.2rem;
+    width: 100%; /* Garante que a mensagem de erro tenha a largura do campo de entrada */
+    text-align: left; /* Alinha o texto à esquerda */
+  }
+  
+  input.erro {
+    background-color: rgba(255, 0, 0, 0.055);
+    border-color: #ff0000;
+  }

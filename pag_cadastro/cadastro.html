@@ -17,7 +17,7 @@
             <h1 class="titulo">SAÚDE <strong class="subtitulo">+</strong></h1>
         </div>
 
-        <h1 class="header" id="dcadastrais">DADOS CADASTRAIS</h1>
+        <h1 class="header">DADOS CADASTRAIS</h1>
     
         <form id="dados" autocomplete="off">
 
@@ -119,7 +119,7 @@
                         <img src="..\Icones\perca.png" id="metaicon">
                         <div class="meta-text">
                             <h1 id="meta">Perca de peso</h1>
-                            <p id="subtexto">Para aqueles que desejam emagrecer e chegar ao peso ideal</p>
+                            <p class="subtexto">Para aqueles que desejam emagrecer e chegar ao peso ideal</p>
                         </div>
                     </div>
                     
@@ -127,7 +127,7 @@
                         <img src="..\Icones\ganho.png" id="metaicon">
                         <div class="meta-text">
                             <h1 id="meta2">Ganho de massa</h1>
-                            <p id="subtexto">Para aqueles que desejam construir músculos e ficarem mais fortes</p>
+                            <p class="subtexto">Para aqueles que desejam construir músculos e ficarem mais fortes</p>
                         </div>
                     </div>
                     
@@ -135,13 +135,64 @@
                         <img src="..\Icones\igual.png" id="metaicon">
                         <div class="meta-text">
                             <h1 id="meta3">Manutenção do peso</h1>
-                            <p id="subtexto">Para aqueles que conseguiram alcançar seu corpo ideal, e agora necessitam de mantê-lo</p>
+                            <p class="subtexto">Para aqueles que conseguiram alcançar seu corpo ideal, e agora necessitam de mantê-lo</p>
                         </div>
                     
                     </div>
                 <span class="mensagem-erro" id="meta-erro">Por favor, selecione seu objetivo.</span>
                 </div> 
 
+            </div>
+
+            <div class="pag4" id="pag4">
+                <p class="confirmacao">Usuário: <span id="cf_usuario"></span></p>
+                <p class="confirmacao">Email: <span id="cf_email"></span></p>
+                <p class="confirmacao">Nascimento: <span id="cf_nascimento"></span></p>
+                <p class="confirmacao">Peso: <span id="cf_peso"></span></p>
+                <p class="confirmacao">Altura: <span id="cf_altura"></span></p>
+                <p class="confirmacao">Sexo: <span id="cf_sexo"></span></p>
+                <p class="confirmacao">Objetivo: <span id="cf_objetivo"></span></p>  
+
+
+                <h1 class="titulo_termos">TERMOS DE USO</h1>
+                <div class="scroll_termos" id="scroll_termos">
+                    <p><strong>Termos de Uso – Saúde +</strong></p>
+                    <p><strong>Última atualização:</strong> 14/01/2025</p>
+                    <p>Bem-vindo ao Saúde +. Ao acessar e utilizar nosso site, você concorda com os seguintes Termos de Uso. Caso não concorde com algum desses termos, pedimos que não utilize nossos serviços.</p>                
+                    <p><strong>1. Aceitação dos Termos</strong></p>
+                    <p>Ao acessar o site Saúde +, você concorda em cumprir estes Termos de Uso e todas as leis e regulamentos aplicáveis. Estes termos podem ser modificados a qualquer momento sem aviso prévio. Recomendamos que você revise os Termos regularmente.</p>           
+                    <p><strong>2. Uso do Site</strong></p>
+                    <p>O conteúdo do site Saúde + é oferecido para fins informativos. As informações fornecidas não substituem aconselhamento médico ou profissional. Recomendamos que você consulte um profissional de saúde antes de iniciar qualquer programa de saúde ou fitness.</p>
+                    <p><strong>3. Conta de Usuário</strong></p>
+                    <p>Para utilizar determinadas funcionalidades, você pode ser solicitado a criar uma conta. É de sua responsabilidade manter suas credenciais de acesso confidenciais. Qualquer atividade realizada em sua conta é de sua responsabilidade.</p>
+                    <p><strong>4. Privacidade</strong></p>
+                    <p>Ao utilizar o site, você concorda com a coleta e uso de informações conforme descrito em nossa Política de Privacidade.</p>
+                    <p><strong>5. Propriedade Intelectual</strong></p>
+                    <p>Todo o conteúdo disponível no site, incluindo textos, imagens, gráficos e logotipos, é de propriedade exclusiva do Saúde + ou de seus licenciadores. O uso não autorizado de qualquer conteúdo pode violar leis de direitos autorais e marcas registradas.</p> 
+                    <p><strong>6. Limitação de Responsabilidade</strong></p>
+                    <p>O Saúde + não se responsabiliza por eventuais danos ou perdas decorrentes do uso do site, incluindo, sem limitação, danos diretos, indiretos ou incidentais. O site é fornecido "no estado em que se encontra", sem garantias de qualquer tipo.</p>
+                    <p><strong>7. Links para Sites de Terceiros</strong></p>
+                    <p>Nosso site pode conter links para sites de terceiros. O Saúde + não tem controle sobre esses sites e não assume responsabilidade por seus conteúdos ou práticas de privacidade.</p>
+                    <p><strong>8. Modificações do Serviço</strong></p>
+                    <p>O Saúde + se reserva o direito de modificar ou descontinuar, temporária ou permanentemente, o serviço a qualquer momento, sem aviso prévio.</p>
+                    <p><strong>9. Encerramento de Conta</strong></p>
+                    <p>Podemos encerrar ou suspender sua conta a qualquer momento, por qualquer motivo, sem aviso prévio ou responsabilidade, caso você viole estes Termos de Uso.</p>
+                    <p><strong>10. Legislação Aplicável</strong></p>
+                    <p>Estes Termos de Uso serão regidos e interpretados de acordo com as leis do [País/Estado], sem considerar seu conflito de provisões legais.</p>
+                    <p><strong>11. Contato</strong></p>
+                    <p>Se você tiver alguma dúvida sobre estes Termos de Uso, entre em contato conosco pelo e-mail: suporte@saudemaissite.com.</p>
+                    <p><strong>Saúde +</strong> Sua Jornada de Bem-Estar Começa Aqui!</p>
+                </div>
+                
+                   
+            <div class="termos_container">
+                    <input type="checkbox" id="check_termos">
+                        <h1 id = "termos_texto">Eu aceito os termos</h1>                                        
+            </div>
+
+                
+  
+                
             </div>
 
             <div class="btns">

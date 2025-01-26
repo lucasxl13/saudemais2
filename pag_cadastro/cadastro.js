@@ -1,9 +1,3 @@
-let valido  = false;
-let valido2 = false;
-let valido3 = false;
-
-
-
 //PAG1
 const pag1 = document.getElementById('pag1');
 const dot1 = document.getElementById('dot1');
@@ -52,7 +46,7 @@ const entrada_peso = document.getElementById("peso");
 const peso_valor = document.getElementById("peso-valor");
 const entrada_altura = document.getElementById("altura");
 const altura_valor = document.getElementById("altura-valor");
-const sexo = document.getElementById("sexo");
+const entrada_sexo = document.getElementById("sexo");
 const msexo = document.getElementById("sexo-masculino");
 const fsexo = document.getElementById("sexo-feminino");
 
@@ -77,7 +71,7 @@ sx_erro.style.display = 'none';
 entrada_nascimento.classList.remove('erro');
 entrada_peso.classList.remove('erro');
 entrada_altura.classList.remove('erro');
-sexo.classList.remove('erro');
+entrada_sexo.classList.remove('erro');
 }
 DefaultErrosPag2();
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,9 +95,17 @@ DefaultErrosPag3();
 
 //PAG4
 const dot4 = document.getElementById('dot4');
-
+const pag4 = document.getElementById('pag4');
+const checkbox = document.getElementById('check_termos');
 //PAG4 ERROS
-n_erro.classList.remove('erro');
+
+
+function DefaultErrosPag4(){
+  // ck_erro.classList.remove('erro');
+  // ck_erro.style.display = 'none';
+ }
+ DefaultErrosPag4();
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //SELETORES
@@ -130,6 +132,7 @@ function default_pag1(){
   pag1.style.display = 'block';
   pag2.style.display = 'none';
   pag3.style.display = 'none';
+  pag4.style.display = 'none';
   btn_back.style.display ="none";
 }
 
@@ -142,9 +145,11 @@ function default_pag2(){
   pag1.style.display = 'none';
   pag2.style.display = 'block';
   pag3.style.display = 'none';
+  pag4.style.display = 'none';
   btn_back.style.display ="block"; 
 }
 
+//Disposição Default dos elementos da Pag3
 function default_pag3(){
   dot1.classList.remove('active');
   dot2.classList.remove('active');
@@ -153,8 +158,10 @@ function default_pag3(){
   pag1.style.display = 'none';
   pag2.style.display = 'none';
   pag3.style.display = 'block';
+  pag4.style.display = 'none';
 }
 
+//Disposição Default dos elementos da Pag4
 function default_pag4(){
   dot1.classList.remove('active');
   dot2.classList.remove('active');
@@ -163,11 +170,12 @@ function default_pag4(){
   pag1.style.display = 'none';
   pag2.style.display = 'none';
   pag3.style.display = 'none';
+  pag4.style.display = 'block';
 }
 
 let pag = 0;
 
-
+//Determinar a visibilidade das paginas conforme progresso do cadastro.
 function atualizarPagina() {
   switch (pag) {
     case 0:
@@ -188,9 +196,81 @@ function atualizarPagina() {
     break;
 
     case 4:
-      console.log("Éxito");
+      const usuario = entrada_usuario.value;
+      const senha = entrada_senha.value;
+      const email = entrada_email.value;
+      const altura = altura_valor.value;
+      const peso = peso_valor.value; 
+      const nascimento = entrada_nascimento.value.split('/').reverse().join('-');
+      const sexo = entrada_sexo.value;
+      const objetivo = entrada_objetivo;
+
+      const data = new Date().toISOString().split("T")[0]; // Pega a data no formato yyyy-mm-dd
+      // const data = "2024-01-23";
+
+      fetch("http://localhost:3000/cadastro", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ usuario, senha, email, altura, peso, data, nascimento, sexo, objetivo}),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Dados enviados com sucesso!");
+            // Redireciona para a página de login
+            window.location.href = "../pag_login/login.html";
+          } else {
+            console.error("Erro ao enviar os dados:", response.statusText);
+            alert("Erro ao enviar os dados.");
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao conectar ao servidor:", error);
+          alert("Erro ao conectar ao servidor.");
+        });
+      break;
+      
   }
 }
+
+//Para retroceder o formulario a qualquer momento.
+btn_back.addEventListener("click", function (event) {
+  event.preventDefault();
+  if(pag>0){
+    pag--;
+    atualizarPagina();
+  }
+});
+
+//Para avançar o formulário quando valido.
+btn_go.addEventListener("click", async function (event) {
+  event.preventDefault();
+
+  let valido = false;
+
+  if (pag === 0) {
+    valido = await validarPrimeiraPagina(); // Aguarda a validação assíncrona
+  } else if (pag === 1) {
+    valido = validarSegundaPagina();
+  } else if (pag === 2) {
+    valido = validarTerceiraPagina();
+    document.getElementById("cf_usuario").textContent = entrada_usuario.value;
+    document.getElementById("cf_email").textContent = entrada_email.value;
+    document.getElementById("cf_nascimento").textContent = entrada_nascimento.value;
+    document.getElementById("cf_peso").textContent = peso_valor.value + " kg";
+    document.getElementById("cf_altura").textContent = altura_valor.value + " cm";
+    document.getElementById("cf_sexo").textContent = entrada_sexo.value;
+    document.getElementById("cf_objetivo").textContent = entrada_objetivo;
+  } else if (pag === 3) {
+    valido = validarQuartaPagina();
+  }
+
+  if (valido) {
+    pag++;
+    atualizarPagina();
+  }
+});
 
 //Requerimentos necessarios para a força da senha.
 const requerimentos = {
@@ -432,9 +512,6 @@ function cores_meta() {
 }
 
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 atualizarPagina();
@@ -473,58 +550,58 @@ entrada_senha.addEventListener("blur", () => {
 });
 
 fsexo.addEventListener("click", () => {
-  sexo.textContent = 'Feminino.';
-  sexo.value = 'feminino';
+  entrada_sexo.textContent = 'Feminino.';
+  entrada_sexo.value = 'feminino';
   fsexo.classList.add('ativo');
   msexo.classList.remove('ativo');
-  sexo.classList.remove('erro');
+  entrada_sexo.classList.remove('erro');
   sx_erro.style.display = 'none';
 });
 
 msexo.addEventListener("click", () => {
-  sexo.textContent = 'Masculino.';
-  sexo.value = 'masculino';
+  entrada_sexo.textContent = 'Masculino.';
+  entrada_sexo.value = 'masculino';
   msexo.classList.add('ativo');
   fsexo.classList.remove('ativo');
-  sexo.classList.remove('erro');
+  entrada_sexo.classList.remove('erro');
   sx_erro.style.display = 'none';
 });
 
-btn_back.addEventListener("click", function (event) {
-  event.preventDefault();
-  if(pag>0){
-    pag--;
-    atualizarPagina();
-  }
-});
 
-btn_go.addEventListener("click", function (event) {
-  event.preventDefault();
-
-  let valido = false;
-
-  if (pag == 0) {
-    valido = validarPrimeiraPagina();
-  } else if (pag == 1) {
-    valido = validarSegundaPagina();
-  }
-  else if(pag==2){
-    valido=validarTerceiraPagina();
-  }
-  if (valido) {
-    pag++;
-    atualizarPagina();
-  }
-});
-
-function validarPrimeiraPagina() {
+async function validarPrimeiraPagina() {
   DefaultErrosPag2();
   let valido = true;
 
-  valido &= validarCampo(entrada_usuario, u_erro); // Validação do usuário
-  valido &= validarCampo(entrada_email, e_erro); // Validação do email
+  // Validação básica do campo usuário
+  valido &= validarCampo(entrada_usuario, u_erro);
 
-  if (entrada_cemail.value == "") {
+  // Verificar disponibilidade do usuário no banco de dados
+  if (entrada_usuario.value.trim() !== "") {
+    const usuarioDisponivel = await verificarDisponibilidadeUsuario(entrada_usuario.value);
+    if (!usuarioDisponivel) {
+      entrada_usuario.classList.add("erro");
+      u_erro.style.display = "block";
+      u_erro.textContent = "Usuário indisponível.";
+      valido = false;
+    }
+  }
+
+  // Validação básica do e-mail
+  valido &= validarCampo(entrada_email, e_erro);
+
+  // Verificar disponibilidade do e-mail no banco de dados
+  if (entrada_email.value.trim() !== "") {
+    const emailDisponivel = await verificarDisponibilidadeEmail(entrada_email.value);
+    if (!emailDisponivel) {
+      entrada_email.classList.add("erro");
+      e_erro.style.display = "block";
+      e_erro.textContent = "E-mail já cadastrado.";
+      valido = false;
+    }
+  }
+
+  // Verificação de confirmação de e-mail
+  if (entrada_cemail.value === "") {
     valido &= validarCampo(entrada_cemail, ce_erro);
   } else {
     valido &= validarCampo(
@@ -535,17 +612,44 @@ function validarPrimeiraPagina() {
     );
   }
 
-  valido &= validarCampo(entrada_senha, s_erro, "Senha fraca", senha_forca); // Validação da senha
+  // Validação da senha
+  valido &= validarCampo(entrada_senha, s_erro, "Senha fraca", senha_forca);
 
-  if (entrada_csenha.value == "") {
+  if (entrada_csenha.value === "") {
     valido &= validarCampo(entrada_csenha, cs_erro);
   } else {
     valido &= validarCampo(
-      entrada_csenha,cs_erro,"Senhas não conferem.", entrada_senha.value === entrada_csenha.value
+      entrada_csenha,
+      cs_erro,
+      "Senhas não conferem.",
+      entrada_senha.value === entrada_csenha.value
     );
   }
 
   return valido;
+}
+
+
+async function verificarDisponibilidadeUsuario(usuario) {
+  try {
+    const response = await fetch(`http://localhost:3000/verificar-usuario/${usuario}`);
+    const data = await response.json();
+    return data.disponivel;
+  } catch (error) {
+    console.error("Erro ao verificar disponibilidade do usuário:", error);
+    return false; // Caso haja erro, trate como indisponível por segurança
+  }
+}
+
+async function verificarDisponibilidadeEmail(email) {
+  try {
+    const response = await fetch(`http://localhost:3000/verificar-email/${email}`);
+    const data = await response.json();
+    return data.disponivel;
+  } catch (error) {
+    console.error("Erro ao verificar disponibilidade do e-mail:", error);
+    return false; // Trate como indisponível em caso de erro
+  }
 }
 
 function validarSegundaPagina() {
@@ -573,7 +677,7 @@ function validarSegundaPagina() {
     valido2=false;
   }
 
-  if(sexo.value === undefined){
+  if(entrada_sexo.value === undefined){
     sx_erro.style.display = 'block';
     sx_erro.textContent = 'Campo obrigatório';
     valido2=false;
@@ -582,6 +686,7 @@ function validarSegundaPagina() {
   return valido2;
 }
 
+let entrada_objetivo = '';
 let TesteObjetivo=false;
 
 meta_emagrecer.addEventListener('click', function() {
@@ -590,6 +695,7 @@ meta_emagrecer.addEventListener('click', function() {
   m_erro.style.display = 'none';
   meta_emagrecer.style.color = color6; 
   TesteObjetivo = true;
+  entrada_objetivo = '1';
 });
 
 meta_ganho.addEventListener('click', function() {
@@ -598,6 +704,7 @@ meta_ganho.addEventListener('click', function() {
   m_erro.style.display = 'none';
   meta_ganho.style.color = color6; 
   TesteObjetivo = true;
+  entrada_objetivo = '2';
 });
 
 meta_equilibrio.addEventListener('click', function() {
@@ -606,6 +713,7 @@ meta_equilibrio.addEventListener('click', function() {
   m_erro.style.display = 'none';
   meta_equilibrio.style.color = color6; 
   TesteObjetivo = true;
+  entrada_objetivo = '3';
 });
 
 function validarTerceiraPagina() {
@@ -618,6 +726,37 @@ function validarTerceiraPagina() {
   }
   
   return valido3;
+}
+
+//Função para o texto da checkbox funcionar como parte do checkbox.
+const scroll_termos = document.getElementById('scroll_termos');
+document.getElementById('termos_texto').addEventListener('click', function() {
+
+  if(checkbox.checked)
+  {
+    checkbox.checked = false;
+  }
+  else{
+    checkbox.checked = true;
+    checkbox.style.outline = "none";
+    scroll_termos.style.outline = "none";
+    scroll_termos.style.background = "#f9f9f9";
+  }
+  });
+
+
+function validarQuartaPagina() {
+  let valido4 = true;
+
+  if(checkbox.checked == false){
+    scroll_termos.style.background = "rgba(255, 0, 0, 0.055)"; 
+    scroll_termos.style.outline = "2px solid #ff0000";
+    checkbox.style.outline = "2px solid #ff0000";
+
+    valido4 = false;
+  }
+  
+  return valido4;
 }
 
 

@@ -7,6 +7,36 @@
     <link rel="stylesheet" href="principal.css">
 </head>
 <body>
+    <div>
+        <h1>Dados do Usuário</h1>
+        <p><strong>Usuário:</strong> <span id="usuario"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <p><strong>Data de Nascimento:</strong> <span id="data_nascimento"></span></p>
+        <p><strong>Sexo:</strong> <span id="sexo"></span></p>
+        <p><strong>Objetivo:</strong> <span id="objetivo"></span></p>
+    </div>
+
+    <div>
+        <canvas id="graficoMedidas" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Tabela para exibir todas as medições -->
+    <div>
+        <h2>Histórico de Medições</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data da Medição</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                </tr>
+            </thead>
+            <tbody id="medidas-table-body">
+                <!-- Os dados de medições serão inseridos dinamicamente aqui -->
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="principal.js"></script>      
 </body>
 </html>
