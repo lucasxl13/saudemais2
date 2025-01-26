@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const response = await fetch("http://localhost:3000/dados-usuario", {
+    const response = await fetch("http://10.100.39.38:3000/dados-usuario", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${jwt}`,

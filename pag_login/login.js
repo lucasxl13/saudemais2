@@ -68,7 +68,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
 
   try {
     // Envia os dados do login para o backend
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch("http://10.100.39.38:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

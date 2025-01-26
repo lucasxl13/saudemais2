@@ -16,7 +16,7 @@ app.use(cors());
 
 // Conexão com o banco de dados
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "10.100.39.38",
   user: "root", // Substitua pelo usuário do banco
   password: "admin", // Substitua pela senha do banco
   database: "saudemais", // Nome do banco de dados
@@ -205,5 +205,5 @@ app.get("/dados-usuario", verificarToken, (req, res) => {
 
 // Iniciar o servidor
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+  console.log(`Servidor rodando em http://10.100.39.38:${port}`);
 });
