@@ -13,7 +13,6 @@ body {
     background-image: url('../Backgrounds/0.png'); 
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
     padding: 1rem; 
 }
@@ -92,4 +91,43 @@ body {
 .sidebar.expanded .item-text {
     visibility: visible;
     opacity: 1;
+}
+
+.primeira_linha{
+    display:flex;
+    gap:4rem;
+}
+
+.containers{
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    width: 26rem;
+    height: 20rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    margin-top:10rem;
+    text-align: center;
+}
+
+#peso, #peso_ideal {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.periodos{
+
+    display:flex;
+    gap:1rem; 
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Alinha verticalmente */
+    width: 100%; /* Garante que ocupe toda a largura do container */
+}
+
+.txt_periodos{
+    cursor: pointer;
+}
+
+.txt_periodos:hover{
+    cursor: pointer;
+    color: var(--color6);
 }

@@ -1,6 +1,6 @@
 const campoLogo = document.querySelector('.style_logo');
 const itemLogo = document.getElementById('itemMais_logo');
-const itemSideBar = document.querySelectorAll('.item__sidebar'); // Alterado para querySelectorAll
+const itemSideBar = document.querySelectorAll('.item__sidebar');
 const toggleSidebar = document.getElementById('toggleSidebar');
 const sidebar = document.getElementById('sidebar');
 
@@ -8,154 +8,219 @@ const botaoHome = document.getElementById('homeLink');
 const botaoHidratacao = document.getElementById('hidratacaoLink');
 const botaoCalorias = document.getElementById('calorialink');
 const botaoDieta = document.getElementById('dietalink');
-const botaoPerfil= document.getElementById('perfilLink');
+const botaoPerfil = document.getElementById('perfilLink');
 const botaoLogout = document.getElementById('logoutlink');
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
-  const year = date.getFullYear();
+let usuario = null;
+let email = null;
+let data_nascimento = null;
+let sexo = null;
+let objetivo = null;
+let data_medida = null;
+let peso = null;
+let altura = null;
 
-  return `${day}/${month}/${year}`;
+let imc = null;
+let peso_ideal = null;
+
+// Armazenar os dados de peso e datas para o gráfico
+let dadosPeso = [];
+
+// Função para formatar datas (dia/mês)
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
+
+    return `${day}/${month}`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  let jwt = null;
+    let jwt = null;
 
-  if (sessionStorage.getItem("jwt")) {
-    jwt = sessionStorage.getItem("jwt");
-  }
-
-  if (!jwt && localStorage.getItem("jwt")) {
-    const storedData = JSON.parse(localStorage.getItem("jwt"));
-
-    if (Date.now() > storedData.expiresAt) {
-      localStorage.removeItem("jwt");
-      sessionStorage.removeItem("jwt");
-      window.location.href = "../pag_login/login.html";
-      return;
+    // Verifica se o token está no sessionStorage ou localStorage
+    if (sessionStorage.getItem("jwt")) {
+        jwt = sessionStorage.getItem("jwt");
     }
 
-    jwt = storedData.token;
-  }
+    if (!jwt && localStorage.getItem("jwt")) {
+        const storedData = JSON.parse(localStorage.getItem("jwt"));
 
-  if (!jwt) {
-    window.location.href = "../pag_login/login.html";
-    return;
-  }
+        // Verifica se o token expirou
+        if (Date.now() > storedData.expiresAt) {
+            localStorage.removeItem("jwt");
+            sessionStorage.removeItem("jwt");
+            window.location.href = "../pag_login/login.html";
+            return;
+        }
 
-//https://apisaudemais.danielhatz.com.br/dados-usuario
-//http://localhost:3000/dados-usuario
-  try {
-    const response = await fetch("//https://apisaudemais.danielhatz.com.br/dados-usuario", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${jwt}`,
-      },
-    });
-
-    if (!response.ok) {
-      localStorage.removeItem("jwt");
-      sessionStorage.removeItem("jwt");
-      window.location.href = "../pag_login/login.html";
-      throw new Error("Erro ao carregar os dados.");
+        jwt = storedData.token;
     }
 
-    const data = await response.json();
-    console.log("Dados do usuário:", data);
+    // Se nenhum token válido for encontrado, redireciona para o login
+    if (!jwt) {
+        window.location.href = "../pag_login/login.html";
+        return;
+    }
 
-    // Exibe informações do usuário
-    const userInfo = data[0];
-    document.getElementById('usuario').textContent = userInfo.usuario;
-    document.getElementById('email').textContent = userInfo.email;
-    document.getElementById('data_nascimento').textContent = formatDate(userInfo.data_nascimento);
-    document.getElementById('sexo').textContent = userInfo.sexo;
-    document.getElementById('objetivo').textContent = userInfo.objetivo;
-
-    // Exibe todas as medições
-    const medidasTableBody = document.getElementById("medidas-table-body");
-    medidasTableBody.innerHTML = ""; // Limpa o conteúdo anterior
-
-    // Arrays para o gráfico
-    const datas = [];
-    const pesos = [];
-    const alturas = [];
-
-    data.forEach((medida) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${formatDate(medida.data_medida)}</td>
-        <td>${medida.altura}</td>
-        <td>${medida.peso}</td>
-      `;
-      medidasTableBody.appendChild(row);
-
-      // Adiciona os dados para o gráfico
-      datas.push(formatDate(medida.data_medida));
-      pesos.push(medida.peso);
-      alturas.push(medida.altura);
-    });
-
-    // Cria o gráfico usando Chart.js
-    const ctx = document.getElementById('graficoMedidas').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: datas, // Datas como labels do eixo X
-        datasets: [
-          {
-            label: 'Peso (kg)',
-            data: pesos,
-            borderColor: 'rgb(75, 192, 192)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            tension: 0.3, // Suaviza a curva da linha
-          },
-          {
-            label: 'Altura (cm)',
-            data: alturas,
-            borderColor: 'rgb(153, 102, 255)',
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            tension: 0.3, // Suaviza a curva da linha
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-        },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Datas',
+    try {
+        // Faz a requisição ao backend
+        const response = await fetch("http://localhost:3000/dados-usuario", {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
             },
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Valores',
-            },
-            beginAtZero: false,
-          },
-        },
-      },
-    });
-  } catch (error) {
-    console.error("Erro ao carregar os dados:", error);
-    window.location.href = "../pag_login/login.html";
-  }
+        });
+
+        // Se a resposta não for OK, redireciona para o login
+        if (!response.ok) {
+            localStorage.removeItem("jwt");
+            sessionStorage.removeItem("jwt");
+            window.location.href = "../pag_login/login.html";
+            return;
+        }
+
+        // Processa os dados do backend
+        const data = await response.json();
+        const userInfo = data[data.length - 1]; // Pega o último dado do usuário
+
+        usuario = userInfo.usuario;
+        email = userInfo.email;
+        data_nascimento = formatDate(userInfo.data_nascimento);
+        sexo = userInfo.sexo;
+        objetivo = userInfo.objetivo;
+        data_medida = formatDate(userInfo.data_medida);
+        peso = userInfo.peso;
+        altura = userInfo.altura;
+
+        imc = peso / ((altura / 100) * (altura / 100));
+        imc = parseFloat(imc).toFixed(2);
+
+        peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
+        peso_ideal = parseFloat(peso_ideal).toFixed(2);
+
+        // Exibe os dados na interface
+        frontending(); // Chama a função para exibir as informações
+
+        // Armazena os dados de peso e data para o gráfico
+        dadosPeso = data.map(item => ({
+            data: item.data_medida,
+            peso: item.peso,
+        }));
+
+        // Exibe os últimos 7 dias no gráfico
+        filtrarUltimosSeteDias();
+    } catch (error) {
+        console.error("Erro ao carregar os dados:", error);
+        localStorage.removeItem("jwt");
+        sessionStorage.removeItem("jwt");
+        window.location.href = "../pag_login/login.html";
+    }
 });
 
+// Função para gerar o gráfico
+let chart = null;
 
-document.getElementById('button_menu').addEventListener('click', (event) => {
-  event.preventDefault(); 
-  window.location.href = '../pag_principal/principal.html';  
-});
+function gerarGrafico(dates, pesos) {
+    const ctx = document.getElementById('graficoPeso').getContext('2d');
+    
+    if (chart) {
+        chart.destroy();  // Destruir o gráfico anterior antes de criar um novo
+    }
 
+    // Calcula os valores mínimo e máximo com base nos pesos
+    const pesoMinimo = Math.ceil(Math.min(...pesos) - 3); // Arredonda para cima o valor mínimo
+    const pesoMaximo = Math.ceil(Math.max(...pesos) + 3); // Arredonda para cima o valor máximo
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates, // Datas para o eixo X
+            datasets: [{
+                label: 'Peso',
+                data: pesos, // Pesos para o eixo Y
+                borderColor: 'rgb(0, 0, 0)',
+                backgroundColor: 'rgba(0, 255, 140, 0.38)',
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'ÚLTIMOS 7 DIAS', // Título do gráfico
+                    font: {
+                        size: 11, // Tamanho da fonte do título
+                    },
+                    color: '#000000', // Cor do título (preto)
+                },
+                legend: {
+                    display: false, // Esconde a legenda se não for necessária
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw + ' kg'; // Adiciona "kg" após o valor da tooltip
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    min: pesoMinimo, // Define o valor mínimo do eixo Y
+                    max: pesoMaximo, // Define o valor máximo do eixo Y
+                    ticks: {
+                        stepSize: 1, // Ajusta o intervalo de marcação do eixo Y
+                        callback: function(value) {
+                            return value + ' kg'; // Adiciona "kg" após o valor
+                        }
+                    },
+                }
+            }
+        }
+    });
+}
+
+
+
+// Função para filtrar os últimos 7 dias automaticamente
+function filtrarUltimosSeteDias() {
+    const hoje = new Date();
+    const seteDiasAtras = new Date();
+    seteDiasAtras.setDate(hoje.getDate() - 7);
+
+    // Filtrar os dados de peso com base nos últimos 7 dias
+    const dadosFiltrados = dadosPeso.filter(item => {
+        const dataMedida = new Date(item.data);
+        return dataMedida >= seteDiasAtras && dataMedida <= hoje;
+    });
+
+    // Preparar as datas e pesos para o gráfico
+    const datas = dadosFiltrados.map(item => formatDate(item.data));
+    const pesos = dadosFiltrados.map(item => item.peso);
+
+    // Atualizar o gráfico
+    gerarGrafico(datas, pesos);
+}
+
+// Função para exibir as informações do usuário na interface
+function frontending() {
+    document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
+    document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
+}
+
+// Evento para alternar o menu lateral
 toggleSidebar.addEventListener('click', () => {
-  sidebar.classList.toggle('expanded');
+    sidebar.classList.toggle('expanded');
+});
+
+// Logout
+botaoLogout.addEventListener('click', () => {
+    // Remove os tokens armazenados
+    localStorage.removeItem('jwt');
+    sessionStorage.removeItem('jwt');
+    
+    // Redireciona para a página de login
+    window.location.href = '../pag_login/login.html';
 });

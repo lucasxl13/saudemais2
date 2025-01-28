@@ -71,7 +71,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
 
     //http://localhost:3000/login
     //https://apisaudemais.danielhatz.com.br/login
-    const response = await fetch("https://apisaudemais.danielhatz.com.br/login", {
+    const response = await fetch("http://localhost:3000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

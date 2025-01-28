@@ -16,15 +16,15 @@ app.use(cors());
 
 // Conexão com o banco de dados
 const db = mysql.createConnection({
-  host: "10.100.63.48",
-  user: "root", // Substitua pelo usuário do banco
-  password: "BLLtml74124", // Substitua pela senha do banco
-  database: "saudemais", // Nome do banco de dados
+  // host: "10.100.63.48",
+  // user: "root", // Substitua pelo usuário do banco
+  // password: "BLLtml74124", // Substitua pela senha do banco
+  // database: "saudemais", // Nome do banco de dados
   
-    // host: "localhost",
-    // user: "root", // Substitua pelo usuário do banco
-    // password: "admin", // Substitua pela senha do banco
-    // database: "saudemais", // Nome do banco de dados
+    host: "localhost",
+    user: "root", // Substitua pelo usuário do banco
+    password: "admin", // Substitua pela senha do banco
+    database: "saudemais", // Nome do banco de dados
 });
 
 // Função para garantir que a conexão está ativa
