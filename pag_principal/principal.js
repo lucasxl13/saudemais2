@@ -65,7 +65,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // Faz a requisição ao backend
-        const response = await fetch("http://localhost:3000/dados-usuario", {
+        // https://apisaudemais.danielhatz.com.br/dados-usuario
+        //http://localhost:3000/dados-usuario
+        const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${jwt}`,
