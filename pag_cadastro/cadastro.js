@@ -633,9 +633,9 @@ async function validarPrimeiraPagina() {
 
 async function verificarDisponibilidadeUsuario(usuario) {
   try {
-    //https://apisaudemais.danielhatz.com.br//verificar-usuario/${usuario}
+    //https://apisaudemais.danielhatz.com.br/verificar-usuario/${usuario}
     //http://localhost:3000/verificar-usuario/${usuario}
-    const response = await fetch(`https://apisaudemais.danielhatz.com.br//verificar-usuario/${usuario}`);
+    const response = await fetch(`https://apisaudemais.danielhatz.com.br/verificar-usuario/${usuario}`);
     const data = await response.json();
     return data.disponivel;
   } catch (error) {
