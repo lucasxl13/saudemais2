@@ -12,20 +12,10 @@ const botaoDieta = document.getElementById('dietalink');
 const botaoPerfil = document.getElementById('perfilLink');
 const botaoLogout = document.getElementById('logoutlink');
 
-const container_peso = document.getElementById('container_peso');
-
-
 let usuario = null;
-let email = null;
-let data_nascimento = null;
-let sexo = null;
-let objetivo = null;
 let data_medida = null;
 let peso = null;
-let altura = null;
 
-let imc = null;
-let peso_ideal = null;
 
 // Armazenar os dados de peso e datas para o gráfico
 let dadosPeso = [];
@@ -91,22 +81,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const userInfo = data[data.length - 1]; // Pega o último dado do usuário
 
         usuario = userInfo.usuario;
-        email = userInfo.email;
-        data_nascimento = formatDate(userInfo.data_nascimento);
-        sexo = userInfo.sexo;
-        objetivo = userInfo.objetivo;
         data_medida = formatDate(userInfo.data_medida);
         peso = userInfo.peso;
-        altura = userInfo.altura;
-
-        imc = peso / ((altura / 100) * (altura / 100));
-        imc = parseFloat(imc).toFixed(2);
-
-        peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
-        peso_ideal = parseFloat(peso_ideal).toFixed(2);
-
-        // Exibe os dados na interface
-        frontending(); // Chama a função para exibir as informações
 
         // Armazena os dados de peso e data para o gráfico
         dadosPeso = data.map(item => ({
@@ -114,8 +90,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             peso: item.peso,
         }));
 
+        frontending();
         // Exibe os últimos 7 dias no gráfico
         filtrarUltimosSeteDias();
+
+        const entrada_peso = document.getElementById("peso");
+        const peso_valor = document.getElementById("peso-valor");
+
+        if (peso) {
+            entrada_peso.value = peso; // Define o slider
+            peso_valor.value = peso;
+            peso_valor.textContent = `${peso} kg`; // Atualiza o texto
+        }
+
+
     } catch (error) {
         console.error("Erro ao carregar os dados:", error);
         localStorage.removeItem("jwt");
@@ -210,12 +198,6 @@ function filtrarUltimosSeteDias() {
     gerarGrafico(datas, pesos);
 }
 
-// Função para exibir as informações do usuário na interface
-function frontending() {
-    document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
-    document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
-}
-
 // Evento para alternar o menu lateral
 toggleSidebar.addEventListener('click', () => {
     sidebar.classList.toggle('expanded');
@@ -239,6 +221,121 @@ botaoLogout.addEventListener('click', () => {
     window.location.href = '../pag_login/login.html';
 });
 
-container_peso.addEventListener('click', () => {
-    window.location.href = '../pag_peso/peso.html';
+function frontending() {
+document.getElementById('peso_atual').textContent = peso + " kg";
+}
+
+const entrada_peso = document.getElementById("peso");
+const peso_valor = document.getElementById("peso-valor");
+
+let intervalo; // Armazena o ID do intervalo
+let velocidade = 50; // Velocidade inicial em ms
+let aceleracao = 10; // Incremento na velocidade
+let vel_minima = 5; // Velocidade mínima (ms)
+let incremento = 0; // Valor incremental (positivo ou negativo)
+let delay; // Timeout para ativar a aceleração
+
+// Atualiza o texto do peso com base no slider
+function atualizaPeso(valor) {
+  peso_valor.textContent = parseFloat(valor).toFixed(1) + ' kg';
+  peso_valor.value = entrada_peso.value;
+}
+// Função para iniciar o ajuste contínuo ao segurar clicado
+function inicia_ajustepeso(valor) {
+  incremento = valor;
+  // Altera o peso uma vez imediatamente
+  alterarPeso(valor);
+
+  // Inicia o timeout para começar a aceleração após 500ms
+  delay = setTimeout(() => {
+    velocidade = 50; // Velocidade inicial
+
+    // Cria um loop que ajusta o peso continuamente
+    intervalo = setInterval(() => {
+      alterarPeso(valor);
+
+      // Reduz a velocidade gradualmente (até o limite mínimo)
+      if (velocidade > vel_minima) {
+        velocidade -= aceleracao;
+        clearInterval(intervalo); // Limpa o intervalo atual
+        intervalo = setInterval(() => alterarPeso(valor), velocidade); // Reinicia o intervalo com a nova velocidade
+      }
+    }, velocidade);
+  }, 500); // Espera 500ms antes de começar o ajuste contínuo
+}
+
+// Função para parar o ajuste contínuo
+function finaliza_ajustepeso() {
+  clearTimeout(delay); // Cancela o timeout de aceleração
+  clearInterval(intervalo); // Para o intervalo
+}
+
+// Altera o valor do peso no slider e atualiza a exibição
+function alterarPeso(valor) {
+  const slider = entrada_peso;
+  let novoValor = parseFloat(slider.value) + valor;
+
+  // Garante que o valor permaneça dentro dos limites do slider
+  if (novoValor >= parseFloat(slider.min) && novoValor <= parseFloat(slider.max)) {
+    slider.value = novoValor.toFixed(1);
+    atualizaPeso(novoValor);
+  }
+}
+document.getElementById('modif_peso').addEventListener('click', () => {
+    document.getElementById('alterar_peso').style.display = 'block';
+    document.getElementById('modif_peso').style.display = 'none';
+    document.getElementById('modif_peso2').style.display = 'none';
+});
+
+document.getElementById('exit_peso').addEventListener('click', () => {
+    document.getElementById('alterar_peso').style.display = 'none';
+    document.getElementById('modif_peso').style.display = 'block';
+    document.getElementById('modif_peso2').style.display = 'block';
+});
+
+
+document.getElementById('edit_peso').addEventListener('click', async () => {
+    // Obtém o novo peso e a data atual
+    const novoPeso = peso_valor.value;
+
+    if (!novoPeso) {
+        return; // Se o usuário não inseriu nada, não faz nada
+    }
+
+    const dataAtual = new Date().toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+
+    // Verifica se o peso inserido é um número
+    if (isNaN(novoPeso) || novoPeso <= 0) {
+        alert("Por favor, insira um valor válido de peso.");
+        return;
+    }
+
+    const jwt = sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
+
+    try {
+        // Faz a requisição para atualizar o peso
+        //https://apisaudemais.danielhatz.com.br/atualizar-peso
+        //http://localhost:3000/atualizar-peso
+        const response = await fetch("https://apisaudemais.danielhatz.com.br/atualizar-peso", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${jwt}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                data: dataAtual, // Passa a data atual
+                peso: parseFloat(novoPeso) // Passa o peso atualizado
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao atualizar o peso.");
+        }
+
+        location.reload();
+
+    } catch (error) {
+        console.error("Erro ao atualizar peso:", error);
+        alert(error.message);
+    }
 });

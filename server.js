@@ -240,6 +240,62 @@ app.get("/dados-usuario", verificarToken, async (req, res) => {
   });
 });
 
+
+app.post("/atualizar-peso", verificarToken, async (req, res) => {
+  const { data, peso, altura } = req.body; // A data, peso e altura (caso fornecido)
+
+  await verificarConexao();
+
+  const usuarioId = req.usuarioId; // 'usuarioId' vem do token JWT
+
+  // Se a altura não for fornecida, buscar a última altura registrada
+  let alturaAtual = altura;
+  if (!altura) {
+    const queryUltimaAltura = "SELECT altura FROM medidas WHERE usuario_id = ? ORDER BY data DESC LIMIT 1";
+    await new Promise((resolve, reject) => {
+      db.query(queryUltimaAltura, [usuarioId], (err, result) => {
+        if (err) {
+          reject("Erro ao buscar última altura.");
+        }
+        if (result.length > 0) {
+          alturaAtual = result[0].altura; // Utiliza a última altura registrada
+        }
+        resolve();
+      });
+    });
+  }
+
+  // Verifica se já existe um registro de peso para a data
+  const queryVerificarData = "SELECT id FROM medidas WHERE usuario_id = ? AND data = ?";
+  db.query(queryVerificarData, [usuarioId, data], (err, result) => {
+    if (err) {
+      console.error("Erro ao verificar data:", err);
+      return res.status(500).send("Erro ao verificar data.");
+    }
+
+    if (result.length > 0) {
+      // Se existir, atualiza o peso e mantém a altura
+      const queryAtualizarPeso = "UPDATE medidas SET peso = ?, altura = ? WHERE id = ?";
+      db.query(queryAtualizarPeso, [peso, alturaAtual, result[0].id], (err, result) => {
+        if (err) {
+          console.error("Erro ao atualizar peso:", err);
+          return res.status(500).send("Erro ao atualizar peso.");
+        }
+        return res.status(200).send("Peso e altura atualizados com sucesso!");
+      });
+    } else {
+      // Se não existir, cria um novo registro com a altura e o peso
+      const queryInserirPeso = "INSERT INTO medidas (usuario_id, peso, altura, data) VALUES (?, ?, ?, ?)";
+      db.query(queryInserirPeso, [usuarioId, peso, alturaAtual, data], (err, result) => {
+        if (err) {
+          console.error("Erro ao inserir peso:", err);
+          return res.status(500).send("Erro ao inserir peso.");
+        }
+        return res.status(200).send("Peso e altura registrados com sucesso!");
+      });
+    }
+  });
+});
 // Iniciar o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://10.100.39.38:${port}`);
