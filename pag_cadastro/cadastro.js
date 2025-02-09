@@ -206,10 +206,9 @@ function atualizarPagina() {
       const objetivo = entrada_objetivo;
 
       const data = new Date().toISOString().split("T")[0]; // Pega a data no formato yyyy-mm-dd
-      // const data = "2024-01-23";
-      //https://apisaudemais.danielhatz.com.br/cadastro
-      //http://localhost:3000/cadastro
-      fetch("https://apisaudemais.danielhatz.com.br/cadastro", {
+
+      // fetch("https://apisaudemais.danielhatz.com.br/cadastro", {
+      fetch("http://localhost:3000/cadastro", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -635,7 +634,7 @@ async function verificarDisponibilidadeUsuario(usuario) {
   try {
     //https://apisaudemais.danielhatz.com.br/verificar-usuario/${usuario}
     //http://localhost:3000/verificar-usuario/${usuario}
-    const response = await fetch(`https://apisaudemais.danielhatz.com.br/verificar-usuario/${usuario}`);
+    const response = await fetch(`http://localhost:3000/verificar-usuario/${usuario}`);
     const data = await response.json();
     return data.disponivel;
   } catch (error) {
@@ -648,7 +647,7 @@ async function verificarDisponibilidadeEmail(email) {
   try {
     //https://apisaudemais.danielhatz.com.br/verificar-email/${email}
     //http://localhost:3000/verificar-email/${email}
-    const response = await fetch(`https://apisaudemais.danielhatz.com.br/verificar-email/${email}`);
+    const response = await fetch(`http://localhost:3000/verificar-email/${email}`);
     const data = await response.json();
     return data.disponivel;
   } catch (error) {

@@ -1,3 +1,4 @@
+require("dotenv").config(); // Para carregar variáveis de ambiente
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
@@ -8,215 +9,131 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const port = 3000;
 
-// Middleware para processar JSON
 app.use(bodyParser.json());
-
-// Configurações de CORS
 app.use(cors());
 
-// Conexão com o banco de dados
-const db = mysql.createConnection({
-  host: "10.100.63.48",
-  user: "root", // Substitua pelo usuário do banco
-  password: "BLLtml74124", // Substitua pela senha do banco
-  database: "saudemais", // Nome do banco de dados
-  
-    // host: "localhost",
-    // user: "root", // Substitua pelo usuário do banco
-    // password: "admin", // Substitua pela senha do banco
-    // database: "saudemais", // Nome do banco de dados
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "admin",
+  database: process.env.DB_NAME || "saudemais",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-// Função para garantir que a conexão está ativa
-function verificarConexao() {
+// Função para executar consultas SQL com Promises
+const queryAsync = (sql, params) => {
   return new Promise((resolve, reject) => {
-    db.ping((err) => {
-      if (err) {
-        console.log('Conexão perdida, tentando reconectar...');
-        db.connect((err) => {
-          if (err) {
-            console.error('Erro ao tentar reconectar:', err);
-            return reject('Erro ao reconectar ao banco de dados');
-          } else {
-            console.log('Reconectado ao banco de dados!');
-            return resolve();
-          }
-        });
-      } else {
-        resolve(); // Se a conexão ainda estiver ativa, resolve a promise
-      }
+    pool.query(sql, params, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
     });
-  }); // Aqui estava faltando fechar a chave da função verificarConexao
-}
+  });
+};
 
-// Teste de conexão com o banco
-db.connect((err) => {
-  if (err) {
-    console.error("Erro ao conectar ao banco de dados:", err);
-  } else {
-    console.log("Conectado ao banco de dados!");
-  }
-});
-
-// Middleware de autenticação para verificar o token JWT
+// Middleware para verificar JWT
 const verificarToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];  // Extrair token do cabeçalho
+  const token = req.headers["authorization"]?.split(" ")[1];
+  if (!token) return res.status(403).send("Token JWT não encontrado.");
 
-  if (!token) {
-    return res.status(403).send("Token JWT não encontrado.");
-  }
-
-  jwt.verify(token, 'secreta', (err, decoded) => {
-    if (err) {
-      return res.status(403).send("Token inválido.");
-    }
-
-    req.usuarioId = decoded.id;  // Salva o 'id' do usuário no 'req'
+  jwt.verify(token, process.env.JWT_SECRET || "secreta", (err, decoded) => {
+    if (err) return res.status(403).send("Token inválido.");
+    req.usuarioId = decoded.id;
     next();
   });
 };
 
+// Rota para verificar usuário
 app.get("/verificar-usuario/:usuario", async (req, res) => {
-  const { usuario } = req.params;
-
-  await verificarConexao();
-
-  const query = "SELECT id FROM usuarios WHERE usuario = ?";
-  db.query(query, [usuario], (err, result) => {
-    if (err) {
-      console.error("Erro ao verificar usuário:", err);
-      return res.status(500).send("Erro ao verificar usuário.");
-    }
-
-    if (result.length > 0) {
-      return res.status(200).send({ disponivel: false });
-    } else {
-      return res.status(200).send({ disponivel: true });
-    }
-  });
+  try {
+    const { usuario } = req.params;
+    const result = await queryAsync("SELECT id FROM usuarios WHERE usuario = ?", [usuario]);
+    res.status(200).send({ disponivel: result.length === 0 });
+  } catch (error) {
+    console.error("Erro ao verificar usuário:", error);
+    res.status(500).send("Erro no servidor.");
+  }
 });
 
+// Rota para verificar e-mail
 app.get("/verificar-email/:email", async (req, res) => {
-  const { email } = req.params;
-
-  await verificarConexao();
-
-  const query = "SELECT id FROM usuarios WHERE email = ?";
-  db.query(query, [email], (err, result) => {
-    if (err) {
-      console.error("Erro ao verificar e-mail:", err);
-      return res.status(500).send("Erro ao verificar e-mail.");
-    }
-
-    if (result.length > 0) {
-      return res.status(200).send({ disponivel: false });
-    } else {
-      return res.status(200).send({ disponivel: true });
-    }
-  });
+  try {
+    const { email } = req.params;
+    const result = await queryAsync("SELECT id FROM usuarios WHERE email = ?", [email]);
+    res.status(200).send({ disponivel: result.length === 0 });
+  } catch (error) {
+    console.error("Erro ao verificar e-mail:", error);
+    res.status(500).send("Erro no servidor.");
+  }
 });
-// Rota de cadastro de usuário
+
+// Rota de login
+app.post("/login", async (req, res) => {
+  try {
+    const { usuario, senha } = req.body;
+    const result = await queryAsync("SELECT id, usuario, senha FROM usuarios WHERE usuario = ? OR email = ?", [usuario, usuario]);
+
+    if (result.length === 0) return res.status(401).send("Usuário ou senha inválidos.");
+
+    const isMatch = await bcrypt.compare(senha, result[0].senha);
+    if (!isMatch) return res.status(401).send("Usuário ou senha inválidos.");
+
+    const token = jwt.sign({ id: result[0].id }, process.env.JWT_SECRET || "secreta", { expiresIn: "1h" });
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error("Erro no login:", error);
+    res.status(500).send("Erro no servidor.");
+  }
+});
+
+
 app.post("/cadastro", async (req, res) => {
   const { usuario, senha, confirmarSenha, email, altura, peso, data, nascimento, sexo, objetivo } = req.body;
 
-  await verificarConexao();
+  try {
+    // Verificar se o usuário já existe
+    const queryUsuario = "SELECT id FROM usuarios WHERE usuario = ?";
+    const resultUsuario = await queryAsync(queryUsuario, [usuario]);
 
-  // Verificar se o usuário já existe
-  const queryUsuario = "SELECT id FROM usuarios WHERE usuario = ?";
-  db.query(queryUsuario, [usuario], (err, result) => {
-    if (err) {
-      console.error("Erro ao verificar usuário:", err);
-      return res.status(500).send("Erro ao verificar usuário.");
-    }
-
-    if (result.length > 0) {
+    if (resultUsuario.length > 0) {
       return res.status(400).send("Usuário já existe.");
     }
 
     // Verificar se o e-mail já existe
     const queryEmail = "SELECT id FROM usuarios WHERE email = ?";
-    db.query(queryEmail, [email], (err, result) => {
-      if (err) {
-        console.error("Erro ao verificar e-mail:", err);
-        return res.status(500).send("Erro ao verificar e-mail.");
-      }
+    const resultEmail = await queryAsync(queryEmail, [email]);
 
-      if (result.length > 0) {
-        return res.status(400).send("E-mail já cadastrado.");
-      }
-
-      // Criptografar a senha
-      bcrypt.hash(senha, 10, (err, hashedPassword) => {
-        if (err) {
-          console.error("Erro ao criptografar a senha:", err);
-          return res.status(500).send("Erro ao criptografar a senha.");
-        }
-
-        // Inserir usuário no banco de dados
-        const queryCadastro = "INSERT INTO usuarios (usuario, senha, email, data_nascimento, sexo, objetivo) VALUES (?, ?, ?, ?, ?, ?)";
-        db.query(queryCadastro, [usuario, hashedPassword, email, nascimento, sexo, objetivo], (err, result) => {
-          if (err) {
-            console.error("Erro ao inserir dados do usuário:", err);
-            return res.status(500).send("Erro ao salvar os dados do usuário.");
-          }
-
-          const usuarioId = result.insertId;
-          const queryMedidas = "INSERT INTO medidas (usuario_id, altura, peso, data) VALUES (?, ?, ?, ?)";
-          db.query(queryMedidas, [usuarioId, altura, peso, data], (err, result) => {
-            if (err) {
-              console.error("Erro ao inserir medidas:", err);
-              return res.status(500).send("Erro ao salvar as medidas.");
-            }
-            res.status(200).send("Cadastro e medidas salvas com sucesso!");
-          });
-        });
-      });
-    });
-  });
-});
-
-// Rota de login
-app.post("/login", async (req, res) => {
-  const { usuario, senha } = req.body;
-
-  await verificarConexao();
-
-  const query = "SELECT id, usuario, senha FROM usuarios WHERE usuario = ? OR email = ?";
-  db.query(query, [usuario, usuario], (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar o usuário:", err);
-      return res.status(500).send("Erro no servidor.");
+    if (resultEmail.length > 0) {
+      return res.status(400).send("E-mail já cadastrado.");
     }
 
-    if (results.length === 0) {
-      return res.status(401).send("Usuário ou senha inválidos.");
-    }
-
-    bcrypt.compare(senha, results[0].senha, (err, isMatch) => {
+    // Criptografar a senha
+    bcrypt.hash(senha, 10, async (err, hashedPassword) => {
       if (err) {
-        console.error("Erro ao verificar a senha:", err);
-        return res.status(500).send("Erro no servidor.");
+        console.error("Erro ao criptografar a senha:", err);
+        return res.status(500).send("Erro ao criptografar a senha.");
       }
 
-      if (!isMatch) {
-        return res.status(401).send("Usuário ou senha inválidos.");
-      }
+      // Inserir usuário no banco de dados
+      const queryCadastro = "INSERT INTO usuarios (usuario, senha, email, data_nascimento, sexo, objetivo) VALUES (?, ?, ?, ?, ?, ?)";
+      const resultCadastro = await queryAsync(queryCadastro, [usuario, hashedPassword, email, nascimento, sexo, objetivo]);
 
-      // Gerar o token JWT
-      const token = jwt.sign({ id: results[0].id }, 'secreta', { expiresIn: '1h' });
+      const usuarioId = resultCadastro.insertId;
+      const queryMedidas = "INSERT INTO medidas (usuario_id, altura, peso, data) VALUES (?, ?, ?, ?)";
+      await queryAsync(queryMedidas, [usuarioId, altura, peso, data]);
 
-      // Retorna o token no corpo da resposta
-      res.status(200).json({ token });
+      res.status(200).send("Cadastro e medidas salvas com sucesso!");
     });
-  });
+  } catch (error) {
+    console.error("Erro ao processar cadastro:", error);
+    res.status(500).send("Erro ao processar o cadastro.");
+  }
 });
 
-// Rota para obter dados do usuário
-// Endpoint para retornar dados do usuário
+
 app.get("/dados-usuario", verificarToken, async (req, res) => {
   const usuarioId = req.usuarioId; // 'usuarioId' vem do token JWT
-
-  await verificarConexao();
 
   const query = `
     SELECT u.usuario, u.email, u.data_nascimento, u.sexo, u.objetivo, m.altura, m.peso, m.data AS data_medida
@@ -226,77 +143,51 @@ app.get("/dados-usuario", verificarToken, async (req, res) => {
     ORDER BY m.data ASC
   `;
 
-  db.query(query, [usuarioId], (err, results) => {
-    if (err) {
-      console.error("Erro ao buscar dados do usuário:", err);
-      return res.status(500).send("Erro ao buscar dados do usuário.");
-    }
+  try {
+    const results = await queryAsync(query, [usuarioId]);
 
     if (results.length === 0) {
       return res.status(404).send("Nenhum dado encontrado para o usuário.");
     }
 
     res.status(200).send(results); // Envia todos os registros
-  });
-});
-
-
-app.post("/atualizar-peso", verificarToken, async (req, res) => {
-  const { data, peso, altura } = req.body; // A data, peso e altura (caso fornecido)
-
-  await verificarConexao();
-
-  const usuarioId = req.usuarioId; // 'usuarioId' vem do token JWT
-
-  // Se a altura não for fornecida, buscar a última altura registrada
-  let alturaAtual = altura;
-  if (!altura) {
-    const queryUltimaAltura = "SELECT altura FROM medidas WHERE usuario_id = ? ORDER BY data DESC LIMIT 1";
-    await new Promise((resolve, reject) => {
-      db.query(queryUltimaAltura, [usuarioId], (err, result) => {
-        if (err) {
-          reject("Erro ao buscar última altura.");
-        }
-        if (result.length > 0) {
-          alturaAtual = result[0].altura; // Utiliza a última altura registrada
-        }
-        resolve();
-      });
-    });
+  } catch (error) {
+    console.error("Erro ao buscar dados do usuário:", error);
+    return res.status(500).send("Erro ao buscar dados do usuário.");
   }
-
-  // Verifica se já existe um registro de peso para a data
-  const queryVerificarData = "SELECT id FROM medidas WHERE usuario_id = ? AND data = ?";
-  db.query(queryVerificarData, [usuarioId, data], (err, result) => {
-    if (err) {
-      console.error("Erro ao verificar data:", err);
-      return res.status(500).send("Erro ao verificar data.");
-    }
-
-    if (result.length > 0) {
-      // Se existir, atualiza o peso e mantém a altura
-      const queryAtualizarPeso = "UPDATE medidas SET peso = ?, altura = ? WHERE id = ?";
-      db.query(queryAtualizarPeso, [peso, alturaAtual, result[0].id], (err, result) => {
-        if (err) {
-          console.error("Erro ao atualizar peso:", err);
-          return res.status(500).send("Erro ao atualizar peso.");
-        }
-        return res.status(200).send("Peso e altura atualizados com sucesso!");
-      });
-    } else {
-      // Se não existir, cria um novo registro com a altura e o peso
-      const queryInserirPeso = "INSERT INTO medidas (usuario_id, peso, altura, data) VALUES (?, ?, ?, ?)";
-      db.query(queryInserirPeso, [usuarioId, peso, alturaAtual, data], (err, result) => {
-        if (err) {
-          console.error("Erro ao inserir peso:", err);
-          return res.status(500).send("Erro ao inserir peso.");
-        }
-        return res.status(200).send("Peso e altura registrados com sucesso!");
-      });
-    }
-  });
 });
+
+
+
+// Rota para atualizar peso
+app.post("/atualizar-peso", verificarToken, async (req, res) => {
+  try {
+    const { data, peso, altura } = req.body;
+    const usuarioId = req.usuarioId;
+
+    let alturaAtual = altura;
+    if (!altura) {
+      const alturaRes = await queryAsync("SELECT altura FROM medidas WHERE usuario_id = ? ORDER BY data DESC LIMIT 1", [usuarioId]);
+      if (alturaRes.length > 0) alturaAtual = alturaRes[0].altura;
+    }
+
+    const registroExistente = await queryAsync("SELECT id FROM medidas WHERE usuario_id = ? AND data = ?", [usuarioId, data]);
+    
+    if (registroExistente.length > 0) {
+      await queryAsync("UPDATE medidas SET peso = ?, altura = ? WHERE id = ?", [peso, alturaAtual, registroExistente[0].id]);
+      return res.status(200).send("Peso atualizado com sucesso.");
+    }
+
+    await queryAsync("INSERT INTO medidas (usuario_id, altura, peso, data) VALUES (?, ?, ?, ?)", [usuarioId, alturaAtual, peso, data]);
+    res.status(200).send("Novo registro de peso adicionado.");
+  } catch (error) {
+    console.error("Erro ao atualizar peso:", error);
+    res.status(500).send("Erro no servidor.");
+  }
+});
+
 // Iniciar o servidor
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://10.100.39.38:${port}`);
+  console.log(`Servidor rodando na porta ${port}`);
 });
+

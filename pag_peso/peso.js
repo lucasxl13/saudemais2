@@ -25,13 +25,15 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses começam em 0
-
-    return `${day}/${month}`;
+    const year = String(date.getFullYear()).slice(-2); // Pegando os dois últimos dígitos do ano
+  
+    return `${day}/${month}/${year}`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     let jwt = null;
-
+    
+    
     // Verifica se o token está no sessionStorage ou localStorage
     if (sessionStorage.getItem("jwt")) {
         jwt = sessionStorage.getItem("jwt");
@@ -59,9 +61,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         // Faz a requisição ao backend
-        // https://apisaudemais.danielhatz.com.br/dados-usuario
-        //http://localhost:3000/dados-usuario
-        const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
+
+        // const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
+        const response = await fetch("http://localhost:3000/dados-usuario", {    
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${jwt}`,
@@ -90,9 +92,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             peso: item.peso,
         }));
 
+
+
+        
+        filtrarDadosPorPeriodo("semana");
+
         frontending();
         // Exibe os últimos 7 dias no gráfico
-        filtrarUltimosSeteDias();
+        document.getElementById("semana").addEventListener("click", () => filtrarDadosPorPeriodo("semana"));
+        document.getElementById("mes").addEventListener("click", () => filtrarDadosPorPeriodo("mes"));
+        document.getElementById("ano").addEventListener("click", () => filtrarDadosPorPeriodo("ano"));
+        document.getElementById("inicio").addEventListener("click", () => filtrarDadosPorPeriodo("inicio"));
+
+        
 
         const entrada_peso = document.getElementById("peso");
         const peso_valor = document.getElementById("peso-valor");
@@ -103,36 +115,41 @@ document.addEventListener("DOMContentLoaded", async () => {
             peso_valor.textContent = `${peso} kg`; // Atualiza o texto
         }
 
-
+        
     } catch (error) {
         console.error("Erro ao carregar os dados:", error);
         localStorage.removeItem("jwt");
         sessionStorage.removeItem("jwt");
-        window.location.href = "../pag_login/login.html";
+        // window.location.href = "../pag_login/login.html";
     }
 });
 
 // Função para gerar o gráfico
 let chart = null;
+let dadosCompletos = [];
+let inicioJanela = 0;
+const tamanhoJanela = 30; // Número de pontos visíveis no gráfico
+let tituloGrafico = ""; // Variável global para o título
 
-function gerarGrafico(dates, pesos) {
+const barraRolagem = document.getElementById("barraRolagem"); // Obtém o slider
+
+function gerarGrafico(dates, pesos, titulo) {
     const ctx = document.getElementById('graficoPeso').getContext('2d');
-    
+
     if (chart) {
-        chart.destroy();  // Destruir o gráfico anterior antes de criar um novo
+        chart.destroy(); // Destroi o gráfico anterior antes de criar um novo
     }
 
-    // Calcula os valores mínimo e máximo com base nos pesos
-    const pesoMinimo = Math.ceil(Math.min(...pesos) - 3); // Arredonda para cima o valor mínimo
-    const pesoMaximo = Math.ceil(Math.max(...pesos) + 3); // Arredonda para cima o valor máximo
+    const pesoMinimo = Math.ceil(Math.min(...pesos) - 3);
+    const pesoMaximo = Math.ceil(Math.max(...pesos) + 3);
 
     chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dates, // Datas para o eixo X
+            labels: dates,
             datasets: [{
                 label: 'Peso',
-                data: pesos, // Pesos para o eixo Y
+                data: pesos,
                 borderColor: 'rgb(0, 0, 0)',
                 backgroundColor: 'rgba(0, 255, 140, 0.38)',
                 fill: true,
@@ -143,59 +160,101 @@ function gerarGrafico(dates, pesos) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'ÚLTIMOS 7 DIAS', // Título do gráfico
-                    font: {
-                        size: 11, // Tamanho da fonte do título
-                    },
-                    color: '#000000', // Cor do título (preto)
+                    text: titulo,
+                    font: { size: 11 },
+                    color: '#000000',
                 },
-                legend: {
-                    display: false, // Esconde a legenda se não for necessária
-                },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: function(tooltipItem) {
-                            return tooltipItem.raw + ' kg'; // Adiciona "kg" após o valor da tooltip
+                            return tooltipItem.raw + ' kg';
                         }
                     }
                 }
             },
             scales: {
+                x: {
+                    ticks: { autoSkip: true, maxTicksLimit: 10 }
+                },
                 y: {
-                    min: pesoMinimo, // Define o valor mínimo do eixo Y
-                    max: pesoMaximo, // Define o valor máximo do eixo Y
+                    min: pesoMinimo,
+                    max: pesoMaximo,
                     ticks: {
-                        stepSize: 1, // Ajusta o intervalo de marcação do eixo Y
+                        stepSize: 1,
                         callback: function(value) {
-                            return value + ' kg'; // Adiciona "kg" após o valor
+                            return value + ' kg';
                         }
-                    },
+                    }
                 }
             }
         }
     });
 }
 
+// Atualiza o gráfico com base no slider
+function atualizarGrafico() {
+    const dadosVisiveis = dadosCompletos.slice(inicioJanela, inicioJanela + tamanhoJanela);
+    
+    const datas = dadosVisiveis.map(item => formatDate(item.data));
+    const pesos = dadosVisiveis.map(item => item.peso);
 
+    gerarGrafico(datas, pesos, tituloGrafico);
+}
 
-// Função para filtrar os últimos 7 dias automaticamente
-function filtrarUltimosSeteDias() {
+// Atualiza o índice da janela de visualização ao mover o slider
+barraRolagem.addEventListener("input", function() {
+    inicioJanela = parseInt(this.value);
+    atualizarGrafico();
+});
+
+// Função para filtrar os dados com base no período escolhido
+function filtrarDadosPorPeriodo(periodo) {
     const hoje = new Date();
-    const seteDiasAtras = new Date();
-    seteDiasAtras.setDate(hoje.getDate() - 7);
+    let dataInicial;
 
-    // Filtrar os dados de peso com base nos últimos 7 dias
-    const dadosFiltrados = dadosPeso.filter(item => {
+    switch (periodo) {
+        case "semana":
+            dataInicial = new Date();
+            dataInicial.setDate(hoje.getDate() - 7);
+            tituloGrafico = "ÚLTIMOS 7 DIAS";
+            barraRolagem.style.display = "none"; // Ocultar a barra
+            break;
+        case "mes":
+            dataInicial = new Date();
+            dataInicial.setMonth(hoje.getMonth() - 1);
+            tituloGrafico = "ÚLTIMO MÊS";
+            barraRolagem.style.display = "none"; // Ocultar a barra
+            break;
+        case "ano":
+            dataInicial = new Date();
+            dataInicial.setFullYear(hoje.getFullYear() - 1);
+            tituloGrafico = "ÚLTIMO ANO";
+            barraRolagem.style.display = "block"; // Mostrar a barra
+            break;
+        case "inicio":
+            dataInicial = new Date(Math.min(...dadosPeso.map(item => new Date(item.data)))); 
+            tituloGrafico = "DESDE O INÍCIO";
+            barraRolagem.style.display = "block"; // Mostrar a barra
+            break;
+    }
+
+    dadosCompletos = dadosPeso.filter(item => {
         const dataMedida = new Date(item.data);
-        return dataMedida >= seteDiasAtras && dataMedida <= hoje;
+        return dataMedida >= dataInicial && dataMedida <= hoje;
     });
 
-    // Preparar as datas e pesos para o gráfico
-    const datas = dadosFiltrados.map(item => formatDate(item.data));
-    const pesos = dadosFiltrados.map(item => item.peso);
+    if (periodo === "ano" || periodo === "inicio") {
+        barraRolagem.max = Math.max(0, dadosCompletos.length - tamanhoJanela);
 
-    // Atualizar o gráfico
-    gerarGrafico(datas, pesos);
+        // Agora garantimos que a barra sempre começa no final
+        inicioJanela = Math.max(0, dadosCompletos.length - tamanhoJanela);
+        barraRolagem.value = inicioJanela;
+    } else {
+        inicioJanela = 0;
+    }
+
+    atualizarGrafico();
 }
 
 // Evento para alternar o menu lateral
@@ -223,6 +282,7 @@ botaoLogout.addEventListener('click', () => {
 
 function frontending() {
 document.getElementById('peso_atual').textContent = peso + " kg";
+
 }
 
 const entrada_peso = document.getElementById("peso");
@@ -302,7 +362,7 @@ document.getElementById('edit_peso').addEventListener('click', async () => {
         return; // Se o usuário não inseriu nada, não faz nada
     }
 
-    const dataAtual = new Date().toISOString().split('T')[0]; // Formato 'YYYY-MM-DD'
+    const dataAtual = new Date().toLocaleDateString('en-CA'); // Formato 'YYYY-MM-DD'
 
     // Verifica se o peso inserido é um número
     if (isNaN(novoPeso) || novoPeso <= 0) {
@@ -314,9 +374,9 @@ document.getElementById('edit_peso').addEventListener('click', async () => {
 
     try {
         // Faz a requisição para atualizar o peso
-        //https://apisaudemais.danielhatz.com.br/atualizar-peso
-        //http://localhost:3000/atualizar-peso
-        const response = await fetch("https://apisaudemais.danielhatz.com.br/atualizar-peso", {
+        
+        // const response = await fetch("https://apisaudemais.danielhatz.com.br/atualizar-peso", {
+        const response = await fetch("http://localhost:3000/atualizar-peso", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${jwt}`,
@@ -339,3 +399,5 @@ document.getElementById('edit_peso').addEventListener('click', async () => {
         alert(error.message);
     }
 });
+
+

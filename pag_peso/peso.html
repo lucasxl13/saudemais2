@@ -82,7 +82,7 @@
                 <p class ="novo_peso" >NOVO PESO: <span id="peso-valor"></span></p>
                 <div class="peso_box">
                     <h1 id="menos_peso" onmousedown="inicia_ajustepeso(-0.1)" onmouseup="finaliza_ajustepeso()" onmouseleave="finaliza_ajustepeso()">-</h1>
-                    <input type="range" id="peso" name="peso" min="30" max="300" step="0.1" oninput="atualizaPeso(this.value)">
+                    <input type="range" id="peso" class="slider_peso" name="peso" min="30" max="300" step="0.1" oninput="atualizaPeso(this.value)">
                     <h1 id="mais_peso" onmousedown="inicia_ajustepeso(0.1)" onmouseup="finaliza_ajustepeso()" onmouseleave="finaliza_ajustepeso()">+</h1>
                 </div>
                 <img src="..\icones\cancela.svg" id="exit_peso"  class="bot_modif">
@@ -98,8 +98,15 @@
             </div>
         </div>
         <canvas id="graficoPeso" class="grafico"></canvas>
+        <input type="range" class="barra-rolagem" id="barraRolagem" min="0" step="1">
+        <div class="periodos">
+            <p class="txt_periodos" id="semana">semana</p>
+            <p class="txt_periodos" id="mes">mês</p>
+            <p class="txt_periodos" id="ano">ano</p>
+            <p class="txt_periodos" id="inicio">inicio</p>
+        </div>
     </div>
-
+    
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="peso.js"></script>
 </body>
