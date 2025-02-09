@@ -1,3 +1,8 @@
+const API_BASE_URL = window.location.hostname === "127.0.0.1"  
+    ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
+    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+
+
 const campoLogo = document.querySelector('.style_logo');
 const itemLogo = document.getElementById('itemMais_logo');
 const itemSideBar = document.querySelectorAll('.item__sidebar');
@@ -71,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Faz a requisição ao backend
 
         // const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
-        const response = await fetch("http://localhost:3000/dados-usuario", {
+        const response = await fetch(`${API_BASE_URL}/dados-usuario`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${jwt}`,

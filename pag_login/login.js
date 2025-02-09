@@ -1,3 +1,8 @@
+const API_BASE_URL = window.location.hostname === "127.0.0.1" 
+    ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
+    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // Verifica se o token está presente no localStorage ou sessionStorage
   const storedDataLocal = localStorage.getItem("jwt");
@@ -70,7 +75,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
     // Envia os dados do login para o backend
 
     // const response = await fetch("https://apisaudemais.danielhatz.com.br/login", {
-    const response = await fetch("http://localhost:3000/login", {
+    const response = await fetch(`${API_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

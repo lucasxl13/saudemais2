@@ -1,3 +1,8 @@
+const API_BASE_URL = window.location.hostname === "127.0.0.1" 
+    ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
+    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+
+
 //PAG1
 const pag1 = document.getElementById('pag1');
 const dot1 = document.getElementById('dot1');
@@ -207,8 +212,7 @@ function atualizarPagina() {
 
       const data = new Date().toISOString().split("T")[0]; // Pega a data no formato yyyy-mm-dd
 
-      // fetch("https://apisaudemais.danielhatz.com.br/cadastro", {
-      fetch("http://localhost:3000/cadastro", {
+      fetch(`${API_BASE_URL}/cadastro`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -632,9 +636,7 @@ async function validarPrimeiraPagina() {
 
 async function verificarDisponibilidadeUsuario(usuario) {
   try {
-    //https://apisaudemais.danielhatz.com.br/verificar-usuario/${usuario}
-    //http://localhost:3000/verificar-usuario/${usuario}
-    const response = await fetch(`http://localhost:3000/verificar-usuario/${usuario}`);
+    const response = await fetch(`${API_BASE_URL}/verificar-usuario/${usuario}`);
     const data = await response.json();
     return data.disponivel;
   } catch (error) {
@@ -645,9 +647,7 @@ async function verificarDisponibilidadeUsuario(usuario) {
 
 async function verificarDisponibilidadeEmail(email) {
   try {
-    //https://apisaudemais.danielhatz.com.br/verificar-email/${email}
-    //http://localhost:3000/verificar-email/${email}
-    const response = await fetch(`http://localhost:3000/verificar-email/${email}`);
+    const response = await fetch(`${API_BASE_URL}/verificar-email/${email}`);
     const data = await response.json();
     return data.disponivel;
   } catch (error) {
