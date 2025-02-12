@@ -93,13 +93,11 @@ body {
 }
 
 .container_principal {
-    background-color: var(--white);
     padding: 2rem;
     border-radius: 10px;
     width: 100%;
     height: 40rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top: 10rem;
+    margin-top: 4rem;
     margin-left: 4rem;
     margin-right: 2rem;
 }
@@ -107,16 +105,16 @@ body {
 .primeira_linha {
     display: flex;
     gap: 1rem;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 }
 
 .peso {
-    background-color: rgb(240, 255, 247);
+    background-color: rgb(255, 255, 255);
     padding: 2rem;
     border-radius: 10px;
     width: 100%;
-    height: 10rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+     height: 10rem; 
+     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2); 
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
@@ -125,10 +123,25 @@ body {
     align-items: center; /* Centraliza verticalmente */
 }
 
+.peso p{
+    margin-top:1.5rem;
+}
+
+#modif_peso{
+    margin-top: 0.5rem;
+}
+
+.pesol2{
+    padding: 2rem;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
 .grafico {
-    width: 80% !important; /* Ocupa 100% da largura do container */
+
+    width: 90% !important; /* Ocupa 100% da largura do container */
     height: auto !important; /* Altura ajustável */
-    max-height: 20rem; /* Define uma altura máxima para o gráfico */
+    max-height: 26rem; /* Define uma altura máxima para o gráfico */
     display: block; /* Garante que o canvas seja um elemento de bloco */
     margin: 0 auto; /* Centraliza horizontalmente */
 }
@@ -204,7 +217,7 @@ body {
 }
 
 .bot_modif:hover{
-    filter: invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
+    filter: invert(50%) sepia(100%) saturate(520%) hue-rotate(90deg);
 }
 
 @media (max-width: 768px) {
@@ -244,3 +257,5 @@ body {
     display: none; /* Oculta por padrão */
     margin: 0 auto; /* Centraliza horizontalmente */
 }
+
+

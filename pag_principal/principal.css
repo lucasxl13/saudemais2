@@ -119,3 +119,48 @@ body {
     display: block;
     margin-bottom: 1rem;
 }
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        height: calc(100% - 56px);
+        width: 40px; /* Largura reduzida (apenas ícones) */
+        background-color: var(--color1);
+        overflow: hidden; /* Esconde conteúdo excedente */
+        transition: width 0.3s ease;
+    }
+    
+    .icon_sideBar {
+        width: 1.5rem;
+        height: auto;
+    }
+    
+
+    
+
+    .primeira_linha{
+        display:block;
+        gap:1rem;
+    }
+    
+    #container_peso{
+        margin-top:6rem;;
+    }
+
+    .containers{
+        background-color: var(--white);
+        padding: 2rem;
+        border-radius: 10px;
+        width: 20rem;
+        height: 16rem;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        margin-top:1rem;
+        text-align: center;
+        cursor:pointer;
+        margin-left:3rem;
+    }
+}
+

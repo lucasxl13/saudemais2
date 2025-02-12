@@ -212,7 +212,7 @@ function atualizarPagina() {
 
       const data = new Date().toISOString().split("T")[0]; // Pega a data no formato yyyy-mm-dd
 
-      fetch(`${API_BASE_URL}/cadastro`, {
+      fetch((`${API_BASE_URL}/cadastro`), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

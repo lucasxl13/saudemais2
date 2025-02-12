@@ -165,7 +165,7 @@ function gerarGrafico(dates, pesos, titulo) {
                 title: {
                     display: true,
                     text: titulo,
-                    font: { size: 11 },
+                    font: { size: 15 },
                     color: '#000000',
                 },
                 legend: { display: false },
