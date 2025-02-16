@@ -136,7 +136,7 @@ app.get("/dados-usuario", verificarToken, async (req, res) => {
   const usuarioId = req.usuarioId; // 'usuarioId' vem do token JWT
 
   const query = `
-    SELECT u.usuario, u.email, u.data_nascimento, u.sexo, u.objetivo, m.altura, m.peso, m.data AS data_medida
+    SELECT u.usuario, u.email, u.data_nascimento, u.sexo, u.objetivo, m.altura, m.peso, m.biceps_direito,m.biceps_esquerdo,m.antebraco_direito,m.antebraco_esquerdo,m.coxa_direita,m.coxa_esquerda,m.panturilha_direita,m.panturilha_esquerda,m.cintura, m.data AS data_medida
     FROM usuarios u
     JOIN medidas m ON u.id = m.usuario_id
     WHERE u.id = ?

@@ -27,7 +27,17 @@ let sexo = null;
 let objetivo = null;
 let data_medida = null;
 let peso = null;
+
 let altura = null;
+let bc_direito = null;
+let bc_esquerdo = null;
+let atb_direito = null;
+let atb_esquerdo = null;
+let cx_direito = null;
+let cx_esquerdo = null;
+let ptr_direito = null;
+let ptr_esquerdo = null;
+let ctr = null;
 
 let imc = null;
 let peso_ideal = null;
@@ -93,6 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Processa os dados do backend
         const data = await response.json();
+        console.log(data);
         const userInfo = data[data.length - 1]; // Pega o último dado do usuário
 
         usuario = userInfo.usuario;
@@ -101,8 +112,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         sexo = userInfo.sexo;
         objetivo = userInfo.objetivo;
         data_medida = formatDate(userInfo.data_medida);
+
+        bc_direito = userInfo.biceps_direito;
+        bc_esquerdo= userInfo.biceps_esquerdo;
+        atb_direito=userInfo.antebraco_direito;
+        atb_esquerdo=userInfo.antebraco_esquerdo;
+        cx_direito=userInfo.coxa_direita;
+        cx_esquerdo=userInfo.coxa_esquerda;
+        ptr_direito=userInfo.panturilha_direita;
+        ptr_esquerdo=userInfo.panturilha_esquerda;
+        ctr=userInfo.cintura;
+
         peso = userInfo.peso;
+        peso = parseFloat(peso).toFixed(2);
+
         altura = userInfo.altura;
+        altura = parseFloat(altura).toFixed(0);
 
         imc = peso / ((altura / 100) * (altura / 100));
         imc = parseFloat(imc).toFixed(2);
@@ -218,8 +243,18 @@ function filtrarUltimosSeteDias() {
 // Função para exibir as informações do usuário na interface
 function frontending() {
     document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
-    
     document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
+
+    document.getElementById('medida_altura').textContent = altura +" cm";
+    document.getElementById('medida_biceps_direito').textContent = bc_direito +" cm";
+    document.getElementById('medida_biceps_esquerdo').textContent = bc_esquerdo +" cm";
+    document.getElementById('medida_antebraco_direito').textContent = atb_direito +" cm";
+    document.getElementById('medida_antebraco_esquerdo').textContent = atb_esquerdo +" cm";
+    document.getElementById('medida_coxa_direito').textContent = cx_direito +" cm";
+    document.getElementById('medida_coxa_esquerdo').textContent = cx_esquerdo +" cm";
+    document.getElementById('medida_panturilha_direito').textContent = ptr_direito +" cm";
+    document.getElementById('medida_panturilha_esquerdo').textContent = ptr_esquerdo +" cm";
+    document.getElementById('medida_cintura').textContent = ctr +" cm";
 
     fetch("../Icones/silhueta.svg")
     .then(response => response.text())
@@ -228,79 +263,36 @@ function frontending() {
     })
     .catch(error => console.error("Erro ao carregar o SVG:", error));
 
-    document.getElementById("obj_biceps_direito").addEventListener("mouseenter", function() {
-        document.getElementById("biceps_direito").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_biceps_direito").addEventListener("mouseleave", function() {
-        document.getElementById("biceps_direito").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_biceps_esquerdo").addEventListener("mouseenter", function() {
-        document.getElementById("biceps_esquerdo").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_biceps_esquerdo").addEventListener("mouseleave", function() {
-        document.getElementById("biceps_esquerdo").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_antebraco_direito").addEventListener("mouseenter", function() {
-        document.getElementById("antebraco_direito").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_antebraco_direito").addEventListener("mouseleave", function() {
-        document.getElementById("antebraco_direito").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_antebraco_esquerdo").addEventListener("mouseenter", function() {
-        document.getElementById("antebraco_esquerdo").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_antebraco_esquerdo").addEventListener("mouseleave", function() {
-        document.getElementById("antebraco_esquerdo").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_coxa_direito").addEventListener("mouseenter", function() {
-        document.getElementById("coxa_direita").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_coxa_direito").addEventListener("mouseleave", function() {
-        document.getElementById("coxa_direita").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_coxa_esquerdo").addEventListener("mouseenter", function() {
-        document.getElementById("coxa_esquerda").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_coxa_esquerdo").addEventListener("mouseleave", function() {
-        document.getElementById("coxa_esquerda").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_panturilha_direito").addEventListener("mouseenter", function() {
-        document.getElementById("panturilha_direita").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_panturilha_direito").addEventListener("mouseleave", function() {
-        document.getElementById("panturilha_direita").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_panturilha_esquerdo").addEventListener("mouseenter", function() {
-        document.getElementById("panturilha_esquerda").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_panturilha_esquerdo").addEventListener("mouseleave", function() {
-        document.getElementById("panturilha_esquerda").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_cintura").addEventListener("mouseenter", function() {
-        document.getElementById("cintura").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_cintura").addEventListener("mouseleave", function() {
-        document.getElementById("cintura").classList.remove("hover_medidas");
-    });
-
-    document.getElementById("obj_altura").addEventListener("mouseenter", function() {
-        document.getElementById("altura").classList.add("hover_medidas");
-        document.getElementById("altura2").classList.add("hover_medidas");
-        document.getElementById("altura3").classList.add("hover_medidas");
-    });
-    document.getElementById("obj_altura").addEventListener("mouseleave", function() {
-        document.getElementById("altura").classList.remove("hover_medidas");
-        document.getElementById("altura2").classList.remove("hover_medidas");
-        document.getElementById("altura3").classList.remove("hover_medidas");
-    });
+    function Hover_medidas(id_html, obj_medidas) {
+        const medidas_html = document.getElementById(id_html);
+    
+        if (!medidas_html) return; // Evita erros caso o elemento não exista
+    
+        medidas_html.addEventListener("mouseenter", function () {
+            obj_medidas.forEach(id => document.getElementById(id)?.classList.add("hover_medidas"));
+        });
+    
+        medidas_html.addEventListener("mouseleave", function () {
+            obj_medidas.forEach(id => document.getElementById(id)?.classList.remove("hover_medidas"));
+        });
+    }
+    
+    // Mapeia os elementos de gatilho para os elementos que serão modificados
+    const listaHovers = [
+        { obj_medidas: "obj_biceps_direito", id_obj_medidas: ["biceps_direito"] },
+        { obj_medidas: "obj_biceps_esquerdo", id_obj_medidas: ["biceps_esquerdo"] },
+        { obj_medidas: "obj_antebraco_direito", id_obj_medidas: ["antebraco_direito"] },
+        { obj_medidas: "obj_antebraco_esquerdo", id_obj_medidas: ["antebraco_esquerdo"] },
+        { obj_medidas: "obj_coxa_direito", id_obj_medidas: ["coxa_direita"] },
+        { obj_medidas: "obj_coxa_esquerdo", id_obj_medidas: ["coxa_esquerda"] },
+        { obj_medidas: "obj_panturilha_direito", id_obj_medidas: ["panturilha_direita"] },
+        { obj_medidas: "obj_panturilha_esquerdo", id_obj_medidas: ["panturilha_esquerda"] },
+        { obj_medidas: "obj_cintura", id_obj_medidas: ["cintura"] },
+        { obj_medidas: "obj_altura", id_obj_medidas: ["altura", "altura2", "altura3"] }
+    ];
+    
+    // Aplica os eventos de hover dinamicamente
+    listaHovers.forEach(mapping => Hover_medidas(mapping.obj_medidas, mapping.id_obj_medidas));
 }
 
 

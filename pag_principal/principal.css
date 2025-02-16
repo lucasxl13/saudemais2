@@ -95,17 +95,17 @@ body {
 
 .primeira_linha{
     display:flex;
-    gap:4rem;
+    gap:2rem;
 }
 
 .containers{
     background-color: var(--white);
     border-radius: 10px;
     padding: 0.7rem;
-    width: 26rem;
+    width: 30rem;
     height: 20rem;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    margin-top:10rem;
+    margin-top:8rem;
     text-align: center;
     cursor:pointer;
 }
@@ -124,8 +124,17 @@ body {
     font-size:0.8rem;
     font-weight: bold;
     padding: 0;
-    margin:0;
+    margin-bottom:2rem;
 }
+
+.txt_medidas2{
+    font-size:0.8rem;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    display: inline
+}
+
 #obj_cintura{
     margin-right: 1rem;
 }
@@ -140,8 +149,8 @@ body {
 }
 
 #svg_medidas {
-    margin-left:1rem;
-    margin-right:1rem;
+    margin-left:1.4rem;
+    margin-right:1.4rem;
     align-self: center;
 }
 
