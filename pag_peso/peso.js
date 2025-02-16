@@ -291,6 +291,8 @@ botaoLogout.addEventListener('click', () => {
 });
 
 function frontending() {
+
+console.log("Teste 15-02-2025:", peso_ideal);
 document.getElementById('peso_atual').textContent = peso + " kg";
 document.getElementById('peso_ideal').textContent = peso_ideal + " kg";
 

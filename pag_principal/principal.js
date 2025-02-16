@@ -218,7 +218,7 @@ function filtrarUltimosSeteDias() {
 // Função para exibir as informações do usuário na interface
 function frontending() {
     document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
-    console.log("Teste:", peso_ideal);
+    
     document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
 
     fetch("../Icones/silhueta.svg")
