@@ -22,49 +22,49 @@
         <ul class="nav flex-column itens__sidebar">
             <li class="nav-item item__sidebar">
                 <a class="nav-link" id="homeLink">
-                    <img src="../icones\home.svg" alt="Ícone Hidratação" class="icon_sideBar" />
+                    <img src="../Icones\home.svg" alt="Ícone Hidratação" class="icon_sideBar" />
                     <span class="item-text">Home</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link" id="pesoLink">
-                    <img src="../icones/peso.svg" alt="Ícone Peso" class="icon_sideBar" />
+                    <img src="../Icones/peso.svg" alt="Ícone Peso" class="icon_sideBar" />
                     <span class="item-text">Peso</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link"  id="hidratacaoLink">
-                    <img src="../icones/hidatracao.svg" alt="Ícone Hidratação" class="icon_sideBar" />
+                    <img src="../Icones/hidatracao.svg" alt="Ícone Hidratação" class="icon_sideBar" />
                     <span class="item-text">Hidratação</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link"  id="calorialink">
-                    <img src="../icones/calorias.svg" alt="Ícone Calorias" class="icon_sideBar" />
+                    <img src="../Icones/calorias.svg" alt="Ícone Calorias" class="icon_sideBar" />
                     <span class="item-text">Calorias</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link"  id="dietalink">
-                    <img src="../icones/dieta.svg" alt="Ícone Dieta" class="icon_sideBar" />
+                    <img src="../Icones/dieta.svg" alt="Ícone Dieta" class="icon_sideBar" />
                     <span class="item-text">Dieta</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link" id="perfilLink">
-                    <img src="../icones/perfil.svg" alt="Ícone Perfil" class="icon_sideBar" />
+                    <img src="../Icones/perfil.svg" alt="Ícone Perfil" class="icon_sideBar" />
                     <span class="item-text">Perfil</span>
                 </a>
             </li>
 
             <li class="nav-item item__sidebar">
                 <a class="nav-link" id="logoutlink">
-                    <img src="../icones/logout.svg" alt="Ícone Hidratação" class="icon_sideBar" />
+                    <img src="../Icones/logout.svg" alt="Ícone Hidratação" class="icon_sideBar" />
                     <span class="item-text">Sair</span>
                 </a>
             </li>
@@ -76,7 +76,7 @@
 
             <div class="peso">
                 <p id="modif_peso2">PESO ATUAL: <span id="peso_atual"></span></p>
-                <img src="..\icones\modificar.svg" id="modif_peso" class="bot_modif">
+                <img src="..\Icones\modificar.svg" id="modif_peso" class="bot_modif">
                 
                 <div class="alterar_peso" id="alterar_peso">
                 <p class ="novo_peso" >NOVO PESO: <span id="peso-valor"></span></p>
@@ -85,16 +85,19 @@
                     <input type="range" id="peso" class="slider_peso" name="peso" min="30" max="300" step="0.1" oninput="atualizaPeso(this.value)">
                     <h1 id="mais_peso" onmousedown="inicia_ajustepeso(0.1)" onmouseup="finaliza_ajustepeso()" onmouseleave="finaliza_ajustepeso()">+</h1>
                 </div>
-                <img src="..\icones\cancela.svg" id="exit_peso"  class="bot_modif">
-                <img src="..\icones\confirma.svg" id="edit_peso" class="bot_modif">
+                <img src="..\Icones\cancela.svg" id="exit_peso"  class="bot_modif">
+                <img src="..\Icones\confirma.svg" id="edit_peso" class="bot_modif">
                 </div>
             </div>
 
-            <div class="peso" id="peso_ideal">
-
+            <div class="peso">
+                <div class="peso_ideal2">
+                <p>PESO IDEAL ESTIMADO: <span id="peso_ideal"></span></p>
+                <p>PESO IDEAL ESTIMADO: <span id="peso_ideal"></span></p>
             </div>
-            <div class="peso" id="peso_var">
-
+            </div>
+            <div class="peso" >
+                <p>VARIAÇÃO DO PESO<span id="peso_var"></span></p>
             </div>
         </div>
         <div class="pesol2">

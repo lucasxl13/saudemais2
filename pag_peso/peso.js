@@ -21,6 +21,7 @@ const botaoLogout = document.getElementById('logoutlink');
 let usuario = null;
 let data_medida = null;
 let peso = null;
+let peso_ideal= null;
 
 
 // Armazenar os dados de peso e datas para o gráfico
@@ -89,6 +90,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         usuario = userInfo.usuario;
         data_medida = formatDate(userInfo.data_medida);
         peso = userInfo.peso;
+        altura = userInfo.altura;
+
+
+
 
         // Armazena os dados de peso e data para o gráfico
         dadosPeso = data.map(item => ({
@@ -97,11 +102,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         }));
 
 
-
+        peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
+        peso_ideal = parseFloat(peso_ideal).toFixed(2);
         
         filtrarDadosPorPeriodo("semana");
 
         frontending();
+
+
+
         // Exibe os últimos 7 dias no gráfico
         document.getElementById("semana").addEventListener("click", () => filtrarDadosPorPeriodo("semana"));
         document.getElementById("mes").addEventListener("click", () => filtrarDadosPorPeriodo("mes"));
@@ -286,6 +295,7 @@ botaoLogout.addEventListener('click', () => {
 
 function frontending() {
 document.getElementById('peso_atual').textContent = peso + " kg";
+document.getElementById('peso_ideal').textContent = peso_ideal + " kg";
 
 }
 

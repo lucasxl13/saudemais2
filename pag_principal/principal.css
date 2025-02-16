@@ -12,7 +12,7 @@ body {
     font-family: var(--fonte-logo);
     background-image: url('../Backgrounds/0.png'); 
     display: flex;
-    justify-content: center;
+    justify-content:center;
     height: 100vh;
     padding: 1rem; 
 }
@@ -100,8 +100,8 @@ body {
 
 .containers{
     background-color: var(--white);
-    padding: 2rem;
     border-radius: 10px;
+    padding: 0.7rem;
     width: 26rem;
     height: 20rem;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
@@ -120,14 +120,65 @@ body {
     margin-bottom: 1rem;
 }
 
-@media (max-width: 768px) {
+.txt_medidas{
+    font-size:0.8rem;
+    font-weight: bold;
+    padding: 0;
+    margin:0;
+}
+#obj_cintura{
+    margin-right: 1rem;
+}
+#obj_altura{
+    margin-right: 1rem;
+}
+.container_medidas{
+    text-align: center;
+    display: flex; /* Adiciona Flexbox */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+#svg_medidas {
+    margin-left:1rem;
+    margin-right:1rem;
+    align-self: center;
+}
+
+.medidas_direita {
+    display: flex;
+    flex-direction: column; /* Mantém os elementos em coluna */
+    align-items: flex-start; /* Alinha os itens à direita */
+    text-align: right; /* Alinha o texto à direita */
+}
+
+.medidas_esquerda {
+    display: flex;
+    flex-direction: column; /* Mantém os elementos em coluna */
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    text-align: left; /* Alinha o texto à esquerda */
+}
+.silhueta{
+    margin: 0;
+    padding: 0;
+    width: 6.5rem;
+    height: auto;
+}
+
+.hover_medidas {
+    fill:rgb(255, 0, 0)!important;
+}
+
+
+
+@media (max-width: 380px) {
 
     .sidebar {
         position: fixed;
         top: 56px;
         left: 0;
         height: calc(100% - 56px);
-        width: 40px; /* Largura reduzida (apenas ícones) */
+        width: 45px; /* Largura reduzida (apenas ícones) */
         background-color: var(--color1);
         overflow: hidden; /* Esconde conteúdo excedente */
         transition: width 0.3s ease;
@@ -137,13 +188,59 @@ body {
         width: 1.5rem;
         height: auto;
     }
-    
 
+    .primeira_linha {
+        display: block;
+        justify-content: center; /* Centraliza os elementos */
+        align-items: center; /* Alinha verticalmente */
+        gap: 1rem;
+        margin-left: 45px; /* Desconta a largura da sidebar */
+        min-height: calc(100vh - 56px); /* Garante que os elementos fiquem centralizados na altura */
+    }
     
+    #container_peso{
+        margin-top:6rem;;
+    }
 
-    .primeira_linha{
-        display:block;
-        gap:1rem;
+    .containers{
+        background-color: var(--white);
+        padding: 2rem;
+        border-radius: 10px;
+        width: 17rem;
+        height: 16rem;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+        margin-top:1rem;
+        text-align: center;
+        cursor:pointer;
+       
+    }
+}
+
+@media ((min-width: 381px) and (max-width: 900px) ) {
+
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        height: calc(100% - 56px);
+        width: 45px; /* Largura reduzida (apenas ícones) */
+        background-color: var(--color1);
+        overflow: hidden; /* Esconde conteúdo excedente */
+        transition: width 0.3s ease;
+    }
+    
+    .icon_sideBar {
+        width: 1.5rem;
+        height: auto;
+    }
+
+    .primeira_linha {
+        display: block;
+        justify-content: center; /* Centraliza os elementos */
+        align-items: center; /* Alinha verticalmente */
+        gap: 1rem;
+        margin-left: 45px; /* Desconta a largura da sidebar */
+        min-height: calc(100vh - 56px); /* Garante que os elementos fiquem centralizados na altura */
     }
     
     #container_peso{
@@ -160,7 +257,6 @@ body {
         margin-top:1rem;
         text-align: center;
         cursor:pointer;
-        margin-left:3rem;
+       
     }
 }
-

@@ -219,7 +219,90 @@ function filtrarUltimosSeteDias() {
 function frontending() {
     document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
     document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
+
+    fetch("../icones/silhueta.svg")
+    .then(response => response.text())
+    .then(svg => {
+      document.getElementById("svg_medidas").innerHTML = svg;
+    })
+    .catch(error => console.error("Erro ao carregar o SVG:", error));
+
+    document.getElementById("obj_biceps_direito").addEventListener("mouseenter", function() {
+        document.getElementById("biceps_direito").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_biceps_direito").addEventListener("mouseleave", function() {
+        document.getElementById("biceps_direito").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_biceps_esquerdo").addEventListener("mouseenter", function() {
+        document.getElementById("biceps_esquerdo").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_biceps_esquerdo").addEventListener("mouseleave", function() {
+        document.getElementById("biceps_esquerdo").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_antebraco_direito").addEventListener("mouseenter", function() {
+        document.getElementById("antebraco_direito").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_antebraco_direito").addEventListener("mouseleave", function() {
+        document.getElementById("antebraco_direito").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_antebraco_esquerdo").addEventListener("mouseenter", function() {
+        document.getElementById("antebraco_esquerdo").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_antebraco_esquerdo").addEventListener("mouseleave", function() {
+        document.getElementById("antebraco_esquerdo").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_coxa_direito").addEventListener("mouseenter", function() {
+        document.getElementById("coxa_direita").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_coxa_direito").addEventListener("mouseleave", function() {
+        document.getElementById("coxa_direita").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_coxa_esquerdo").addEventListener("mouseenter", function() {
+        document.getElementById("coxa_esquerda").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_coxa_esquerdo").addEventListener("mouseleave", function() {
+        document.getElementById("coxa_esquerda").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_panturilha_direito").addEventListener("mouseenter", function() {
+        document.getElementById("panturilha_direita").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_panturilha_direito").addEventListener("mouseleave", function() {
+        document.getElementById("panturilha_direita").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_panturilha_esquerdo").addEventListener("mouseenter", function() {
+        document.getElementById("panturilha_esquerda").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_panturilha_esquerdo").addEventListener("mouseleave", function() {
+        document.getElementById("panturilha_esquerda").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_cintura").addEventListener("mouseenter", function() {
+        document.getElementById("cintura").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_cintura").addEventListener("mouseleave", function() {
+        document.getElementById("cintura").classList.remove("hover_medidas");
+    });
+
+    document.getElementById("obj_altura").addEventListener("mouseenter", function() {
+        document.getElementById("altura").classList.add("hover_medidas");
+        document.getElementById("altura2").classList.add("hover_medidas");
+        document.getElementById("altura3").classList.add("hover_medidas");
+    });
+    document.getElementById("obj_altura").addEventListener("mouseleave", function() {
+        document.getElementById("altura").classList.remove("hover_medidas");
+        document.getElementById("altura2").classList.remove("hover_medidas");
+        document.getElementById("altura3").classList.remove("hover_medidas");
+    });
 }
+
+
 
 // Evento para alternar o menu lateral
 toggleSidebar.addEventListener('click', () => {
