@@ -92,9 +92,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         peso = userInfo.peso;
         altura = userInfo.altura;
 
-
-
-
         // Armazena os dados de peso e data para o gráfico
         dadosPeso = data.map(item => ({
             data: item.data_medida,
