@@ -220,7 +220,7 @@ function frontending() {
     document.getElementById('peso').textContent = "PESO ATUAL: " + peso + " kg";
     document.getElementById('peso_ideal').textContent = "PESO IDEAL ESTIMADO: " + peso_ideal + " kg";
 
-    fetch("../icones/silhueta.svg")
+    fetch("../Icones/silhueta.svg")
     .then(response => response.text())
     .then(svg => {
       document.getElementById("svg_medidas").innerHTML = svg;
