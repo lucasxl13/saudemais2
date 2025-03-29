@@ -1,7 +1,6 @@
-const API_BASE_URL = window.location.hostname === "127.0.0.1" 
+const API_BASE_URL = window.location.hostname === "127.0.0.1"  
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
     : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
-
 
 
 const campoLogo = document.querySelector('.style_logo');
@@ -12,16 +11,22 @@ const sidebar = document.getElementById('sidebar');
 
 const botaoHome = document.getElementById('homeLink');
 const botaoPeso = document.getElementById('pesoLink');
-const botaoHidratacao = document.getElementById('hidratacaoLink');
+const botaoMedidas = document.getElementById('medidasLink');
+const botaoMetricas = document.getElementById('metricasLink');
 const botaoCalorias = document.getElementById('calorialink');
-const botaoDieta = document.getElementById('dietalink');
+const botaoHidratacao = document.getElementById('hidratacaoLink');
+const botaoSono = document.getElementById('sonoLink');
+const botaoDieta = document.getElementById('dietaLink');
+const botaoExercicio = document.getElementById('exercicioLink');
 const botaoPerfil = document.getElementById('perfilLink');
-const botaoLogout = document.getElementById('logoutlink');
+const botaoLogout = document.getElementById('logoutLink');
+
 
 let usuario = null;
 let data_medida = null;
 let peso = null;
 let peso_ideal= null;
+let diferenca_peso = null;
 
 
 // Armazenar os dados de peso e datas para o gráfico
@@ -100,7 +105,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
-        peso_ideal = parseFloat(peso_ideal).toFixed(2);
+        peso_ideal = parseFloat(peso_ideal).toFixed(1);
+        diferenca_peso = peso - peso_ideal;
+        diferenca_peso= parseFloat(diferenca_peso).toFixed(1);
         
         filtrarDadosPorPeriodo("semana");
 
@@ -218,6 +225,12 @@ barraRolagem.addEventListener("input", function() {
     atualizarGrafico();
 });
 
+function calcularVariacaoPercentual(inicial, final) {
+    if (inicial === 0) return "0%"; // Evita divisão por zero
+    const variacao = ((final - inicial) / inicial) * 100;
+    return `${variacao.toFixed(2)}%`;
+}
+
 // Função para filtrar os dados com base no período escolhido
 function filtrarDadosPorPeriodo(periodo) {
     const hoje = new Date();
@@ -254,6 +267,19 @@ function filtrarDadosPorPeriodo(periodo) {
         return dataMedida >= dataInicial && dataMedida <= hoje;
     });
 
+
+    if (dadosCompletos.length > 1) {
+        const pesoInicial = dadosCompletos[0].peso;
+        const pesoFinal = dadosCompletos[dadosCompletos.length - 1].peso;
+        const variacaoPercentual = ((pesoFinal - pesoInicial) / pesoInicial) * 100;
+
+        document.getElementById("peso_var").textContent =`${variacaoPercentual.toFixed(2)}%`;
+    } else {
+        document.getElementById("peso_var").textContent = "0%";
+    }
+
+    
+
     if (periodo === "ano" || periodo === "inicio") {
         barraRolagem.max = Math.max(0, dadosCompletos.length - tamanhoJanela);
 
@@ -265,6 +291,7 @@ function filtrarDadosPorPeriodo(periodo) {
     }
 
     atualizarGrafico();
+    
 }
 
 // Evento para alternar o menu lateral
@@ -278,6 +305,38 @@ botaoHome.addEventListener('click', () =>{
 
 botaoPeso.addEventListener('click', () =>{
     window.location.href = '../pag_peso/peso.html';
+});
+
+botaoMedidas.addEventListener('click', () =>{
+    window.location.href = '../pag_medidas/medidas.html';
+});
+
+botaoMetricas.addEventListener('click', () =>{
+    window.location.href = '../pag_metricas/metricas.html';
+});
+
+botaoCalorias.addEventListener('click', () =>{
+    window.location.href = '../pag_calorias/calorias.html';
+});
+
+botaoHidratacao.addEventListener('click', () =>{
+    window.location.href = '../pag_hidratacao/hidratacao.html';
+});
+
+botaoSono.addEventListener('click', () =>{
+    window.location.href = '../pag_sono/sono.html';
+});
+
+botaoDieta.addEventListener('click', () =>{
+    window.location.href = '../pag_dieta/dieta.html';
+});
+
+botaoExercicio.addEventListener('click', () =>{
+    window.location.href = '../pag_exercicios/exercicio.html';
+});
+
+botaoPerfil.addEventListener('click', () =>{
+    window.location.href = '../pag_perfil/perfil.html';
 });
 
 // Logout
@@ -295,6 +354,18 @@ function frontending() {
 document.getElementById('peso_atual').textContent = peso + " kg";
 document.getElementById('peso_ideal').textContent = peso_ideal + " kg";
 
+if(diferenca_peso>-1 || diferenca_peso<1){
+    document.getElementById('diferenca_peso').style.color = "green";
+    document.getElementById('diferenca_peso').textContent = "PARABÉNS, VOCÊ ALCANÇOU SEU PESO IDEAL";
+}
+if(diferenca_peso>1){
+    document.getElementById('diferenca_peso').style.color = "red";
+    document.getElementById('diferenca_peso').textContent = "VOCÊ ESTÁ " + diferenca_peso + "KG ACIMA DO PESO";
+}
+else if(diferenca_peso<-1){
+    document.getElementById('diferenca_peso').style.color = "red";
+    document.getElementById('diferenca_peso').textContent = "VOCÊ ESTÁ " + diferenca_peso*(-1) + "KG ABAIXO DO PESO";
+}
 }
 
 const entrada_peso = document.getElementById("peso");
