@@ -201,7 +201,7 @@ function atualizarPagina() {
     break;
 
     case 4:
-      const usuario = entrada_usuario.value;
+      const nome = entrada_usuario.value;
       const senha = entrada_senha.value;
       const email = entrada_email.value;
       const altura = altura_valor.value;
@@ -210,6 +210,17 @@ function atualizarPagina() {
       const sexo = entrada_sexo.value;
       const objetivo = entrada_objetivo;
 
+      console.log({
+        nome,
+        senha,
+        email,
+        altura,
+        peso,
+        nascimento,
+        sexo,
+        objetivo
+      });
+
       const data = new Date().toISOString().split("T")[0]; // Pega a data no formato yyyy-mm-dd
 
       fetch((`${API_BASE_URL}/cadastro`), {
@@ -217,7 +228,7 @@ function atualizarPagina() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ usuario, senha, email, altura, peso, data, nascimento, sexo, objetivo}),
+        body: JSON.stringify({ nome, senha, email, altura, peso, data, nascimento, sexo, objetivo}),
       })
         .then((response) => {
           if (response.ok) {
@@ -579,17 +590,6 @@ async function validarPrimeiraPagina() {
   // Validação básica do campo usuário
   valido &= validarCampo(entrada_usuario, u_erro);
 
-  // Verificar disponibilidade do usuário no banco de dados
-  if (entrada_usuario.value.trim() !== "") {
-    const usuarioDisponivel = await verificarDisponibilidadeUsuario(entrada_usuario.value);
-    if (!usuarioDisponivel) {
-      entrada_usuario.classList.add("erro");
-      u_erro.style.display = "block";
-      u_erro.textContent = "Usuário indisponível.";
-      valido = false;
-    }
-  }
-
   // Validação básica do e-mail
   valido &= validarCampo(entrada_email, e_erro);
 
@@ -631,18 +631,6 @@ async function validarPrimeiraPagina() {
   }
 
   return valido;
-}
-
-
-async function verificarDisponibilidadeUsuario(usuario) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/verificar-usuario/${usuario}`);
-    const data = await response.json();
-    return data.disponivel;
-  } catch (error) {
-    console.error("Erro ao verificar disponibilidade do usuário:", error);
-    return false; // Caso haja erro, trate como indisponível por segurança
-  }
 }
 
 async function verificarDisponibilidadeEmail(email) {

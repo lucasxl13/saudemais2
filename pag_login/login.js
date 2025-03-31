@@ -44,19 +44,19 @@ document.getElementById('btn-registro').addEventListener('click', function() {
 document.getElementById("dados").addEventListener("submit", async (event) => {
   event.preventDefault(); // Evita o envio do formulário
 
-  const usuarioInput = document.getElementById("usuario"); // Referência ao elemento
+  const emailInput = document.getElementById("email"); // Referência ao elemento
   const senhaInput = document.getElementById("senha");
   const manterConectado = document.getElementById("manter-conectado").checked; // Verifica se o checkbox está marcado
-  const u_erro = document.getElementById('usuario-erro');
+  const u_erro = document.getElementById('email-erro');
   const s_erro = document.getElementById('senha-erro');
 
-  const usuario = usuarioInput.value; // Valor do input
+  const email = emailInput.value; // Valor do input
   const senha = senhaInput.value;
 
   let hasError = false;
 
-  if (usuario === '') { // Verifica se o campo está vazio
-    usuarioInput.classList.add('erro'); // Adiciona a classe de erro ao input
+  if (email === '') { // Verifica se o campo está vazio
+    emailInput.classList.add('erro'); // Adiciona a classe de erro ao input
     u_erro.style.display = 'block'; // Exibe a mensagem de erro
     u_erro.textContent = 'Campo obrigatório'; // Define o texto do erro
     hasError = true;
@@ -80,7 +80,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ usuario, senha }),
+      body: JSON.stringify({ email, senha }),
     });
 
     if (!response.ok) {
@@ -89,7 +89,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
       console.error("Erro no login:", errorText);
 
       // Adiciona a classe de erro aos campos e exibe mensagem genérica
-      usuarioInput.classList.add('erro');
+      emailInput.classList.add('erro');
       senhaInput.classList.add('erro');
       s_erro.style.display = 'block';
       s_erro.textContent = 'Usuário ou senha inválidos';

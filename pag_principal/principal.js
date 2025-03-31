@@ -108,80 +108,83 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        // Faz a requisição ao backend
+    const response = await fetch(`${API_BASE_URL}/dados-usuario`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${jwt}`,
+        },
+    });
 
-        // const response = await fetch("https://apisaudemais.danielhatz.com.br/dados-usuario", {
-            const response = await fetch(`${API_BASE_URL}/dados-usuario`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${jwt}`,
-            },
-        });
+    if (!response.ok) {
+        localStorage.removeItem("jwt");
+        sessionStorage.removeItem("jwt");
+        window.location.href = "../pag_login/login.html";
+        return;
+    }
 
-        // Se a resposta não for OK, redireciona para o login
-        if (!response.ok) {
-            localStorage.removeItem("jwt");
-            sessionStorage.removeItem("jwt");
-            window.location.href = "../pag_login/login.html";
-            return;
-        }
+    // Corrigido aqui ↓↓↓↓↓
+    const data = await response.json();
+    const { dados_usuario, metricas } = data;
 
-        // Processa os dados do backend
-        const data = await response.json();
-        const userInfo = data[data.length - 1]; // Pega o último dado do usuário
+    usuario = dados_usuario.nome;
+    email = dados_usuario.email;
+    data_nascimento = dados_usuario.data_nascimento;
+    sexo = dados_usuario.sexo;
+    objetivo = dados_usuario.objetivo;
 
-        usuario = userInfo.usuario;
-        email = userInfo.email;
-        data_nascimento = userInfo.data_nascimento;
-        sexo = userInfo.sexo;
-        objetivo = userInfo.objetivo;
-        data_medida = formatDate(userInfo.data_medida);
+    // Mapeando métricas para acesso fácil por tipo
+    const metricasMapeadas = {};
+    metricas.forEach(m => {
+        metricasMapeadas[m.tipo] = {
+            ...m.valor,
+            registrado_em: m.registrado_em
+        };
+    });
 
-        bc_direito = userInfo.biceps_direito;
-        bc_esquerdo= userInfo.biceps_esquerdo;
-        atb_direito=userInfo.antebraco_direito;
-        atb_esquerdo=userInfo.antebraco_esquerdo;
-        cx_direito=userInfo.coxa_direita;
-        cx_esquerdo=userInfo.coxa_esquerda;
-        ptr_direito=userInfo.panturilha_direita;
-        ptr_esquerdo=userInfo.panturilha_esquerda;
-        ctr=userInfo.cintura;
+    altura = metricasMapeadas.altura?.altura || null;
+    peso = metricasMapeadas.peso?.peso || null;
+    data_medida = metricasMapeadas.peso?.registrado_em || null;
 
-        peso = userInfo.peso;
-        peso = parseFloat(peso).toFixed(2);
+    bc_direito = metricasMapeadas.biceps_direito?.biceps_direito || null;
+    bc_esquerdo = metricasMapeadas.biceps_esquerdo?.biceps_esquerdo || null;
+    atb_direito = metricasMapeadas.antebraco_direito?.antebraco_direito || null;
+    atb_esquerdo = metricasMapeadas.antebraco_esquerdo?.antebraco_esquerdo || null;
+    cx_direito = metricasMapeadas.coxa_direita?.coxa_direita || null;
+    cx_esquerdo = metricasMapeadas.coxa_esquerda?.coxa_esquerda || null;
+    ptr_direito = metricasMapeadas.panturilha_direita?.panturilha_direita || null;
+    ptr_esquerdo = metricasMapeadas.panturilha_esquerda?.panturilha_esquerda || null;
+    ctr = metricasMapeadas.cintura?.cintura || null;
 
-        altura = userInfo.altura;
-        altura = parseFloat(altura).toFixed(0);
+    gordura_corporal = metricasMapeadas.gordura_corporal?.gordura_corporal || null;
+    musculo_esqueletico = metricasMapeadas.musculo_esqueletico?.musculo_esqueletico || null;
+    agua_massa = metricasMapeadas.agua_massa?.agua_massa || null;
 
-        imc = peso / ((altura / 100) * (altura / 100));
-        imc = parseFloat(imc).toFixed(2);
+    calorias = metricasMapeadas.calorias?.calorias || 0;
+    streak_cal = metricasMapeadas.calorias?.streakCal || 0;
 
-        peso = userInfo.peso;
+    agua_consumida = metricasMapeadas.hidratacao?.hidratacao || 0;
+    streak_hidro = metricasMapeadas.hidratacao?.streakHidratacao || 0;
 
-        peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
-        peso_ideal = parseFloat(peso_ideal).toFixed(2);
+    idade = calcularIdade(data_nascimento);
 
-        gordura_corporal = userInfo.gordura_corporal;
-        musculo_esqueletico = userInfo.musculo_esqueletico;
-        agua_massa = userInfo.agua_massa;
+        if (peso && altura) {
+            imc = peso / ((altura / 100) * (altura / 100));
+            imc = parseFloat(imc).toFixed(2);
 
-        idade = calcularIdade(data_nascimento);
+            peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
+            peso_ideal = parseFloat(peso_ideal).toFixed(2);
 
-        calorias =userInfo.calorias;
-        streak_cal = userInfo.streakCal
+            meta_hidratacao = peso * 35;
 
-        agua_consumida =userInfo.hidratacao;
-        streak_hidro = userInfo.streakHidratacao;
+            if (sexo === "masculino") {
+                tmb = (66 + (13.7 * peso) + (5 * altura) - (6.8 * idade));
+            } else if (sexo === "feminino") {
+                tmb = (655 + (9.6 * peso) + (1.8 * altura) - (4.7 * idade));
+            }
 
-        if (sexo === "masculino") {
-            tmb = (66 + (13.7 * peso) + (5 * altura) - (6.8 * idade));
             tmb = parseFloat(tmb).toFixed(0);
-        } else if (sexo === "feminino") {
-            tmb = (655 + (9.6 * peso) + (1.8 * altura) - (4.7 * idade));
-            tmb = parseFloat(tmb).toFixed(0);
+        
         }
-
-        meta_hidratacao = peso * 35;
         
         fetch('../Icones/streak.svg')
         .then(response => response.text())
@@ -362,20 +365,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         frontending(); // Chama a função para exibir as informações
 
         // Armazena os dados de peso e data para o gráfico
-        dadosPeso = data.map(item => ({
-            data: item.data_medida,
-            peso: item.peso,
+        dadosPeso = metricas
+        .filter(item => item.tipo === 'peso')
+        .map(item => ({
+            data: item.registrado_em,
+            peso: item.valor.peso
         }));
 
-        dadosCaloria = data.map(item => ({
-            data: item.data_medida,
-            calorias: item.calorias,
+        dadosCaloria = metricas
+        .filter(item => item.tipo === 'calorias')
+        .map(item => ({
+            data: item.registrado_em,
+            calorias: item.valor.calorias
         }));
 
-        dadosHidratacao = data.map(item => ({
-            data: item.data_medida,
-            hidratacao: item.hidratacao,
+        dadosHidratacao = metricas
+        .filter(item => item.tipo === 'hidratacao')
+        .map(item => ({
+            data: item.registrado_em,
+            hidratacao: item.valor.hidratacao
         }));
+
 
         // Exibe os últimos 7 dias no gráfico
         filtrarUltimosSeteDias();

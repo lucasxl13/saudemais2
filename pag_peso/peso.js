@@ -72,48 +72,62 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        // Faz a requisição ao backend
-        const response = await fetch(`${API_BASE_URL}/dados-usuario`, {    
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${jwt}`,
-            },
-        });
+    const response = await fetch(`${API_BASE_URL}/dados-usuario`, {
+        method: "GET",
+        headers: {
+        "Authorization": `Bearer ${jwt}`,
+        },
+    });
 
-        // Se a resposta não for OK, redireciona para o login
-        if (!response.ok) {
-            localStorage.removeItem("jwt");
-            sessionStorage.removeItem("jwt");
-            window.location.href = "../pag_login/login.html";
-            return;
-        }
+    if (!response.ok) {
+        localStorage.removeItem("jwt");
+        sessionStorage.removeItem("jwt");
+        window.location.href = "../pag_login/login.html";
+        return;
+    }
 
-        // Processa os dados do backend
-        const data = await response.json();
-        const userInfo = data[data.length - 1]; // Pega o último dado do usuário
+    const data = await response.json();
+    console.log("Resposta da API:", data);
 
-        usuario = userInfo.usuario;
-        data_medida = formatDate(userInfo.data_medida);
-        peso = userInfo.peso;
-        altura = userInfo.altura;
+    const dadosUsuario = data.dados_usuario;
+    const metricas = data.metricas;
 
-        // Armazena os dados de peso e data para o gráfico
-        dadosPeso = data.map(item => ({
-            data: item.data_medida,
-            peso: item.peso,
-        }));
+    if (!metricas || metricas.length === 0) {
+        console.warn("Nenhuma métrica de peso encontrada.");
+        return;
+    }
 
+    const ultimoRegistro = metricas[metricas.length - 1];
 
-        peso_ideal = 21.75 * ((altura / 100) * (altura / 100));
-        peso_ideal = parseFloat(peso_ideal).toFixed(1);
-        diferenca_peso = peso - peso_ideal;
-        diferenca_peso= parseFloat(diferenca_peso).toFixed(1);
-        
-        filtrarDadosPorPeriodo("semana");
+    usuario = dadosUsuario.nome;
+    data_medida = formatDate(ultimoRegistro.registrado_em);
 
-        frontending();
+    console.log("Registro mais recente:", ultimoRegistro);
 
+    peso = ultimoRegistro.valor.peso;
+    altura = ultimoRegistro.valor.altura || dadosUsuario.altura || 170;
 
+    if (!altura || isNaN(altura)) {
+        console.warn("Altura inválida:", altura);
+        return;
+    }
+
+    dadosPeso = metricas.map(item => ({
+        data: formatDate(item.registrado_em),
+        peso: item.valor.peso,
+    }));
+
+    peso_ideal = 21.75 * ((altura / 100) ** 2);
+    peso_ideal = parseFloat(peso_ideal).toFixed(1);
+
+    diferenca_peso = peso - peso_ideal;
+    diferenca_peso = parseFloat(diferenca_peso).toFixed(1);
+
+    console.log("Peso ideal:", peso_ideal);
+    console.log("Diferença:", diferenca_peso);
+
+    filtrarDadosPorPeriodo("semana");
+    frontending();
 
         // Exibe os últimos 7 dias no gráfico
         document.getElementById("semana").addEventListener("click", () => filtrarDadosPorPeriodo("semana"));
@@ -456,29 +470,32 @@ document.getElementById('edit_peso').addEventListener('click', async () => {
     const jwt = sessionStorage.getItem("jwt") || localStorage.getItem("jwt");
 
     try {
-        // Faz a requisição para atualizar o peso
-        const response = await fetch(`${API_BASE_URL}/atualizar-peso`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${jwt}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                data: dataAtual, // Passa a data atual
-                peso: parseFloat(novoPeso) // Passa o peso atualizado
-            })
+        const response = await fetch(`${API_BASE_URL}/update/peso`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${jwt}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            valor: {
+              peso: parseFloat(novoPeso)
+            }
+          })
         });
-
+      
         if (!response.ok) {
-            throw new Error("Erro ao atualizar o peso.");
+          const erro = await response.text();
+          throw new Error(erro || "Erro ao atualizar o peso.");
         }
-
+      
+        // Atualização com sucesso
+        console.log("Peso atualizado com sucesso!");
         location.reload();
-
-    } catch (error) {
-        console.error("Erro ao atualizar peso:", error);
-        alert(error.message);
-    }
+      
+      } catch (error) {
+        console.error("Erro na atualização:", error);
+        alert("Falha ao atualizar peso.");
+      }
 });
 
 
