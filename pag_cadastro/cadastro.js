@@ -1,6 +1,7 @@
 const API_BASE_URL = window.location.hostname === "127.0.0.1" 
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
-    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+    : "https://saude-mais-service-api.vercel.app";
+    // : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
 
 //PAG1
@@ -201,7 +202,7 @@ function atualizarPagina() {
     break;
 
     case 4:
-      const usuario = entrada_usuario.value;
+      const nome = entrada_usuario.value;
       const senha = entrada_senha.value;
       const email = entrada_email.value;
       const altura = altura_valor.value;
@@ -217,7 +218,7 @@ function atualizarPagina() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ usuario, senha, email, altura, peso, data, nascimento, sexo, objetivo}),
+        body: JSON.stringify({ nome, senha, email, altura, peso, nascimento, sexo, objetivo}),
       })
         .then((response) => {
           if (response.ok) {
@@ -575,21 +576,7 @@ msexo.addEventListener("click", () => {
 async function validarPrimeiraPagina() {
   DefaultErrosPag2();
   let valido = true;
-
-  // Validação básica do campo usuário
-  valido &= validarCampo(entrada_usuario, u_erro);
-
-  // Verificar disponibilidade do usuário no banco de dados
-  if (entrada_usuario.value.trim() !== "") {
-    const usuarioDisponivel = await verificarDisponibilidadeUsuario(entrada_usuario.value);
-    if (!usuarioDisponivel) {
-      entrada_usuario.classList.add("erro");
-      u_erro.style.display = "block";
-      u_erro.textContent = "Usuário indisponível.";
-      valido = false;
-    }
-  }
-
+ 
   // Validação básica do e-mail
   valido &= validarCampo(entrada_email, e_erro);
 
@@ -631,18 +618,6 @@ async function validarPrimeiraPagina() {
   }
 
   return valido;
-}
-
-
-async function verificarDisponibilidadeUsuario(usuario) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/verificar-usuario/${usuario}`);
-    const data = await response.json();
-    return data.disponivel;
-  } catch (error) {
-    console.error("Erro ao verificar disponibilidade do usuário:", error);
-    return false; // Caso haja erro, trate como indisponível por segurança
-  }
 }
 
 async function verificarDisponibilidadeEmail(email) {

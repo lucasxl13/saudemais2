@@ -1,6 +1,7 @@
 const API_BASE_URL = window.location.hostname === "127.0.0.1" 
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
-    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+    : "https://saude-mais-service-api.vercel.app";
+    // : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,12 +51,12 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
   const u_erro = document.getElementById('usuario-erro');
   const s_erro = document.getElementById('senha-erro');
 
-  const usuario = usuarioInput.value; // Valor do input
+  const email = usuarioInput.value; // Valor do input
   const senha = senhaInput.value;
 
   let hasError = false;
 
-  if (usuario === '') { // Verifica se o campo está vazio
+  if (email === '') { // Verifica se o campo está vazio
     usuarioInput.classList.add('erro'); // Adiciona a classe de erro ao input
     u_erro.style.display = 'block'; // Exibe a mensagem de erro
     u_erro.textContent = 'Campo obrigatório'; // Define o texto do erro
@@ -80,7 +81,7 @@ document.getElementById("dados").addEventListener("submit", async (event) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ usuario, senha }),
+      body: JSON.stringify({ email, senha }),
     });
 
     if (!response.ok) {
