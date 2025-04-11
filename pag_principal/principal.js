@@ -118,6 +118,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
         });
 
+        const dataTESTE = await response.json(); // Espera o corpo da resposta
+        console.log(dataTESTE); // Agora sim você vê os dados
+
         // Se a resposta não for OK, redireciona para o login
         if (!response.ok) {
             localStorage.removeItem("jwt");
@@ -130,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const data = await response.json();
         const userInfo = data[data.length - 1]; // Pega o último dado do usuário
 
-        usuario = userInfo.usuario;
+        usuario = userInfo.nome;
         email = userInfo.email;
         data_nascimento = userInfo.data_nascimento;
         sexo = userInfo.sexo;
