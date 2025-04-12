@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="principal.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 
 <body>
 
@@ -50,27 +49,6 @@
             </li>
 
             <li class="nav-item item__sidebar">
-                <a class="nav-link"  id="caloriaLink">
-                    <img src="../Icones/calorias.svg" alt="Ícone Calorias" class="icon_sideBar" />
-                    <span class="item-text">Calorias</span>
-                </a>
-            </li>
-
-            <li class="nav-item item__sidebar">
-                <a class="nav-link"  id="hidratacaoLink">
-                    <img src="../Icones/hidatracao.svg" alt="Ícone Hidratação" class="icon_sideBar" />
-                    <span class="item-text">Hidratação</span>
-                </a>
-            </li>
-
-            <li class="nav-item item__sidebar">
-                <a class="nav-link"  id="sonoLink">
-                    <img src="../Icones/sono.svg" alt="Ícone Sono" class="icon_sideBar" />
-                    <span class="item-text">Sono</span>
-                </a>
-            </li>
-
-            <li class="nav-item item__sidebar">
                 <a class="nav-link"  id="dietaLink">
                     <img src="../Icones/dieta.svg" alt="Ícone Dieta" class="icon_sideBar" />
                     <span class="item-text">Dieta</span>
@@ -99,136 +77,9 @@
             </li>
         </ul>
     </div>
-
-    <div class="container_principal">
-
-    <div class="linha">
-        <div class="containers" id="container_peso">
-            <div class="texto_peso">
-            <span id="peso"></span>
-            <p>_</p>
-            <span id="peso_ideal"></span>
-        </div>
-            <canvas id="graficoPeso" width="400" height="200"></canvas>
-        </div>
     
-    <div class="containers" id="container_medidas">
-
-        <p class="txt_medidas2" id="obj_altura">Altura: <span id="medida_altura"></span></p>
-
-        <div class="container_medidas">
-        <div class="medidas_direita">
-        <p class="txt_medidas" id="obj_biceps_direito">Biceps direito:<span id="medida_biceps_direito"></span></p>
-        <p class="txt_medidas" id="obj_antebraco_direito">Antebraço direito:<span id="medida_antebraco_direito"></span></p>
-        <p class="txt_medidas" id="obj_coxa_direito">Coxa direita:<span id="medida_coxa_direito"></span></p>
-        <p class="txt_medidas" id="obj_panturilha_direito">Panturilha direita:<span id="medida_panturilha_direito"></span></p>
-        </div>
-
-        <div id="svg_medidas"></div>
-
-        <div class="medidas_esquerda">
-        <p class="txt_medidas" id="obj_biceps_esquerdo">Biceps esquerdo:<span id="medida_biceps_esquerdo"></span></p>
-        <p class="txt_medidas" id="obj_antebraco_esquerdo">Antebraço esquerdo:<span id="medida_antebraco_esquerdo"></span></p>
-        <p class="txt_medidas" id="obj_coxa_esquerdo">Coxa esquerda:<span id="medida_coxa_esquerdo"></span></p>
-        <p class="txt_medidas" id="obj_panturilha_esquerdo">Panturilha esquerda:<span id="medida_panturilha_esquerdo"></span></p>
-        </div>
-        </div>
-
-        <p class="txt_medidas2" id="obj_cintura">Cintura:<span id="medida_cintura"></span></p>
-    </div>   
-
-    <div class="containers" id="container_metricas">
-        <div class="container_metricas">
-        <p class="imc">IMC Atual: <span id="imc_valor"></span></p>
-
-        <div>
-
-            <div class="linha_metricas">
-            <img src="../Icones/gordura_corporal.svg" class="icones_metricas" />
-            <p><span id="gordura_valor"></span></p>
-            </div>
-
-            <div class="linha_metricas">
-            <img src="../Icones/musculo_esqueletico.svg" class="icones_metricas" />
-            <p><span id="musculo_valor"></span></p>
-            </div>
-
-            <div class="linha_metricas">
-            <img src="../Icones/agua_massa.svg" class="icones_metricas" />
-            <p><span id="agua_valor"></span></p>
-            </div>
-
-        </div>
-
-    </div>   
-    </div>
-</div>
-
-<div class="linha">
-
-    <div class="containers2" id="container_caloria">
-        
-        <div class="container_caloria2">
-            <div class="streak" id="streak_icone"></div>
-            <div class="barra-container">
-              <div class="cal-info">
-                <span id="cal_span">0/0 Kcal</span>
-              </div>
-          
-              <div class="barra-progresso">
-                <div class="progresso" id="barra"></div>
-                <span class="texto-porcentagem" id="textoBarra">0%</span>
-              </div>
-            </div>
-          </div>
-
-          <canvas id="graficoCalorias" width="400" height="100"></canvas>
-    </div>
-
-    <div class="containers2" id="container_hidratacao">
-
-        <div class="container_hidratacao2">
-            <div class="streak" id="streakHidratacao_icone"></div>
-            <div class="barraHidratacao_container">
-              <div class="agua-info">
-                <span id="agua_span">0/0 ml</span>
-              </div>
-              <div class="barrah-progresso">
-                <div class="progresso_hidratacao" id="barra_hidratacao"></div>
-                <span class="texto-porcentagem" id="textoBarraHidratacao">0%</span>
-              </div>
-            </div>
-          </div>
-
-          <canvas id="graficoHidratacao" width="400" height="100"></canvas>
-    </div>  
-
-    <div class="containers2" id="container_sono" >
-        <h1>SONO</h1>
-        <p>TEMPO DE DESCANSO</p>
-        <p>QUALIDADE DO SONO</p>
-    </div>  
-</div>
-
-<div class="linha">
-    <div class="containers3" id="container_dieta">
-        <h1>DIETA</h1>
-        <p>PRATOSL</p>
-        <p>DIAS DA SEMANA</p>
-        <p>CONSUMO CALÓRICO</p>
-    </div>  
-
-    <div class="containers3" id="container_exercicios">
-        <h1>EXERCICIOS</h1>
-        <p>LISTA DE EXERCICIOS</p>
-        <p>SEMANA</p>
-    </div>  
-</div>
-
-
-</div>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="principal.js"></script>      
+<script src="principal.js"></script>
 </body>
+
 </html>
+

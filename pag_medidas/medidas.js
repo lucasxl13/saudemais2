@@ -1,6 +1,7 @@
-const API_BASE_URL = window.location.hostname === "127.0.0.1"  
+const API_BASE_URL = window.location.hostname === "127.0.0.1" 
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
-    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+    : "https://saude-mais-service-api.vercel.app";
+    // : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
 
     const campoLogo = document.querySelector('.style_logo');
@@ -22,60 +23,68 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
     const botaoLogout = document.getElementById('logoutLink');
 
 
-    document.addEventListener("DOMContentLoaded", async () => {
+    (async () => {
         let jwt = null;
-        
-        
-        // Verifica se o token está no sessionStorage ou localStorage
+      
+        // 1. Pega o token do sessionStorage se tiver
         if (sessionStorage.getItem("jwt")) {
-            jwt = sessionStorage.getItem("jwt");
+          jwt = sessionStorage.getItem("jwt");
         }
-    
-        if (!jwt && localStorage.getItem("jwt")) {
-            const storedData = JSON.parse(localStorage.getItem("jwt"));
-    
-            // Verifica se o token expirou
+      
+        // 2. Se não tiver no session, tenta pegar do localStorage e verifica expiração
+        const stored = localStorage.getItem("jwt");
+        if (!jwt && stored) {
+          try {
+            const storedData = JSON.parse(stored);
+      
             if (Date.now() > storedData.expiresAt) {
-                localStorage.removeItem("jwt");
-                sessionStorage.removeItem("jwt");
-                window.location.href = "../pag_login/login.html";
-                return;
+              limparSessaoERedirecionar();
+              return;
             }
-    
+      
             jwt = storedData.token;
-        }
-    
-        // Se nenhum token válido for encontrado, redireciona para o login
-        if (!jwt) {
-            window.location.href = "../pag_login/login.html";
+          } catch (e) {
+            console.error("Token malformado.");
+            limparSessaoERedirecionar();
             return;
+          }
         }
-    
+      
+        // 3. Se não tiver nenhum token, redireciona
+        if (!jwt) {
+          limparSessaoERedirecionar();
+          return;
+        }
+      
+        // 4. Faz a requisição para validar o token
         try {
-            // Faz a requisição ao backend
-            const response = await fetch(`${API_BASE_URL}/dados-usuario`, {    
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${jwt}`,
-                },
-            });
-    
-            // Se a resposta não for OK, redireciona para o login
-            if (!response.ok) {
-                localStorage.removeItem("jwt");
-                sessionStorage.removeItem("jwt");
-                window.location.href = "../pag_login/login.html";
-                return;
-            }
-    
+          const response = await fetch(`${API_BASE_URL}/dados-usuario`, {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${jwt}`,
+            },
+          });
+      
+          if (!response.ok) {
+            limparSessaoERedirecionar();
+            return;
+          }
+      
+          const data = await response.json();
+          console.log("Usuário autenticado:", data); // você pode guardar isso em window.usuarioLogado, por exemplo
+          window.usuarioLogado = data;
+      
         } catch (error) {
-            console.error("Erro ao carregar os dados:", error);
-            localStorage.removeItem("jwt");
-            sessionStorage.removeItem("jwt");
-            // window.location.href = "../pag_login/login.html";
+          console.error("Erro ao validar sessão:", error);
+          limparSessaoERedirecionar();
         }
-    });
-
+      
+        function limparSessaoERedirecionar() {
+          localStorage.removeItem("jwt");
+          sessionStorage.removeItem("jwt");
+          window.location.href = "../pag_login/login.html";
+        }
+      })();
 
 
 toggleSidebar.addEventListener('click', () => {
@@ -96,18 +105,6 @@ botaoMedidas.addEventListener('click', () =>{
 
 botaoMetricas.addEventListener('click', () =>{
     window.location.href = '../pag_metricas/metricas.html';
-});
-
-botaoCalorias.addEventListener('click', () =>{
-    window.location.href = '../pag_calorias/calorias.html';
-});
-
-botaoHidratacao.addEventListener('click', () =>{
-    window.location.href = '../pag_hidratacao/hidratacao.html';
-});
-
-botaoSono.addEventListener('click', () =>{
-    window.location.href = '../pag_sono/sono.html';
 });
 
 botaoDieta.addEventListener('click', () =>{
