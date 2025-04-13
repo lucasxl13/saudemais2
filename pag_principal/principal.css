@@ -10,7 +10,7 @@
 
 body {
     font-family: var(--fonte-logo);
-    background-image: url('../Backgrounds/0.png'); 
+    background-image: url('../Design/0.png'); 
     display: flex;
     justify-content:center;
     height: 100vh;
@@ -47,13 +47,12 @@ body {
     background-color: var(--color1);
     overflow: hidden; /* Esconde conteúdo excedente */
     transition: width 0.3s ease;
+    z-index: 10;
 }
 
 .sidebar .nav-item:first-child {
     margin-top: 20px; /* Ajusta a posição do primeiro ícone */
 }
-
-
 
 .sidebar.expanded {
     width: 150px; /* Largura expandida (ícones + texto) */
@@ -92,3 +91,151 @@ body {
     visibility: visible;
     opacity: 1;
 }
+
+.container_principal {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top:5rem;
+}
+
+.linha {
+    display:flex;
+    gap:2rem;
+  }
+  
+  .containers_topo {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 0.7rem;
+    width: 30rem;
+    height: 16rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    cursor:pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .containers_meio {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 0.7rem;
+    width: 46rem;
+    height: 16rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    cursor:pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .containers_fundo {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 0.7rem;
+    width: 46rem;
+    height: 16rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    cursor:pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .containers_topo:hover,.containers_meio:hover,.containers_fundo:hover {
+    transform: scale(1.05);
+  }
+
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+  }
+
+  .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .containers_topo,
+  .containers_meio,
+  .containers_fundo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    min-width: 280px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .containers_topo:hover,
+  .containers_meio:hover,
+  .containers_fundo:hover {
+    transform: none;
+  }
+
+  .sidebar.expanded {
+    width: 150px;
+  }
+
+  .sidebar {
+    width: 50px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1360px) {
+    .container_principal {
+      margin-left: 60px;
+      width: calc(100% - 60px);
+      align-items: center;
+    }
+  
+    .linha {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+  
+    .containers_topo,
+    .containers_meio,
+    .containers_fundo {
+      width: 40rem;         /* largura intermediária para tablets */
+      height: auto;
+      min-width: 300px;
+    }
+  
+    .sidebar.expanded {
+      width: 150px;
+    }
+  
+    .sidebar {
+      width: 50px;
+    }
+  }
+
+  @media (min-width: 1361px) and (max-width: 1600px) {
+    .container_principal {
+      margin-left: 60px;
+      width: calc(100% - 60px);
+      align-items: center;
+    }
+  
+    .linha {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+  
+    .containers_topo{
+      width: 24rem;       /* reduzido para caber 3 por linha */
+      height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
+    }
+
+    .containers_meio,
+    .containers_fundo {
+        width: 37rem;       /* reduzido para caber 3 por linha */
+        height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
+
+    }
+  }

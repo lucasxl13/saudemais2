@@ -10,7 +10,7 @@
 
 body {
     font-family: var(--fonte-logo);
-    background-image: url('../Backgrounds/0.png'); 
+    background-image: url('../Design/0.png'); 
     display: flex;
     justify-content:center;
     height: 100vh;
