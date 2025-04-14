@@ -13,6 +13,17 @@
     
 }
 
+.dark-mode {
+    --color1: #0c3b28;
+    --color2: #145e43;
+    --color3: #67f7aa;
+    --color4: #cfcfcf;
+    --color5: #445f52;
+    --color6: #20b46e;
+    --black: #ffffff;
+    --white: #1b1b1b;
+  }
+  
 body a{
     text-decoration: none;
 }

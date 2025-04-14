@@ -1,3 +1,5 @@
+import { toggleDarkMode } from "./toogleDarkMode.js";	
+
 export function gerarSidebar(menuItems) {
   const sidebarMenu = document.getElementById("sidebarMenu");
 
@@ -26,7 +28,11 @@ export function gerarSidebar(menuItems) {
       link.addEventListener("click", () => {
         window.location.href = item.href;
       });
-    }
+    } else if (item.id === "darkModeToggle") {
+      link.addEventListener("click", () => {
+        toggleDarkMode();
+      });
+    }    
   });
 
   // Adiciona o toggle da sidebar

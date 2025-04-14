@@ -16,6 +16,28 @@ body {
     height: 100vh;
     padding: 1rem; 
 }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(66, 66, 66, 0); /* transparente por padrão */
+  z-index: -1;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0); /* transparente por padrão */
+  z-index: -1;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+body.dark-mode::before {
+  background: rgba(0, 0, 0, 0.6); /* escurece o fundo no modo dark */
+}
 
 /* Navbar */
 .style_bg_nav {
@@ -75,8 +97,10 @@ body {
 }
 
 .icon_sideBar {
-    width: 1.5rem;
-    height: auto;
+  width: 24px;
+  height: 24px;
+  color: var(--color1); /* controla a cor base do ícone */
+  transition: color 0.3s ease;
 }
 
 .sidebar .item-text {
@@ -239,3 +263,96 @@ body {
 
     }
   }
+
+  #usuario_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    color: var(--black);
+    font-family: 'Segoe UI', sans-serif;
+    gap: 1.5rem;
+  }
+  
+  body.dark-mode #usuario_info {
+    background: linear-gradient(135deg, #1d1d1d, #2c2c2c);
+    color: var(--white);
+  }
+  
+  .foto_perfil {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-image: url('../Design/avatar_padrao.png');
+    background-size: cover;
+    background-position: center;
+    border: 2px solid var(--color3);
+    background-color: #eaeaea;
+  }
+  
+  body.dark-mode .foto_perfil {
+    background-color: #444;
+  }
+  
+  .dados_texto h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--black);
+    display: flex;
+    padding-bottom: 1rem;
+  }
+  
+  body.dark-mode .dados_texto h3 {
+    color: var(--color3);
+  }
+  
+  .dados_texto p {
+    margin: 2px 0;
+    font-size: 0.95rem;
+    color: var(--color4);
+    display: flex;
+  }
+  
+  body.dark-mode .dados_texto p {
+    color: #ccc;
+  }
+  
+  #btn_editar_perfil {
+    padding: 0.5rem 0.5rem;
+    background-color: var(--color1);
+    color: rgb(83, 83, 83);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  
+  body.dark-mode #btn_editar_perfil {
+    color: white;
+  }
+  
+  #btn_editar_perfil:hover {
+    background-color: var(--color2);
+  }
+  
+  .info_esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .acoes_direita {
+    display: flex;
+    align-items: center;
+  }
+  
+  body.dark-mode #toggleSidebar {
+    color: var(--color3);
+    border-color: var(--color3);
+  }
+  
+  

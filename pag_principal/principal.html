@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saúde +</title>
     <link rel="stylesheet" href="principal.css">
-    <link rel="stylesheet" href="..\Design\css\bootstrap.min.css">
+    <link rel="stylesheet" href="../Design/css/bootstrap.min.css">
   </head>
 
 <body>
@@ -24,7 +24,20 @@
 
     <div class="container_principal">
         <div class="linha"> 
-            <div class="containers_topo"></div>
+            <div class="containers_topo" id="usuario_info">
+                <div class="info_esquerda">
+                  <div class="foto_perfil"></div>
+                  <div class="dados_texto">
+                    <h3 id="nome_usuario">Nome</h3>
+                    <p id="email_usuario">email@email.com</p>
+                    <p id="sexo_usuario">Sexo: Masculino</p>
+                    <p id="nascimento_usuario">Nascimento: 07/04/2025</p>
+                  </div>
+                </div>
+                <div class="acoes_direita">
+                  <button id="btn_editar_perfil">Editar Perfil</button>
+                </div>
+              </div>
             <div class="containers_topo"></div>
             <div class="containers_topo"></div>
         </div>
