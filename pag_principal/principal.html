@@ -24,6 +24,7 @@
 
     <div class="container_principal">
         <div class="linha"> 
+
             <div class="containers_topo" id="usuario_info">
                 <div class="info_esquerda">
                   <div class="foto_perfil"></div>
@@ -38,7 +39,11 @@
                   <button id="btn_editar_perfil">Editar Perfil</button>
                 </div>
               </div>
-            <div class="containers_topo"></div>
+              
+            <div class="containers_topo">
+              <canvas id="graficoPeso" width="600" height="300"></canvas>
+            </div>
+
             <div class="containers_topo"></div>
         </div>
 
@@ -54,6 +59,8 @@
     </div>
     
 <script src="..\Design\js\bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="./principal.js"></script>
 </body>
 

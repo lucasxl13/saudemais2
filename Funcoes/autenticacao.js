@@ -42,8 +42,12 @@ export async function verificarAutenticacao(API_BASE_URL) {
       }
   
       const data = await response.json();
-      console.log("Usuário autenticado:", data);
-      window.usuarioLogado = data;
+
+      window.usuarioLogado = {
+        dados_usuario: data.dados_usuario,
+        historico_metricas: data.metricas.reverse()
+      };
+
   
     } catch (error) {
       console.error("Erro ao validar sessão:", error);

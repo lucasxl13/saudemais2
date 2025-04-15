@@ -1,5 +1,6 @@
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
+import { filtrarUltimosSeteDias } from '../Funcoes/grafico_peso.js';
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -17,26 +18,23 @@ const menuItems = [
   { id: "logoutLink", icon: "logout", text: "Sair", href: null },
 ];
 
-// Primeiro autentica, depois monta o menu
-gerarSidebar(menuItems);
-
-async function initDashboard() {
-  await verificarAutenticacao(API_BASE_URL); // carrega window.usuarioLogado
-
+  await verificarAutenticacao(API_BASE_URL); 
   const { dados_usuario } = window.usuarioLogado;
 
   document.getElementById("nome_usuario").textContent = dados_usuario.nome;
   document.getElementById("email_usuario").textContent = dados_usuario.email;
   document.getElementById("sexo_usuario").textContent = `Sexo: ${dados_usuario.sexo}`;
   document.getElementById("nascimento_usuario").textContent = `Nascimento: ${formatarData(dados_usuario.data_nascimento)}`;
-}
 
 function formatarData(dataISO) {
   const data = new Date(dataISO);
   return data.toLocaleDateString('pt-BR');
 }
 
-// Executar ao carregar
-initDashboard()
+gerarSidebar(menuItems);
+filtrarUltimosSeteDias();
+
+
+
 
 
