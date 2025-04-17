@@ -751,4 +751,3 @@ removerErroAoDigitar(entrada_nascimento, n_erro);
 removerErroAoDigitar(entrada_peso, p_erro);
 removerErroAoDigitar(entrada_altura, a_erro);
 
-

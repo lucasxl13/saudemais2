@@ -9,21 +9,50 @@
     --color6: #3adb85;
     --black: #000000;
     --white: #fff;
-    --fonte-logo: "Comfortaa", system-ui;
     
 }
 
-.dark-mode {
-    --color1: #0c3b28;
-    --color2: #145e43;
-    --color3: #67f7aa;
-    --color4: #cfcfcf;
-    --color5: #445f52;
-    --color6: #20b46e;
-    --black: #ffffff;
-    --white: #1b1b1b;
-  }
-  
-body a{
-    text-decoration: none;
+* {
+    --fonte-logo: "Comfortaa", system-ui;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    --texto: #000000;
+    --textoInverso:#ffffff;
+    --txtTitulo: #000000;
+    --bars:#67f7aa;
+    --sidebarMenu:#212529;
+    --bg_container:#ffffff;
+
+
+    color: var(--texto);
+    font-family: var(--fonte-logo);
+    background-image: url('../Design/0.png'); 
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding: 1rem; 
+}
+
+body.dark-mode {
+    --texto: #ffffff;
+    --textoInverso:#000000;
+    --txtTitulo: #67f7aa;
+    --bars:#2c2c2c;
+    --sidebarMenu:#67f7aa;
+    --bg_container:#3b3b3b;
+
+    
+    color: var(--texto);
+    font-family: var(--fonte-logo);
+    background-image: url('../Design/1.png'); 
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    padding: 1rem; 
 }

@@ -13,7 +13,7 @@
 
     <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
         <div class="container-fluid">
-            <button class="btn btn-outline-dark" id="toggleSidebar">Menu</button>
+            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
             <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
         </div>
     </header>
@@ -25,21 +25,14 @@
     <div class="container_principal">
         <div class="linha"> 
 
-            <div class="containers_topo" id="usuario_info">
-                <div class="info_esquerda">
-                  <div class="foto_perfil"></div>
-                  <div class="dados_texto">
-                    <h3 id="nome_usuario">Nome</h3>
-                    <p id="email_usuario">email@email.com</p>
-                    <p id="sexo_usuario">Sexo: Masculino</p>
-                    <p id="nascimento_usuario">Nascimento: 07/04/2025</p>
-                  </div>
-                </div>
-                <div class="acoes_direita">
-                  <button id="btn_editar_perfil">Editar Perfil</button>
-                </div>
-              </div>
-              
+            <div class="containers_topo">
+                <p>Olá, <span id="nomeUsuario"></span></p>
+                <p>Idade: <span id="idadeUsuario"></span></p>
+                <p>Peso: <span id="pesoUsuario"></span></p>
+                <p>Altura: <span id="alturaUsuario"></span></p>
+                <p>Objetivo: <span id="objetivoUsuario"></span></p>
+            </div>
+
             <div class="containers_topo">
               <canvas id="graficoPeso" width="600" height="300"></canvas>
             </div>

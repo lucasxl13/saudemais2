@@ -1,40 +1,47 @@
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { filtrarUltimosSeteDias } from '../Funcoes/grafico_peso.js';
+import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
+import { calcularIdade } from "../Funcoes/calcularIdade.js";
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
   : "https://saude-mais-service-api.vercel.app";
 
-const menuItems = [
-  { id: "homeLink", icon: "home", text: "Home", href: "../pag_principal/principal.html" },
-  { id: "pesoLink", icon: "peso", text: "Peso", href: "../pag_peso/peso.html" },
-  { id: "medidasLink", icon: "medidas", text: "Medidas", href: "../pag_medidas/medidas.html" },
-  { id: "metricasLink", icon: "metricas", text: "Metricas", href: "../pag_metricas/metricas.html" },
-  { id: "dietaLink", icon: "dieta", text: "Dieta", href: "../pag_dieta/dieta.html" },
-  { id: "exercicioLink", icon: "exercicios", text: "Exercicios", href: "../pag_exercicios/exercicio.html" },
-  { id: "darkModeToggle", icon: "moon", text: "Modo Escuro" , href: null },
-  { id: "perfilLink", icon: "perfil", text: "Perfil", href: "../pag_perfil/perfil.html" },
-  { id: "logoutLink", icon: "logout", text: "Sair", href: null },
-];
-
   await verificarAutenticacao(API_BASE_URL); 
+
   const { dados_usuario } = window.usuarioLogado;
+  const metricas = window.usuarioLogado?.historico_metricas;
+  const ultimoRegistro = metricas[metricas.length - 1];
 
-  document.getElementById("nome_usuario").textContent = dados_usuario.nome;
-  document.getElementById("email_usuario").textContent = dados_usuario.email;
-  document.getElementById("sexo_usuario").textContent = `Sexo: ${dados_usuario.sexo}`;
-  document.getElementById("nascimento_usuario").textContent = `Nascimento: ${formatarData(dados_usuario.data_nascimento)}`;
+  console.log(dados_usuario);
+  console.log(metricas);
 
-function formatarData(dataISO) {
-  const data = new Date(dataISO);
-  return data.toLocaleDateString('pt-BR');
-}
+  document.getElementById("nomeUsuario").textContent = dados_usuario.nome;
 
-gerarSidebar(menuItems);
+  const dataServidor = await obterDataDoServidor(API_BASE_URL);
+    if (dataServidor) {
+        const idade = calcularIdade(dados_usuario.data_nascimento, dataServidor.toISOString());
+        document.getElementById("idadeUsuario").textContent = idade;
+    }
+
+  document.getElementById("pesoUsuario").textContent = ultimoRegistro.peso.toFixed(1) + " kg";
+  document.getElementById("alturaUsuario").textContent = ultimoRegistro.altura + " cm";
+
+  if(dados_usuario.objetivo==1){
+    document.getElementById("objetivoUsuario").textContent = "Perca de peso";
+  }else if(dados_usuario.objetivo==2){
+    document.getElementById("objetivoUsuario").textContent = "Ganho de massa";
+  }else{
+    document.getElementById("objetivoUsuario").textContent = "Manutenção do peso";;
+  }
+  
+
+
+gerarSidebar();
 filtrarUltimosSeteDias();
 
-
+// document.body.classList.toggle('dark-mode');  
 
 
 

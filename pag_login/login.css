@@ -20,7 +20,7 @@ body {
 }
 
 .container-principal {
-    background-color: var(--white);
+    background-color: var(--bg_container);
     padding: 2rem;
     border-radius: 25px;
     width: 23rem;
@@ -43,7 +43,7 @@ body {
 
 .titulo {
     font-size: 2.5rem;
-    color: #000000;
+    color: var(--black);
     margin-top: 25px;
     margin-bottom: 25px;
 }
@@ -51,7 +51,7 @@ body {
 .subtitulo {
     font-size: 3rem;
     color: var(--color1);
-    -webkit-text-stroke: 0.5px black;
+    -webkit-text-stroke: 0.5px var(--black);
 }
 
 .formulario {
