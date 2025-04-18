@@ -64,19 +64,21 @@
 }
 
 .sidebar .nav-link {
+    font-family: var(--fonte-logo);
     display: flex;
     align-items: center; /* Centraliza verticalmente */
     justify-content: start; /* Alinha horizontalmente */
     padding: 0.5rem;
     height: 50px; /* Altura fixa */
-    color: var(--color3);
+    color: var(--iconesSidebar);
     text-decoration: none;
     cursor: pointer;
 }
 
 .sidebar .nav-link:hover {
-    background-color: var(--color2);
+    background-color: var(--hoverIcones);
     border-radius: 5px;
+    color: var(--iconesSidebar);
 }
 
 .icon_sideBar {

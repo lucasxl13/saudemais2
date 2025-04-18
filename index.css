@@ -27,7 +27,10 @@ body {
     --txtTitulo: #000000;
     --bars:#67f7aa;
     --sidebarMenu:#212529;
+    --iconesSidebar:#000000;
+    --hoverIcones:#acf8d4;
     --bg_container:#ffffff;
+    --bg_silhueta:rgba(255, 255, 255, 0);
 
 
     color: var(--texto);
@@ -45,8 +48,10 @@ body.dark-mode {
     --txtTitulo: #67f7aa;
     --bars:#2c2c2c;
     --sidebarMenu:#67f7aa;
+    --iconesSidebar:#67f7aa;
+    --hoverIcones:#212529;
     --bg_container:#3b3b3b;
-
+    --bg_silhueta:rgba(255, 255, 255, 0.224);
     
     color: var(--texto);
     font-family: var(--fonte-logo);

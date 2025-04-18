@@ -1,8 +1,11 @@
+document.body.classList.toggle('dark-mode');  
+
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { filtrarUltimosSeteDias } from '../Funcoes/grafico_peso.js';
 import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
 import { calcularIdade } from "../Funcoes/calcularIdade.js";
+import { silhueta } from '../Funcoes/silhueta.js';
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -25,9 +28,6 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
         document.getElementById("idadeUsuario").textContent = idade;
     }
 
-  document.getElementById("pesoUsuario").textContent = ultimoRegistro.peso.toFixed(1) + " kg";
-  document.getElementById("alturaUsuario").textContent = ultimoRegistro.altura + " cm";
-
   if(dados_usuario.objetivo==1){
     document.getElementById("objetivoUsuario").textContent = "Perca de peso";
   }else if(dados_usuario.objetivo==2){
@@ -36,12 +36,7 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
     document.getElementById("objetivoUsuario").textContent = "Manutenção do peso";;
   }
   
-
-
 gerarSidebar();
 filtrarUltimosSeteDias();
-
-// document.body.classList.toggle('dark-mode');  
-
-
+silhueta(ultimoRegistro);
 

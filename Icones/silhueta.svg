@@ -105,7 +105,7 @@
      transform="matrix(0.99999996,-2.9330586e-4,0.00432031,0.99999067,0,0)" />
   <rect
      style="stroke-width:1.37114;fill:none"
-     id="panturilha_direita"
+     id="panturrilha_direita"
      width="84.943993"
      height="5.9547439"
      x="123.97368"
@@ -113,7 +113,7 @@
      transform="matrix(0.99999986,5.3285319e-4,0.0014906,0.99999889,0,0)" />
   <rect
      style="stroke-width:1.36458;fill:none"
-     id="panturilha_esquerda"
+     id="panturrilha_esquerda"
      width="84.13385"
      height="5.9547439"
      x="308.65643"
@@ -140,7 +140,7 @@
      id="_Artboards_" />
   <g
      id="Layer 1"
-     style="fill:none">
+     style="fill:red">
     <path
        id="&lt;Path&gt;"
        class="s0"

@@ -24,23 +24,29 @@
 
     <div class="container_principal">
         <div class="linha"> 
-
             <div class="containers_topo">
-                <p>Olá, <span id="nomeUsuario"></span></p>
-                <p>Idade: <span id="idadeUsuario"></span></p>
-                <p>Peso: <span id="pesoUsuario"></span></p>
-                <p>Altura: <span id="alturaUsuario"></span></p>
-                <p>Objetivo: <span id="objetivoUsuario"></span></p>
+                <div class="container_usuario">
+                    <p>Olá, <span id="nomeUsuario"></span></p>
+                    <p>Idade: <span id="idadeUsuario"></span></p>
+                    <p>Objetivo: <span id="objetivoUsuario"></span></p>
+                </div>
             </div>
 
             <div class="containers_topo">
-              <canvas id="graficoPeso" width="600" height="300"></canvas>
+                <div class="container_peso">
+                    <canvas id="graficoPeso"></canvas>
+                </div>
             </div>
 
-            <div class="containers_topo"></div>
+            <div class="containers_topo"> 
+                <div class="container_medida">
+                    <div id="silhueta_container"></div>
+                </div>   
+            </div>
         </div>
 
         <div class="linha"> 
+            <div class="containers_meio"></div>
             <div class="containers_meio"></div>
             <div class="containers_meio"></div>
         </div>
@@ -52,7 +58,6 @@
     </div>
     
 <script src="..\Design\js\bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module" src="./principal.js"></script>
 </body>

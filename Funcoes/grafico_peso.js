@@ -17,6 +17,8 @@ function gerarGraficoPeso(dates, pesos) {
   const pesoMinimo = Math.ceil(Math.min(...pesos) - 3);
   const pesoMaximo = Math.ceil(Math.max(...pesos) + 3);
 
+  const textoColor = getComputedStyle(document.body).getPropertyValue('--texto')
+
   chart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -38,7 +40,7 @@ function gerarGraficoPeso(dates, pesos) {
           font: {
             size: 11,
           },
-          color: '#000000',
+          color: textoColor,
         },
         legend: {
           display: false,
