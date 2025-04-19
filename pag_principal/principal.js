@@ -2,7 +2,7 @@ document.body.classList.toggle('dark-mode');
 
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
-import { filtrarUltimosSeteDias } from '../Funcoes/grafico_peso.js';
+import { filtrarUltimosSeteDias } from '../Funcoes/graficos.js';
 import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
 import { calcularIdade } from "../Funcoes/calcularIdade.js";
 import { silhueta } from '../Funcoes/silhueta.js';
@@ -26,6 +26,8 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
     if (dataServidor) {
         const idade = calcularIdade(dados_usuario.data_nascimento, dataServidor.toISOString());
         document.getElementById("idadeUsuario").textContent = idade;
+
+        filtrarUltimosSeteDias(dataServidor);
     }
 
   if(dados_usuario.objetivo==1){
@@ -37,6 +39,6 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
   }
   
 gerarSidebar();
-filtrarUltimosSeteDias();
 silhueta(ultimoRegistro);
 
+console.log(ultimoRegistro.calorias.meta + "kcal");

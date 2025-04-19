@@ -110,6 +110,31 @@
     transition: transform 0.3s ease-in-out;
   }
 
+  .container_calorais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  #graficoCaloria {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .container_hidratacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  #graficoHidratacao {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+
   .containers_fundo {
     background-color: var(--bg_container);
     border-radius: 10px;
