@@ -1,7 +1,7 @@
 const API_BASE_URL = window.location.hostname === "127.0.0.1" 
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
-    : "https://saude-mais-service-api.vercel.app";
-    // : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
+    // : "https://saude-mais-service-api.vercel.app";
+    : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
 
 document.addEventListener("DOMContentLoaded", () => {
