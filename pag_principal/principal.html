@@ -6,11 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saúde +</title>
   <link rel="stylesheet" href="principal.css" />
-  <link rel="stylesheet" href="..\elementosCSS\chat.css">
-  <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css" />
+  <link rel="stylesheet" href="../elementosCSS/chat.css" />
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css" />
 </head>
 
 <body>
+  <!-- Navbar -->
   <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
     <div class="container-fluid">
       <button class="btn_sidebar" id="toggleSidebar">Menu</button>
@@ -18,44 +19,25 @@
     </div>
   </header>
 
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
-
-    <!-- Botão flutuante -->
-    <div id="chatToggle">💬</div>
-
-    <!-- Janela do chat -->
-    <div id="chatContainer">
-    <div id="chatHeader">Chat</div>
-    <div id="chatMessages"></div>
-    <form id="chatForm">
-        <input type="text" id="chatInput" placeholder="Digite sua mensagem..." required />
-        <button type="submit">Enviar</button>
-    </form>
-    </div>
-
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
   </div>
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
 
-    <!-- Botão flutuante -->
-    <div id="chatToggle">💬</div>
+  <!-- Botão flutuante -->
+  <div id="chatToggle">💬</div>
 
-    <!-- Janela do chat -->
-    <div id="chatContainer">
+  <!-- Janela do chat -->
+  <div id="chatContainer">
     <div id="chatHeader">Chat</div>
     <div id="chatMessages"></div>
     <form id="chatForm">
-        <input type="text" id="chatInput" placeholder="Digite sua mensagem..." required />
-        <button type="submit">Enviar</button>
+      <input type="text" id="chatInput" placeholder="Digite sua mensagem..." required />
+      <button type="submit">Enviar</button>
     </form>
-    </div>
+  </div>
 
-
+  <!-- Conteúdo Principal -->
   <div class="container_principal">
     <!-- Linha 1 -->
     <div class="linha">
@@ -84,7 +66,6 @@
     <div class="linha">
       <div class="containers_meio">
         <div class="container_calorias">
-
           <div class="container_grafico">
             <div class="botoes-lado">
               <button class="botao_diminui" onclick="diminuirCalorias(1)">-1</button>
@@ -111,28 +92,27 @@
 
       <div class="containers_meio">
         <div class="container_hidratacao">
-            <div class="container_grafico">
-                <div class="botoes-lado">
-                  <button class="botao_diminui" onclick="diminuirHidratacao(1)">-1</button>
-                  <button class="botao_diminui" onclick="diminuirHidratacao(10)">-10</button>
-                  <button class="botao_diminui" onclick="diminuirHidratacao(50)">-50</button>
-                  <button class="botao_diminui" onclick="diminuirHidratacao(100)">-100</button>
-                  <button class="botao_diminui" onclick="diminuirHidratacao(500)">-500</button>
-                  <button class="botao_diminui" onclick="diminuirHidratacao(1000)">-1000</button>
-                </div>
-    
-                <canvas id="graficoHidratacao"></canvas>
-    
-                <div class="botoes-lado">
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(1)">+1</button>
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(10)">+10</button>
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(50)">+50</button>
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(100)">+100</button>
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(500)">+500</button>
-                  <button class="botao_aumenta" onclick="aumentarHidratacao(1000)">+1000</button>
-                </div>
-              </div>
-          
+          <div class="container_grafico">
+            <div class="botoes-lado">
+              <button class="botao_diminui" onclick="diminuirHidratacao(1)">-1</button>
+              <button class="botao_diminui" onclick="diminuirHidratacao(10)">-10</button>
+              <button class="botao_diminui" onclick="diminuirHidratacao(50)">-50</button>
+              <button class="botao_diminui" onclick="diminuirHidratacao(100)">-100</button>
+              <button class="botao_diminui" onclick="diminuirHidratacao(500)">-500</button>
+              <button class="botao_diminui" onclick="diminuirHidratacao(1000)">-1000</button>
+            </div>
+
+            <canvas id="graficoHidratacao"></canvas>
+
+            <div class="botoes-lado">
+              <button class="botao_aumenta" onclick="aumentarHidratacao(1)">+1</button>
+              <button class="botao_aumenta" onclick="aumentarHidratacao(10)">+10</button>
+              <button class="botao_aumenta" onclick="aumentarHidratacao(50)">+50</button>
+              <button class="botao_aumenta" onclick="aumentarHidratacao(100)">+100</button>
+              <button class="botao_aumenta" onclick="aumentarHidratacao(500)">+500</button>
+              <button class="botao_aumenta" onclick="aumentarHidratacao(1000)">+1000</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -160,7 +140,7 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Script principal -->
+  <!-- Scripts principais -->
   <script type="module" src="./principal.js"></script>
   <script type="module" src="../Funcoes/chat.js"></script>
 </body>

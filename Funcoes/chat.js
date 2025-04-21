@@ -25,15 +25,30 @@ document.addEventListener('DOMContentLoaded', () => {
       chatInput.value = '';
   
       try {
-        const response = await fetch(`${API_BASE_URL}/chatSaudeMais`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ mensagem: msg })
-        });
-  
-        const data = await response.json();
-        appendMessage('Bot', data.text || 'Erro na resposta');
+        const token = sessionStorage.getItem("jwt") || JSON.parse(localStorage.getItem("jwt"))?.token;
+
+      const response = await fetch(`${API_BASE_URL}/chatSaudeMais`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // ⬅ adiciona o token aqui
+        },
+        body: JSON.stringify({ mensagem: msg })
+      });
+      const text = await response.text();
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        console.error('Resposta não é JSON:', text);
+        appendMessage('Bot', 'Erro na resposta do servidor');
+        return;
+      }
+        
+      appendMessage('Bot', data.text || 'Erro na resposta');
       } catch (err) {
+        console.error('Erro ao conectar com o servidor:', err);
         appendMessage('Bot', 'Erro ao conectar com o servidor');
       }
     });
