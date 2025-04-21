@@ -31,11 +31,12 @@ body {
     --hoverIcones:#acf8d4;
     --bg_container:#ffffff;
     --bg_silhueta:rgba(255, 255, 255, 0);
+    --graficoCircular:#d5d5d5;
 
 
     color: var(--texto);
     font-family: var(--fonte-logo);
-    background-image: url('../Design/0.png'); 
+    background-image: url('../elementosCSS/0.png'); 
     display: flex;
     justify-content: center;
     height: 100vh;
@@ -52,10 +53,11 @@ body.dark-mode {
     --hoverIcones:#212529;
     --bg_container:#3b3b3b;
     --bg_silhueta:rgba(255, 255, 255, 0.224);
+    --graficoCircular:#636363;
     
     color: var(--texto);
     font-family: var(--fonte-logo);
-    background-image: url('../Design/1.png'); 
+    background-image: url('../elementosCSS/1.png'); 
     display: flex;
     justify-content: center;
     height: 100vh;

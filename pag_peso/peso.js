@@ -8,4 +8,3 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
 // Primeiro autentica, depois monta o menu
 verificarAutenticacao(API_BASE_URL);
 gerarSidebar();
-

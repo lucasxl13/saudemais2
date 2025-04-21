@@ -20,7 +20,6 @@ input[type="password"]::-ms-reveal {
 body {
     overflow-x: hidden;
     font-family: var(--fonte-logo);
-    background-image: url('../Design/0.png'); 
     display: flex;
     justify-content: center;
     align-items: center;

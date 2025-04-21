@@ -2,72 +2,131 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saúde +</title>
-    <link rel="stylesheet" href="principal.css">
-    <link rel="stylesheet" href="../Design/css/bootstrap.min.css">
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saúde +</title>
+  <link rel="stylesheet" href="principal.css" />
+  <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css" />
+</head>
 
 <body>
+  <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
+    <div class="container-fluid">
+      <button class="btn_sidebar" id="toggleSidebar">Menu</button>
+      <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+    </div>
+  </header>
 
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
+
+  <div class="container_principal">
+    <!-- Linha 1 -->
+    <div class="linha">
+      <div class="containers_topo">
+        <div class="container_usuario">
+          <p>Olá, <span id="nomeUsuario"></span></p>
+          <p>Idade: <span id="idadeUsuario"></span></p>
+          <p>Objetivo: <span id="objetivoUsuario"></span></p>
         </div>
-    </header>
+      </div>
 
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+      <div class="containers_topo">
+        <div class="container_peso">
+          <canvas id="graficoPeso"></canvas>
+        </div>
+      </div>
+
+      <div class="containers_topo">
+        <div class="container_medida">
+          <div id="silhueta_container"></div>
+        </div>
+      </div>
     </div>
 
-    <div class="container_principal">
-        <div class="linha"> 
-            <div class="containers_topo">
-                <div class="container_usuario">
-                    <p>Olá, <span id="nomeUsuario"></span></p>
-                    <p>Idade: <span id="idadeUsuario"></span></p>
-                    <p>Objetivo: <span id="objetivoUsuario"></span></p>
-                </div>
+    <!-- Linha 2 -->
+    <div class="linha">
+      <div class="containers_meio">
+        <div class="container_calorias">
+
+          <div class="container_grafico">
+            <div class="botoes-lado">
+              <button class="botao_diminui" onclick="diminuirCalorias(1)">-1</button>
+              <button class="botao_diminui" onclick="diminuirCalorias(10)">-10</button>
+              <button class="botao_diminui" onclick="diminuirCalorias(50)">-50</button>
+              <button class="botao_diminui" onclick="diminuirCalorias(100)">-100</button>
+              <button class="botao_diminui" onclick="diminuirCalorias(500)">-500</button>
+              <button class="botao_diminui" onclick="diminuirCalorias(1000)">-1000</button>
             </div>
 
-            <div class="containers_topo">
-                <div class="container_peso">
-                    <canvas id="graficoPeso"></canvas>
-                </div>
-            </div>
+            <canvas id="graficoCaloria"></canvas>
 
-            <div class="containers_topo"> 
-                <div class="container_medida">
-                    <div id="silhueta_container"></div>
-                </div>   
+            <div class="botoes-lado">
+              <button class="botao_aumenta" onclick="aumentarCalorias(1)">+1</button>
+              <button class="botao_aumenta" onclick="aumentarCalorias(10)">+10</button>
+              <button class="botao_aumenta" onclick="aumentarCalorias(50)">+50</button>
+              <button class="botao_aumenta" onclick="aumentarCalorias(100)">+100</button>
+              <button class="botao_aumenta" onclick="aumentarCalorias(500)">+500</button>
+              <button class="botao_aumenta" onclick="aumentarCalorias(1000)">+1000</button>
             </div>
+          </div>
         </div>
+      </div>
 
-        <div class="linha"> 
-            <div class="containers_meio">
-                <div class="container_calorias">
-                    <canvas id="graficoCaloria"></canvas>
+      <div class="containers_meio">
+        <div class="container_hidratacao">
+            <div class="container_grafico">
+                <div class="botoes-lado">
+                  <button class="botao_diminui" onclick="diminuirHidratacao(1)">-1</button>
+                  <button class="botao_diminui" onclick="diminuirHidratacao(10)">-10</button>
+                  <button class="botao_diminui" onclick="diminuirHidratacao(50)">-50</button>
+                  <button class="botao_diminui" onclick="diminuirHidratacao(100)">-100</button>
+                  <button class="botao_diminui" onclick="diminuirHidratacao(500)">-500</button>
+                  <button class="botao_diminui" onclick="diminuirHidratacao(1000)">-1000</button>
                 </div>
-            </div>
-            <div class="containers_meio">
-                <div class="container_hidratacao">
-                    <canvas id="graficoHidratacao"></canvas>
-                </div>
-            </div>
-            <div class="containers_meio"></div>
-        </div>
-
-        <div class="linha"> 
-            <div class="containers_fundo"></div>
-            <div class="containers_fundo"></div>
-        </div>
-    </div>
     
-<script src="..\Design\js\bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="module" src="./principal.js"></script>
+                <canvas id="graficoHidratacao"></canvas>
+    
+                <div class="botoes-lado">
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(1)">+1</button>
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(10)">+10</button>
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(50)">+50</button>
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(100)">+100</button>
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(500)">+500</button>
+                  <button class="botao_aumenta" onclick="aumentarHidratacao(1000)">+1000</button>
+                </div>
+              </div>
+          
+        </div>
+      </div>
+
+      <div class="containers_meio"></div>
+    </div>
+
+    <!-- Linha 3 -->
+    <div class="linha">
+      <div class="containers_fundo"></div>
+      <div class="containers_fundo"></div>
+    </div>
+  </div>
+
+  <!-- Fallback para Chart.js -->
+  <script>
+    window.addEventListener('error', function fallbackChartJS(e) {
+      if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
+        const scriptLocal = document.createElement('script');
+        scriptLocal.src = '../componentes/chartJS/chart.min.js';
+        document.head.appendChild(scriptLocal);
+      }
+    }, true);
+  </script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script principal -->
+  <script type="module" src="./principal.js"></script>
 </body>
 
 </html>

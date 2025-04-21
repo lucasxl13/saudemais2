@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saúde +</title>
     <link rel="stylesheet" href="peso.css">
-    <link rel="stylesheet" href="..\Design\css\bootstrap.min.css">
+    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
   </head>
 
 <body>
@@ -22,7 +22,18 @@
         <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
     </div>
     
-<script src="..\Design\js\bootstrap.bundle.min.js"></script>
+<script>
+    window.addEventListener('error', function fallbackChartJS(e) {
+      if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
+        const scriptLocal = document.createElement('script');
+        scriptLocal.src = '../componentes/chartJS/chart.min.js';
+        document.head.appendChild(scriptLocal);
+      }
+    }, true);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script type="module" src="./peso.js"></script>
 </body>
 
