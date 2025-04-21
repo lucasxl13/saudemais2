@@ -1,7 +1,8 @@
 // chat.js
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
-  : "https://saude-mais-service-api.vercel.app";
+  // : "https://saude-mais-service-api.vercel.app";
+  : "https://apisaudemais.danielhatz.com.br";
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatToggle = document.getElementById('chatToggle');
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage('Bot', 'Erro na resposta do servidor');
         return;
       }
-        
+
       appendMessage('Bot', data.text || 'Erro na resposta');
       } catch (err) {
         console.error('Erro ao conectar com o servidor:', err);
