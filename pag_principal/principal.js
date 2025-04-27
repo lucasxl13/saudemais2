@@ -1,4 +1,4 @@
-// document.body.classList.toggle('dark-mode');  
+document.body.classList.toggle('dark-mode');  
 
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
@@ -9,6 +9,11 @@ import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
 import { calcularIdade } from "../Funcoes/calcularIdade.js";
 import { silhueta } from '../Funcoes/silhueta.js';
 import { atualizarMetricaNoServidor } from '../Funcoes/atualizarMetrica.js';
+import { configurarBotaoIncremento } from '../Funcoes/incrementoGrafico.js';
+import icones from '../Funcoes/icones.js';
+import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
+
+
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -26,13 +31,18 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
 
   document.getElementById("nomeUsuario").textContent = dados_usuario.nome;
 
-  const dataServidor = await obterDataDoServidor(API_BASE_URL);
+  async function inicializarStreak(API_BASE_URL) {
+    const dataServidor = await obterDataDoServidor(API_BASE_URL);
+  
     if (dataServidor) {
-        const idade = calcularIdade(dados_usuario.data_nascimento, dataServidor.toISOString());
-        document.getElementById("idadeUsuario").textContent = idade;
-
-        filtroGraficoPeso(dataServidor);
+      const idade = calcularIdade(dados_usuario.data_nascimento, dataServidor.toISOString());
+      document.getElementById("idadeUsuario").textContent = idade;
+  
+      filtroGraficoPeso(dataServidor);
+  
+      criarBarrasStreak(dataServidor, metricas); 
     }
+  }
 
   if(dados_usuario.objetivo==1){
     document.getElementById("objetivoUsuario").textContent = "Perca de peso";
@@ -47,75 +57,27 @@ silhueta(ultimoRegistro);
 graficoCaloriasCirculo(ultimoRegistro);
 graficoHidratacaoCirculo(ultimoRegistro);
 
-window.diminuirCalorias = async function(valor) {
-  const registro = window.usuarioLogado.historico_metricas.at(-1);
+document.querySelectorAll('.container_calorias .botao_aumenta').forEach(botao => {
+  configurarBotaoIncremento(botao, 'aumentar', 'calorias', atualizarMetricaNoServidor, graficoCaloriasCirculo);
+});
+document.querySelectorAll('.container_calorias .botao_diminui').forEach(botao => {
+  configurarBotaoIncremento(botao, 'diminuir', 'calorias', atualizarMetricaNoServidor, graficoCaloriasCirculo);
+});
 
-  let novoValor = registro.calorias.consumido - valor;
+document.querySelectorAll('.container_hidratacao .botao_aumenta').forEach(botao => {
+  configurarBotaoIncremento(botao, 'aumentar', 'hidratacao', atualizarMetricaNoServidor, graficoHidratacaoCirculo);
+});
+document.querySelectorAll('.container_hidratacao .botao_diminui').forEach(botao => {
+  configurarBotaoIncremento(botao, 'diminuir', 'hidratacao', atualizarMetricaNoServidor, graficoHidratacaoCirculo);
+});
 
-  // Se for menor que 0, zera.
-  if (novoValor < 0) {
-    novoValor = 0;
-  }
+let streak_calorias = 0;
+let streak_hidratacao = 0;
+const elementoSvg = icones.fire(streak_calorias);
+document.getElementById('icone_streak').appendChild(elementoSvg);
+const elementoSvg2 = icones.water(streak_hidratacao);
+document.getElementById('icone_streak_hidro').appendChild(elementoSvg2);
 
-  registro.calorias.consumido = novoValor;
-
-  // Atualiza o backend com o valor certo
-  await atualizarMetricaNoServidor("calorias_consumido", novoValor);
-
-  // Atualiza visualmente
-  graficoCaloriasCirculo(registro);
-}
-
-window.aumentarCalorias = async function(valor) {
-  const registro = window.usuarioLogado.historico_metricas.at(-1);
-  const novoValor = registro.calorias.consumido + valor;
-
-  if (novoValor > 20000) {
-    alert("Limite máximo de 20.000 calorias atingido.");
-    return;
-  }
-
-  registro.calorias.consumido = novoValor;
-
-  await atualizarMetricaNoServidor("calorias_consumido", novoValor);
-  graficoCaloriasCirculo(registro);
-}
-
-
-
-window.diminuirHidratacao = async function(valor) {
-  const registro = window.usuarioLogado.historico_metricas.at(-1);
-
-  let novoValor = registro.hidratacao.consumido - valor;
-
-  // Se for menor que 0, zera.
-  if (novoValor < 0) {
-    novoValor = 0;
-  }
-
-  registro.hidratacao.consumido = novoValor;
-
-  // Atualiza o backend com o valor certo
-  await atualizarMetricaNoServidor("hidratacao_consumido", novoValor);
-
-  // Atualiza visualmente
-  graficoHidratacaoCirculo(registro);
-}
-
-window.aumentarHidratacao = async function(valor) {
-  const registro = window.usuarioLogado.historico_metricas.at(-1);
-  const novoValor = registro.hidratacao.consumido + valor;
-
-  if (novoValor > 20000) {
-    alert("Limite máximo de 20.000 calorias atingido.");
-    return;
-  }
-
-  registro.hidratacao.consumido = novoValor;
-
-  await atualizarMetricaNoServidor("hidratacao_consumido", novoValor);
-  graficoHidratacaoCirculo(registro);
-}
-
+inicializarStreak(API_BASE_URL);
 
 

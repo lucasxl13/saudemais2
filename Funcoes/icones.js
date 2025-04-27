@@ -209,7 +209,96 @@ const icones = {
     
         svg.appendChild(path);
         return svg;
+      },
+
+      fire(streak_calorias = 0) {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "-33 -20 255 295");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icone_streak");
+      
+        const createPath = (d, fill, stroke = null, strokeWidth = 0) => {
+          const path = document.createElementNS(xmlns, "path");
+          path.setAttribute("d", d);
+          path.setAttribute("fill", fill);
+          if (stroke) {
+            path.setAttribute("stroke", stroke);
+            path.setAttribute("stroke-width", strokeWidth);
+          }
+          return path;
+        };
+      
+        svg.appendChild(createPath(
+          `M187.899,164.809 C185.803,214.868 144.574,254.812 94.000,254.812 C42.085,254.812 -0.000,211.312 -0.000,160.812 C-0.000,154.062 -0.121,140.572 10.000,117.812 C16.057,104.191 19.856,95.634 22.000,87.812 C23.178,83.513 25.469,76.683 32.000,87.812 C35.851,94.374 36.000,103.812 36.000,103.812 C36.000,103.812 50.328,92.817 60.000,71.812 C74.179,41.019 62.866,22.612 59.000,9.812 C57.662,5.384 56.822,-2.574 66.000,0.812 C75.352,4.263 100.076,21.570 113.000,39.812 C131.445,65.847 138.000,90.812 138.000,90.812 C138.000,90.812 143.906,83.482 146.000,75.812 C148.365,67.151 148.400,58.573 155.999,67.813 C163.226,76.600 173.959,93.113 180.000,108.812 C190.969,137.321 187.899,164.809 187.899,164.809 Z`,
+          "rgb(255, 98, 0)", "black", 15
+        ));
+        svg.appendChild(createPath(
+          `M94.000,254.812 C58.101,254.812 29.000,225.711 29.000,189.812 C29.000,168.151 37.729,155.000 55.896,137.166 C67.528,125.747 78.415,111.722 83.042,102.172 C83.953,100.292 86.026,90.495 94.019,101.966 C98.212,107.982 104.785,118.681 109.000,127.812 C116.266,143.555 118.000,158.812 118.000,158.812 C118.000,158.812 125.121,154.616 130.000,143.812 C131.573,140.330 134.753,127.148 143.643,140.328 C150.166,150.000 159.127,167.390 159.000,189.812 C159.000,225.711 129.898,254.812 94.000,254.812 Z`,
+          "rgb(255, 98, 0)"
+        ));
+        svg.appendChild(createPath(
+          `M95.000,183.812 C104.250,183.812 104.250,200.941 116.000,223.812 C123.824,239.041 112.121,254.812 95.000,254.812 C77.879,254.812 69.000,240.933 69.000,223.812 C69.000,206.692 85.750,183.812 95.000,183.812 Z`,
+          "rgb(255, 98, 0)"
+        ));
+      
+        // Adiciona o texto no centro
+        const text = document.createElementNS(xmlns, "text");
+        text.setAttribute("x", "92"); // CENTRO X do seu desenho
+        text.setAttribute("y", "180"); // CENTRO Y do seu desenho
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("font-size", "75"); // tamanho do número
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("fill", "white"); // cor do número
+        text.textContent = streak_calorias;
+        svg.appendChild(text);
+      
+        return svg;
+      },
+
+      water(streak_hidratacao = 0) {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "0 0 32 32");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icone_streak");
+      
+        const createPath = (d, fill, stroke = null, strokeWidth = 0) => {
+          const path = document.createElementNS(xmlns, "path");
+          path.setAttribute("d", d);
+          path.setAttribute("fill", fill);
+          if (stroke) {
+            path.setAttribute("stroke", stroke);
+            path.setAttribute("stroke-width", strokeWidth);
+          }
+          return path;
+        };
+      
+        svg.appendChild(createPath(
+          `M25.378 19.75c1.507 6.027-3.162 11.25-9.375 11.25s-10.9-5.149-9.375-11.25c0.937-3.75 5.625-9.375 9.375-18.75 3.75 9.374 8.438 15 9.375 18.75z`,
+          "rgb(0, 164, 255)", "black", 1.5
+        ));
+      
+        // Adiciona o texto no centro
+        const text = document.createElementNS(xmlns, "text");
+        text.setAttribute("x", "16"); // Centro do SVG
+        text.setAttribute("y", "23"); // Centro ajustado para a gota
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("dominant-baseline", "middle");
+        text.setAttribute("font-size", "9"); // tamanho do número
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("fill", "white"); // cor do número
+        text.textContent = streak_hidratacao;
+        svg.appendChild(text);
+      
+        return svg;
       }
+      
+
+      
   };
   
   export default icones;

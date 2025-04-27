@@ -48,14 +48,14 @@ export function graficoCaloriasCirculo(ultimoRegistro) {
           const corTxt = getComputedStyle(document.body).getPropertyValue('--texto').trim();
 
           ctx.save();
-          ctx.font = "bold 40px sans-serif";
+          ctx.font = "bold 30px sans-serif";
           ctx.fillStyle = corTxt;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
 
           ctx.clearRect(chart.width / 4, chart.height / 4, chart.width / 2, chart.height / 2); // limpa o centro
           ctx.fillText(`${porcentagem}%`, chart.width / 2, chart.height / 2 - 10);
-          ctx.font = "14px sans-serif";
+          ctx.font = "12px sans-serif";
           ctx.fillText(`${consumido}/${meta} kcal`, chart.width / 2, chart.height / 2 + 18);
           ctx.restore();
         }

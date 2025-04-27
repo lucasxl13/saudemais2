@@ -100,6 +100,7 @@ function gerarGraficoCaloria(dates, caloriasConsumidas, caloriasMeta) {
           backgroundColor: 'rgb(255, 178, 110)',
           borderColor: 'black',
           borderWidth: 1,
+          barThickness: caloriasConsumidas.length < 7 ? 40 : 'flex' 
         }
       ]
     },

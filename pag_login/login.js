@@ -3,7 +3,9 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
     // : "https://saude-mais-service-api.vercel.app";
     : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
+    // document.body.classList.toggle('dark-mode');  
 
+    
 document.addEventListener("DOMContentLoaded", () => {
   // Verifica se o token está presente no localStorage ou sessionStorage
   const storedDataLocal = localStorage.getItem("jwt");

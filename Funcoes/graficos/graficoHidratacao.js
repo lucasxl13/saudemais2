@@ -102,6 +102,7 @@ function gerarGraficoHidratacao(dates, hidratacaoConsumida, hidratacaoMeta) {
           backgroundColor: 'rgb(2, 159, 207)',
           borderColor: 'black',
           borderWidth: 1,
+          barThickness: hidratacaoConsumida.length < 7 ? 40 : 'flex' 
         }
       ]
     },
