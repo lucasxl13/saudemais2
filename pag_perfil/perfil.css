@@ -1,2 +1,157 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
+
+.container-perfil {
+  margin-top: 5rem;
+  width: 90%;
+  padding: 2rem;
+  background-color: var(--bg_container);
+  color: var(--texto);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.perfil-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-right: 2px solid var(--color1);
+}
+
+.foto-perfil img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color1);
+}
+
+.info-perfil {
+  text-align: center;
+}
+
+.info-perfil p {
+  margin: 0.3rem 0;
+}
+
+.info-perfil strong {
+  color: var(--txtTitulo);
+}
+
+.perfil-cards {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 1rem;
+  min-width: 300px;
+}
+
+.card-perfil {
+  background-color: var(--bg_container_card);
+  border: 2px solid var(--color1);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  font-size: 1.2rem;
+}
+
+/* Responsividade para tablet */
+@media (max-width: 768px) {
+  .container-perfil {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin-left: 2rem;
+    width: 90%;
+  }
+
+  .perfil-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 2px solid var(--color1);
+    width: 100%;
+    gap: 2rem;
+  }
+
+  .foto-perfil img {
+    width: 100px; /* reduz um pouco a imagem em tablets */
+    height: 100px;
+  }
+
+  .perfil-cards {
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 1rem;
+  }
+}
+
+.info-extra {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--bg_container_card);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.info-extra h3 {
+  margin-bottom: 1rem;
+  color: var(--txtTitulo);
+  text-align: center;
+}
+
+.info-extra p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  text-align: center;
+}
+
+
+/* Responsividade para celular pequeno */
+@media (max-width: 500px) {
+  .perfil-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .info-perfil {
+    text-align: center;
+    gap: 2rem;
+    padding: 0rem;
+  }
+
+  .container-perfil{
+    padding: 2rem;
+    margin-top: 5rem;
+    gap: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .foto-perfil img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .perfil-cards {
+    grid-template-columns: 1fr; /* só 1 card por linha */
+    margin-top: 5rem;
+    border-radius: 1rem;
+  }
+
+  .card-perfil {
+    padding: 1rem;
+    margin: 1rem;
+  }
+}

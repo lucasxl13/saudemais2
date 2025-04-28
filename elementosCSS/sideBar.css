@@ -29,6 +29,7 @@
 
 .style_logo {
     font-size: 2.5em;
+    text-decoration: none;
     color: var(--txtTitulo);
     font-family: var(--fonte-logo);
 }
