@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saúde +</title>
     <link rel="stylesheet" href="perfil.css">
+    <link rel="stylesheet" href="../elementosCSS/toast.css">
     <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
   </head>
 
@@ -27,6 +28,11 @@
         <div class="foto-perfil">
           <img id="fotoPerfil" src="../elementosCSS/225-default-avatar.png" alt="Avatar">
         </div>
+        <div class="botoes-avatar">
+          <button id="gerarAvatar">Gerar Novo Avatar</button>
+          <button id="salvarAvatar">Salvar Avatar Atual</button>
+        </div>
+        
         <div class="info-perfil">
           <h2 id="nomeUsuario">Carregando...</h2>
           <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
@@ -53,6 +59,7 @@
     </div>
        
     
+    <div id="toast" class="toast">Avatar salvo com sucesso!</div>
 
 <script type="module" src="./perfil.js"></script>
 </body>

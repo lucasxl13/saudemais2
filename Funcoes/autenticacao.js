@@ -45,6 +45,8 @@ export async function verificarAutenticacao(API_BASE_URL) {
 
       window.usuarioLogado = {
         dados_usuario: data.dados_usuario,
+        streak_caloria: data.streak_caloria,
+        streak_hidratacao: data.streak_hidratacao,
         historico_metricas: data.metricas.reverse()
       };
 
