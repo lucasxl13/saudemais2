@@ -1,2 +1,93 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
+
+
+.card-treino {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+}
+.exercicios-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.exercicio-card {
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #198754;
+  min-width: 130px;
+  max-width: 160px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+/* Cor base do card */
+.exercicio-card {
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--bs-success); /* será sobrescrita pela classe */
+  min-width: 130px;
+  max-width: 160px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Sobrescreve a borda pela classe Bootstrap */
+.border-danger { border-left-color: #dc3545 !important; }
+.border-primary { border-left-color: #0d6efd !important; }
+.border-success { border-left-color: #198754 !important; }
+.border-warning { border-left-color: #ffc107 !important; }
+.border-info { border-left-color: #0dcaf0 !important; }
+.border-secondary { border-left-color: #6c757d !important; }
+.border-dark { border-left-color: #212529 !important; }
+.border-light { border-left-color: #f8f9fa !important; }
+
+.grupo-card.oculto {
+  display: none;
+}
+
+.grupo-card.expandido {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 999;
+  width: 50vw;          /* quase toda a tela */
+  height: 50vh;         /* altura grande */
+  max-width: unset;     /* remove limite anterior */
+  padding: 2rem;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
+  border-radius: 12px;
+}
+.grupo-card.expandido .exercicios-grid {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+
+
+#botaoVoltar {
+  position: fixed;
+  top: 200px; /* aqui você controla o quanto abaixa */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+}
+#fundoOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4); /* fundo escurecido */
+  z-index: 998; /* abaixo do card focado */
+}
+
+
