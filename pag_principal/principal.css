@@ -29,6 +29,24 @@
     text-align: left;
   }
 
+  .foto-perfil {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .foto-perfil img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 2px solid var(--color1);
+  }
+  
+  .info-usuario p {
+    margin: 0;
+  }
+
   .container_peso {
     display: flex;
     justify-content: center;
@@ -116,6 +134,11 @@
     justify-content: space-between; 
     align-items: center;
     height: 100%;
+  }
+
+  .segmento_streak.passado {
+    /* text-decoration: line-through; */
+    opacity: 0.6;
   }
   
 

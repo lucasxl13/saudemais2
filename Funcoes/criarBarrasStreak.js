@@ -30,14 +30,20 @@ function atualizarStreakCalorias(dataServidor, metricas) {
     const dataDia = new Date(dataServidor);
     const diferencaDias = index - diaSemanaHoje;
     dataDia.setDate(dataServidor.getDate() + diferencaDias);
-
+  
+    if (index < diaSemanaHoje) {
+      segmento.classList.add('passado');
+    } else {
+      segmento.classList.remove('passado');
+    }
+  
     const registro = metricas.find(item => datasIguais(new Date(item.registrado_em), dataDia));
-
+  
     if (!registro || !registro.calorias) {
       segmento.classList.remove('preenchido');
       return;
     }
-
+  
     const { consumido, meta } = registro.calorias;
     if (consumido >= (meta - 100) && consumido <= (meta + 100)) {
       segmento.classList.add('preenchido');
@@ -55,14 +61,20 @@ function atualizarStreakHidratacao(dataServidor, metricas) {
     const dataDia = new Date(dataServidor);
     const diferencaDias = index - diaSemanaHoje;
     dataDia.setDate(dataServidor.getDate() + diferencaDias);
-
+  
+    if (index < diaSemanaHoje) {
+      segmento.classList.add('passado');
+    } else {
+      segmento.classList.remove('passado');
+    }
+  
     const registro = metricas.find(item => datasIguais(new Date(item.registrado_em), dataDia));
-
+  
     if (!registro || !registro.hidratacao) {
       segmento.classList.remove('preenchido');
       return;
     }
-
+  
     const { consumido, meta } = registro.hidratacao;
     if (consumido >= (meta - 100) && consumido <= (meta + 100)) {
       segmento.classList.add('preenchido');

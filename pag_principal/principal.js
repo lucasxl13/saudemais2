@@ -13,8 +13,6 @@ import { configurarBotaoIncremento } from '../Funcoes/incrementoGrafico.js';
 import icones from '../Funcoes/icones.js';
 import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
 
-
-
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
   // : "https://saude-mais-service-api.vercel.app";
@@ -28,6 +26,9 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
 
   console.log(dados_usuario);
   console.log(metricas);
+
+  let avatarURL = dados_usuario.avatar;
+  document.getElementById('fotoPerfil').src = avatarURL;
 
   document.getElementById("nomeUsuario").textContent = dados_usuario.nome;
 
@@ -71,13 +72,10 @@ document.querySelectorAll('.container_hidratacao .botao_diminui').forEach(botao 
   configurarBotaoIncremento(botao, 'diminuir', 'hidratacao', atualizarMetricaNoServidor, graficoHidratacaoCirculo);
 });
 
-let streak_calorias = 0;
-let streak_hidratacao = 0;
-const elementoSvg = icones.fire(streak_calorias);
+const elementoSvg = icones.fire(ultimoRegistro.streak_caloria);
 document.getElementById('icone_streak').appendChild(elementoSvg);
-const elementoSvg2 = icones.water(streak_hidratacao);
+const elementoSvg2 = icones.water(ultimoRegistro.streak_hidratacao);
 document.getElementById('icone_streak_hidro').appendChild(elementoSvg2);
 
 inicializarStreak(API_BASE_URL);
-
 
