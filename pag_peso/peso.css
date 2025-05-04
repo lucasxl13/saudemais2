@@ -40,3 +40,77 @@
   .containers_topo:hover,.containers_fundo:hover {
     transform: scale(1.05);
   }
+
+  .container_peso {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+
+  #graficoPeso {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+.container_medida {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* ⬅️ centraliza verticalmente */
+  font-size: 0.7rem;
+  font-family: var(--fonte-logo);
+  font-weight: bold;
+  gap: 0.5rem;
+}
+  
+  .area_silhueta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .coluna_esquerda,
+  .coluna_direita {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  #svg_medidas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+  
+  .silhueta {
+    width: 6rem;
+    height: auto;
+  }
+  
+  .s0 {
+    fill: var(--bg_silhueta) !important;
+  }
+  
+  .texto_meio {
+    margin: 0;
+    color: var(--texto);
+    text-align: center;
+  }
+  
+  .texto_lateral {
+    color: var(--texto);
+    text-align: left;
+  }
+  
+  .hover_medidas {
+      fill: var(--color6) !important;
+      stroke: #00f285 !important;
+      stroke-width: 0.2rem !important;
+      stroke-linejoin: round !important;
+  }
+
+  .texto_lateral:hover,.texto_meio:hover{
+     color:var(--color6) !important;
+  }
