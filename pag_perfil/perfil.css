@@ -91,8 +91,8 @@
     flex-direction: column;
     display: block;
     padding: 1.5rem;
-    width: 100%;
     margin: 0 auto;
+    width: calc(100% - 60px);
   }
 
   .perfil-header {
@@ -146,26 +146,27 @@
 
   .container-perfil {
     flex-direction: column;
-    display: block; 
     padding: 1rem;
     gap: 1rem;
-    margin: 0 auto;
-    margin: 5rem;
-  }
+    margin-left: 60px;
+    margin-top: 5rem;
+    width: calc(100% - 60px);  }
 
   .foto-perfil img {
     width: 80px;
     height: 80px;
   }
 
-  .perfil-cards {
-    grid-template-columns: 1fr; /* só 1 card por linha */
-    margin-top: 5rem;
-    border-radius: 1rem;
+  .perfil-cards{
+    padding: 0.1rem;
   }
 
-  .card-perfil {
-    padding: 1rem;
-    margin: 1rem;
+  .card-perfil{
+    font-size: xx-small;
+    margin-top: 1rem;
+    padding: 0;
+    display: block;
+    justify-content: center;
   }
+
 }
