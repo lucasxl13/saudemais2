@@ -295,10 +295,90 @@ const icones = {
         svg.appendChild(text);
       
         return svg;
-      }
-      
+      },
 
+      down(fill="currentColor") {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icon_sideBar");
       
+        const path = document.createElementNS(xmlns, "path");
+        path.setAttribute("fill-rule", "evenodd");
+        path.setAttribute("clip-rule", "evenodd");
+        path.setAttribute("d", "M4.29289 8.29289C4.68342 7.90237 5.31658 7.90237 5.70711 8.29289L12 14.5858L18.2929 8.29289C18.6834 7.90237 19.3166 7.90237 19.7071 8.29289C20.0976 8.68342 20.0976 9.31658 19.7071 9.70711L12.7071 16.7071C12.3166 17.0976 11.6834 17.0976 11.2929 16.7071L4.29289 9.70711C3.90237 9.31658 3.90237 8.68342 4.29289 8.29289Z");
+        path.setAttribute("fill", fill);
+      
+        svg.appendChild(path);
+        return svg;
+      },
+
+      up(fill="currentColor") {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icon_sideBar");
+      
+        const path = document.createElementNS(xmlns, "path");
+        path.setAttribute("fill-rule", "evenodd");
+        path.setAttribute("clip-rule", "evenodd");
+        path.setAttribute("d", "M12 7C12.2652 7 12.5196 7.10536 12.7071 7.29289L19.7071 14.2929C20.0976 14.6834 20.0976 15.3166 19.7071 15.7071C19.3166 16.0976 18.6834 16.0976 18.2929 15.7071L12 9.41421L5.70711 15.7071C5.31658 16.0976 4.68342 16.0976 4.29289 15.7071C3.90237 15.3166 3.90237 14.6834 4.29289 14.2929L11.2929 7.29289C11.4804 7.10536 11.7348 7 12 7Z");
+        path.setAttribute("fill", fill);
+      
+        svg.appendChild(path);
+        return svg;
+      },
+      
+      cancela(fill="currentColor") {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "0 0 512 512");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icon_sideBar");
+      
+        const g1 = document.createElementNS(xmlns, "g");
+        g1.setAttribute("fill", "none");
+        g1.setAttribute("fill-rule", "evenodd");
+        g1.setAttribute("stroke", "none");
+        g1.setAttribute("stroke-width", "1");
+      
+        const g2 = document.createElementNS(xmlns, "g");
+        g2.setAttribute("fill", fill);
+        g2.setAttribute("transform", "translate(91.520000, 91.520000)");
+      
+        const polygon = document.createElementNS(xmlns, "polygon");
+        polygon.setAttribute("points", "328.96 30.2933333 298.666667 0 164.48 134.4 30.2933333 0 0 30.2933333 134.4 164.48 0 298.666667 30.2933333 328.96 164.48 194.56 298.666667 328.96 328.96 298.666667 194.56 164.48");
+      
+        g2.appendChild(polygon);
+        g1.appendChild(g2);
+        svg.appendChild(g1);
+        return svg;
+      },
+
+      confirma(fill="currentColor") {
+        const xmlns = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(xmlns, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("width", "24");
+        svg.setAttribute("height", "24");
+        svg.classList.add("icon_sideBar");
+      
+        const path = document.createElementNS(xmlns, "path");
+        path.setAttribute("fill-rule", "evenodd");
+        path.setAttribute("clip-rule", "evenodd");
+        path.setAttribute("d", "M20.6097 5.20743C21.0475 5.54416 21.1294 6.17201 20.7926 6.60976L10.7926 19.6098C10.6172 19.8378 10.352 19.9793 10.0648 19.9979C9.77765 20.0166 9.49637 19.9106 9.29289 19.7072L4.29289 14.7072C3.90237 14.3166 3.90237 13.6835 4.29289 13.2929C4.68342 12.9024 5.31658 12.9024 5.70711 13.2929L9.90178 17.4876L19.2074 5.39034C19.5441 4.95258 20.172 4.87069 20.6097 5.20743Z");
+        path.setAttribute("fill", fill);
+      
+        svg.appendChild(path);
+        return svg;
+      }
+
   };
   
   export default icones;
+  
