@@ -2,53 +2,62 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saúde +</title>
-    <link rel="stylesheet" href="peso.css">
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-  </head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saúde +</title>
+  <link rel="stylesheet" href="peso.css">
+  <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
+</head>
 
 <body>
 
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+  <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
+    <div class="container-fluid">
+      <button class="btn_sidebar" id="toggleSidebar">Menu</button>
+      <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+    </div>
+  </header>
+
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
+
+  <div class="container_principal">
+
+    <div class="linha">
+      <div class="containers_topo" id="attPeso">
+        <h1><span id="pesos"></span></h1>
+        <h1><span id="variacaoPesos"></span></h1>
+        <h1><span id="StatusPesos"></span></h1>
+      </div>
+
+      <div class="containers_topo">
+        <div class="container_atualizacao"></div>
+      </div>
+
+      <div class="containers_topo">
+        <h1>METRICA ATUAL(MAIOR METRICA)</h1>
+      </div>
+    </div>
+
+    <div class="linha">
+      <div class="containers_fundo">
+        <div class="grafico-wrapper">
+          <canvas id="graficoPeso"></canvas>
+          <div class="filtros-periodo">
+            <p class="periodo" data-periodo="semana">SEMANA</p>
+            <p class="periodo" data-periodo="mes">MÊS</p>
+            <p class="periodo" data-periodo="ano">ANO</p>
+            <p class="periodo" data-periodo="inicio">INÍCIO</p>
+          </div>
+          <input type="range" id="scrollRangePeso" min="0" value="0" step="1" class="scroll-range">
         </div>
-    </header>
-
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+      </div>
     </div>
 
-    <div class="container_principal">
+  </div>
 
-      <div class="linha">
-          <div class="containers_topo" id="attPeso">
-            <h1><span id="pesos"></span></h1>
-            <h1><span id="variacaoPesos"></span></h1>
-            <h1><span id="StatusPesos"></span></h1>
-          </div>
-
-          <div class="containers_topo">
-            <div class="container_atualizacao"></div>
-          </div>
-
-          <div class="containers_topo">
-            <h1>METRICA ATUAL(MAIOR METRICA)</h1>
-          </div>
-      </div>
-
-      <div class="linha">
-          <div class="containers_fundo">
-            <canvas id="graficoPeso"></canvas>
-          </div>
-      </div>
-
-    </div>
-    
-<script>
+  <script>
     window.addEventListener('error', function fallbackChartJS(e) {
       if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
         const scriptLocal = document.createElement('script');
@@ -56,11 +65,11 @@
         document.head.appendChild(scriptLocal);
       }
     }, true);
-</script>
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script type="module" src="./peso.js"></script>
+  <script type="module" src="./peso.js"></script>
 </body>
 
 </html>

@@ -62,5 +62,61 @@ export function preencherMedidasComNowMax(metricas, seletor = '.medidas p') {
       el.setAttribute("data-nome", chave);
       el.setAttribute("data-valor", atual);
     }
+  }); 
+}
+
+import icones from './icones.js';
+
+export function atualizarVariacoes(metricasPeriodo) {
+  const primeiro = metricasPeriodo[0];
+  const ultimo = metricasPeriodo[metricasPeriodo.length - 1];
+
+  if (!primeiro || !ultimo) return;
+
+  const campos = {
+    "altura": "porcentagemAltura",
+    "cintura": "porcentagemCintura",
+    "biceps_direito": "porcentagemBicepsDireito",
+    "biceps_esquerdo": "porcentagemBicepsEsquerdo",
+    "antebraco_direito": "porcentagemAntebracoDireito",
+    "antebraco_esquerdo": "porcentagemAntebracoEsquerdo",
+    "coxa_direita": "porcentagemCoxaDireita",
+    "coxa_esquerda": "porcentagemCoxaEsquerda",
+    "panturrilha_direita": "porcentagemPanturrilhaDireita",
+    "panturrilha_esquerda": "porcentagemPanturrilhaEsquerda"
+  };
+
+  Object.entries(campos).forEach(([campo, spanId]) => {
+    const inicial = campo === "altura" ? primeiro.altura : primeiro.medidas_corporais[campo];
+    const final = campo === "altura" ? ultimo.altura : ultimo.medidas_corporais[campo];
+
+    if (inicial != null && final != null && inicial !== 0) {
+      const variacao = ((final - inicial) / inicial) * 100;
+
+      const corClasse = variacao > 0 ? "variacao-positiva" :
+                        variacao < 0 ? "variacao-negativa" : "variacao-neutra";
+
+      let corIcone = "#f9a825";
+      if (variacao > 0) corIcone = "#00c853";
+      else if (variacao < 0) corIcone = "#d50000";
+
+      const icone = variacao < 0
+        ? icones.down(corIcone)
+        : variacao > 0
+          ? icones.up(corIcone)
+          : icones.equal(corIcone);
+
+      icone.style.marginRight = "0.4rem";
+
+      const span = document.getElementById(spanId);
+      if (span) {
+        span.textContent = "";
+        span.appendChild(icone);
+        span.append(`${variacao.toFixed(1)}%`);
+
+        span.classList.remove("variacao-positiva", "variacao-negativa", "variacao-neutra");
+        span.classList.add(corClasse);
+      }
+    }
   });
 }

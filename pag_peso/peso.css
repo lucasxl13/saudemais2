@@ -1,120 +1,81 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
+/* CONTAINER PRINCIPAL E ESTRUTURA DE LINHAS */
 .container_principal {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top:5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 5rem;
 }
 
 .linha {
-    display:flex;
-    gap:2rem;
-}
-
-.containers_topo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 30rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor:pointer;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .containers_fundo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 100%;
-    max-width: 94rem;
-    height:auto;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    display: flex;
-    justify-content: center;
-  }
-
-  .containers_topo:hover,.containers_fundo:hover {
-    transform: scale(1.02);
-  }
-
-  .container_peso {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-  }
-
-  #graficoPeso {
-    width: 70% !important;
-    max-width: 100%;
-    height: auto !important;
-    margin: 0 auto;
-    display: block;
-  }
-
-.container_medida {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* ⬅️ centraliza verticalmente */
-  font-size: 0.7rem;
-  font-family: var(--fonte-logo);
-  font-weight: bold;
-  gap: 0.5rem;
+  gap: 2rem;
 }
-  
-  .area_silhueta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-  }
-  
-  .coluna_esquerda,
-  .coluna_direita {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  
-  #svg_medidas {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-  }
-  
-  .silhueta {
-    width: 6rem;
-    height: auto;
-  }
-  
-  .s0 {
-    fill: var(--bg_silhueta) !important;
-  }
-  
-  .texto_meio {
-    margin: 0;
-    color: var(--texto);
-    text-align: center;
-  }
-  
-  .texto_lateral {
-    color: var(--texto);
-    text-align: left;
-  }
-  
-  .hover_medidas {
-      fill: var(--color6) !important;
-      stroke: #00f285 !important;
-      stroke-width: 0.2rem !important;
-      stroke-linejoin: round !important;
-  }
 
-  .texto_lateral:hover,.texto_meio:hover{
-     color:var(--color6) !important;
-  }
+/* ELEMENTOS DO TOPO */
+.containers_topo {
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 30rem;
+  height: 16rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* GRÁFICO DE PESO */
+.containers_fundo {
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 100%;
+  max-width: 94rem;
+  height: auto;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+#graficoPeso {
+  width: 100% !important;
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+  height: auto !important; /* evita conflitos */
+}
+
+.filtros-periodo {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.periodo {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.periodo:hover {
+  color: rgb(0, 255, 115);
+}
+
+.periodo.ativo {
+  color: rgb(0, 255, 115);
+}
+
+.scroll-range {
+  width: 90%;
+  visibility: hidden;
+}
