@@ -2,112 +2,185 @@
 @import url('../elementosCSS/sideBar.css');
 
 .container_principal {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .coluna {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .container_esquerda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; 
-    margin-top: 4rem;
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 46rem;
-    height: 100%;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 46rem;
+  height: 100%;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
 .containers_direita {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 46rem;
-    height: 32rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 46rem;
+  height: 32rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
 .containers_direita:first-of-type {
-    margin-top: 4rem;
+  margin-top: 4rem;
+    height: 18.9rem;
 }
 
 .area_silhueta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-  }
-  
-  .coluna_esquerda,
-  .coluna_direita {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-  
-  #svg_medidas {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-  }
-  
-  .silhueta {
-    width: 15rem;
-    height: auto;
-  }
-  
-  .s0 {
-    fill: var(--bg_silhueta) !important;
-  }
-  
-  .texto_meio {
-    margin: 0;
-    color: var(--texto);
-    text-align: center;
-  }
-  
-  .texto_lateral {
-    color: var(--texto);
-    text-align: left;
-  }
-  
-  .hover_medidas {
-      fill: var(--color6) !important;
-      stroke: #00f285 !important;
-      stroke-width: 0.01rem !important;
-      stroke-linejoin: round !important;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
 
-  .texto_lateral:hover,.texto_meio:hover{
-     color:var(--color6) !important;
-  }
+.coluna_esquerda,
+.coluna_direita {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
 
-  .seta {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: var(--texto); /* cor inicial */
-    cursor: pointer;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .seta:hover {
-    color: #00f285; /* aplica no fill também */
-  }
+#svg_medidas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.silhueta {
+  width: 15rem;
+  height: auto;
+}
+
+.s0 {
+  fill: var(--bg_silhueta) !important;
+}
+
+.texto_meio {
+  margin: 0;
+  color: var(--texto);
+  text-align: center;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+}
+
+.hover_medidas {
+  fill: var(--color6) !important;
+  stroke: #00f285 !important;
+  stroke-width: 0.01rem !important;
+  stroke-linejoin: round !important;
+}
+
+.texto_hover {
+  color: var(--color6) !important;
+}
+
+.seta {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--texto);
+  /* cor inicial */
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.seta:hover {
+  color: #00f285;
+  /* aplica no fill também */
+}
+
+.medidas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 2rem 0.8rem;
+  font-size: 0.8rem;
+  text-align: left;
+  height: 100%; /* importante pra distribuir espaço vertical */
+  gap: 1rem;
+}
+
+.medidas p:nth-child(1),
+.medidas p:nth-child(5) {
+  align-self: start;
+}
+
+.medidas p:nth-child(2),
+.medidas p:nth-child(3),
+.medidas p:nth-child(6),
+.medidas p:nth-child(7) {
+  align-self: center;
+}
+
+.medidas p:nth-child(4),
+.medidas p:nth-child(8) {
+  align-self: end;
+}
+
+.periodo {
+  display: inline-block;
+  border: none;
+  padding: 1rem;
+}
+
+.periodo:hover {
+  color: rgb(157, 255, 0);
+}
+
+.periodo.ativo {
+  color: rgb(157, 255, 0);
+}
+
+.espacamento-lateral .texto_lateral {
+  padding: 3rem
+}
+
+.scroll-range {
+  width: 100%;
+  height: 20px; /* garante que ocupe espaço fixo */
+  margin-top: 10px;
+  visibility: hidden; /* inicia invisível mas ocupando espaço */
+}
+.scroll-range.visivel {
+  visibility: visible;
+}
+
+.variacao-positiva {
+  color: #00ff6a; /* verde */
+  font-weight: bold;
+}
+
+.variacao-negativa {
+  color: #ff0000; /* vermelho */
+  font-weight: bold;
+}
+
+.variacao-neutra {
+  color: #fffb00; /* amarelo */
+  font-weight: bold;
+}

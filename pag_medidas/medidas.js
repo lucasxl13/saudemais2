@@ -3,8 +3,11 @@ document.body.classList.toggle('dark-mode');
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { silhueta } from '../Funcoes/silhueta.js';
+import { exibirControleDeDigitos } from '../Funcoes/atualizarMedidas.js';
+import { preencherMedidasComNowMax } from '../Funcoes/nowMaxMedidas.js';
+import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
 import icones from '../Funcoes/icones.js';
-import { atualizarMetricaNoServidor } from '../Funcoes/atualizarMetrica.js';
+
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -13,29 +16,47 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
 await verificarAutenticacao(API_BASE_URL);
 
 const { dados_usuario } = window.usuarioLogado;
+console.log(dados_usuario);
+
 const metricas = window.usuarioLogado?.historico_metricas;
 const ultimoRegistro = metricas[metricas.length - 1];
-
-console.log(dados_usuario);
 console.log(metricas);
 
 gerarSidebar();
+document.getElementById("silhueta_container").classList.add("espacamento-lateral");
 silhueta(ultimoRegistro);
-
-
-// === LÓGICA DE CLIQUE E AJUSTE DE MEDIDA ===
+preencherMedidasComNowMax(metricas);
 
 const partes = {
   hover_biceps_direito: "BÍCEPS DIREITO",
+  p_biceps_direito: "BÍCEPS DIREITO",
+
   hover_biceps_esquerdo: "BÍCEPS ESQUERDO",
+  p_biceps_esquerdo: "BÍCEPS ESQUERDO",
+
   hover_antebraco_direito: "ANTEBRAÇO DIREITO",
+  p_antebraco_direito: "ANTEBRAÇO DIREITO",
+
   hover_antebraco_esquerdo: "ANTEBRAÇO ESQUERDO",
+  p_antebraco_esquerdo: "ANTEBRAÇO ESQUERDO",
+
   hover_coxa_direita: "COXA DIREITA",
+  p_coxa_direita: "COXA DIREITA",
+
   hover_coxa_esquerda: "COXA ESQUERDA",
+  p_coxa_esquerda: "COXA ESQUERDA",
+
   hover_panturrilha_direita: "PANTURRILHA DIREITA",
+  p_panturrilha_direita: "PANTURRILHA DIREITA",
+
   hover_panturrilha_esquerda: "PANTURRILHA ESQUERDA",
+  p_panturrilha_esquerda: "PANTURRILHA ESQUERDA",
+
   hover_cintura: "CINTURA",
-  hover_altura: "ALTURA"
+  p_cintura: "CINTURA",
+
+  hover_altura: "ALTURA",
+  p_altura: "ALTURA"
 };
 
 setTimeout(() => {
@@ -44,155 +65,249 @@ setTimeout(() => {
     if (!el) return;
 
     el.addEventListener("click", () => {
-      const nome = partes[id];
+      let nome = partes[id];
       let valor;
 
-      if (id === "hover_altura") {
-        valor = ultimoRegistro.altura;
-      } else if (id === "hover_cintura") {
-        valor = ultimoRegistro.medidas_corporais.cintura;
+      // Pega direto do atributo se for um <p>
+      if (id.startsWith("p_")) {
+        valor = parseInt(el.getAttribute("data-valor"));
       } else {
-        const chave = id.replace("hover_", "");
-        valor = ultimoRegistro.medidas_corporais[chave];
+        // continua como já estava
+        if (id === "hover_altura") {
+          valor = ultimoRegistro.altura;
+        } else if (id === "hover_cintura") {
+          valor = ultimoRegistro.medidas_corporais.cintura;
+        } else {
+          const chave = id.replace("hover_", "");
+          valor = ultimoRegistro.medidas_corporais[chave];
+        }
       }
-
-      exibirControleDeDigitos(parseInt(valor), nome);
+      exibirControleDeDigitos(valor, nome);
     });
   });
-}, 500); // aguarda carregamento da silhueta
+}, 500);
 
-function exibirControleDeDigitos(valorInicial, nomeCampo) {
-  const container = document.getElementById("info_medida");
-  if (!container) return;
+let chartGlobal;
 
-  const mapaMaximos = {
-    "ALTURA": 250,
-    "CINTURA": 100,
-    "BÍCEPS DIREITO": 100,
-    "BÍCEPS ESQUERDO": 100,
-    "ANTEBRAÇO DIREITO": 100,
-    "ANTEBRAÇO ESQUERDO": 100,
-    "COXA DIREITA": 100,
-    "COXA ESQUERDA": 100,
-    "PANTURRILHA DIREITA": 100,
-    "PANTURRILHA ESQUERDA": 100
+function gerarGraficoDeMedidas(metricasFiltradas) {
+  const ctx = document.getElementById("graficosMedidas").getContext("2d");
+
+  const labels = metricasFiltradas.map(m => {
+    const data = new Date(m.registrado_em);
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = String(data.getFullYear()).slice(-2);
+    return `${dia}/${mes}/${ano}`;
+  });
+
+  const partesAgrupadas = {
+    "BÍCEPS": ["biceps_direito", "biceps_esquerdo"],
+    "ANTEBRAÇO": ["antebraco_direito", "antebraco_esquerdo"],
+    "COXA": ["coxa_direita", "coxa_esquerda"],
+    "PANTURRILHA": ["panturrilha_direita", "panturrilha_esquerda"],
+    "CINTURA": ["cintura"],
+    "ALTURA": ["altura"],
   };
 
-  const mapaCampos = {
-    "BÍCEPS DIREITO": "biceps_direito",
-    "BÍCEPS ESQUERDO": "biceps_esquerdo",
-    "ANTEBRAÇO DIREITO": "antebraco_direito",
-    "ANTEBRAÇO ESQUERDO": "antebraco_esquerdo",
-    "COXA DIREITA": "coxa_direita",
-    "COXA ESQUERDA": "coxa_esquerda",
-    "PANTURRILHA DIREITA": "panturrilha_direita",
-    "PANTURRILHA ESQUERDA": "panturrilha_esquerda",
-    "CINTURA": "cintura",
-    "ALTURA": "altura"
-  };
+  const cores = [
+    'rgb(255, 0, 0)',      // BÍCEPS
+    'rgb(255, 255, 255)',  // ANTEBRAÇO
+    'rgb(255, 251, 0)',    // COXA
+    'rgb(0, 187, 255)',    // PANTURRILHA
+    'rgb(255, 0, 136)',    // CINTURA
+    'rgb(0, 255, 102)'     // ALTURA
+  ];
 
-  const valorMax = mapaMaximos[nomeCampo] || 250;
-  let valor = valorInicial.toString().padStart(3, '0').split("").map(Number);
+  const datasets = Object.entries(partesAgrupadas).map(([label, campos], i) => {
+    const data = metricasFiltradas.map(m => {
+      const soma = campos.reduce((acc, campo) => {
+        if (campo === "altura") return acc + (m.altura || 0);
+        return acc + (m.medidas_corporais[campo] || 0);
+      }, 0);
+      const media = soma / campos.length;
+      return parseFloat(media.toFixed(2));
+    });
 
-  const render = () => {
-    const valorAtual = parseInt(valor.join(""));
+    return {
+      label,
+      data,
+      borderColor: cores[i % cores.length],
+      fill: false,
+      tension: 0.3
+    };
+  });
 
-    container.innerHTML = `
-      <h3>${nomeCampo}</h3>
-      <div id="ajuste_digitos" style="display: flex; gap: 1rem; font-size: 2rem; justify-content: center; align-items: center; margin-top: 1rem;">
-        ${valor.map((digito, idx) => {
-          const copia = [...valor];
+  if (chartGlobal) chartGlobal.destroy();
 
-          const podeSubir = (() => {
-            const atual = parseInt(valor.join(""));
-            if (atual >= valorMax) return false;
+  chartGlobal = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+          onClick: (e, legendItem, legend) => {
+            const ci = legend.chart;
+            const index = legendItem.datasetIndex;
+            const isOnlyVisible = ci.data.datasets.every((d, i) =>
+              i === index ? ci.isDatasetVisible(i) : !ci.isDatasetVisible(i)
+            );
 
-            if (idx === 0) {
-              if (valorMax === 100) return atual < 100;
-              if (valorMax === 250) return atual < 250;
-              return true;
+            if (isOnlyVisible) {
+              ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, true));
+            } else {
+              ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, i === index));
             }
 
-            copia[idx] = (copia[idx] + 1) % 10;
-            return parseInt(copia.join("")) <= valorMax;
-          })();
-
-          const podeDescer = (() => {
-            if (valorAtual === 0) return false;
-            if (idx === 0) return valor[0] > 0;
-            return true;
-          })();
-
-          return `
-            <div class="digito" data-idx="${idx}" style="display: flex; flex-direction: column; align-items: center;">
-              <button class="seta seta-up" data-idx="${idx}" data-op="up" ${!podeSubir ? 'style="visibility:hidden"' : ''}></button>
-              <div><strong>${digito}</strong></div>
-              <button class="seta seta-down" data-idx="${idx}" data-op="down" ${!podeDescer ? 'style="visibility:hidden"' : ''}></button>
-            </div>
-          `;
-        }).join("")}
-      </div>
-      <p style="margin-top: 1rem;">Valor atual: <strong id="valor_atual">${valor.join("")} cm</strong></p>
-      <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 2rem;">
-        <button id="btn_confirmar" class="seta"></button>
-        <button id="btn_cancelar" class="seta"></button>
-      </div>
-    `;
-
-    // Insere os ícones
-    document.querySelectorAll(".seta-up").forEach(btn => btn.appendChild(icones.up()));
-    document.querySelectorAll(".seta-down").forEach(btn => btn.appendChild(icones.down()));
-    document.getElementById("btn_confirmar").appendChild(icones.confirma());
-    document.getElementById("btn_cancelar").appendChild(icones.cancela());
-
-    // Evento do botão CANCELAR
-    container.addEventListener("click", (e) => {
-      const alvo = e.target.closest("#btn_cancelar");
-      if (alvo) {
-        container.innerHTML = ""; // ou silhueta(ultimoRegistro);
-      }
-    });
-
-    // Evento do botão CONFIRMAR
-    const btnConfirmar = document.getElementById("btn_confirmar");
-    btnConfirmar.addEventListener("click", async () => {
-      const valorFinal = parseInt(valor.join(""));
-      const campoBanco = mapaCampos[nomeCampo];
-
-      try {
-        if (nomeCampo === "ALTURA") {
-          await atualizarMetricaNoServidor("altura", valorFinal);
-        } else {
-          await atualizarMetricaNoServidor("medidas_corporais", { [campoBanco]: valorFinal });
+            ci.update();
+          }
+        },
+        title: {
+          display: true,
+          text: 'Histórico de Medidas Corporais (médias)',
         }
-
-        location.reload(); // Atualiza a página após salvar
-      } catch (erro) {
-        console.error("Erro ao salvar a métrica:", erro);
-        alert("Erro ao salvar a métrica. Tente novamente.");
+      },
+      scales: {
+        y: { beginAtZero: true }
       }
-    });
+    }
+  });
+}
 
-    // Eventos dos botões de seta
-    container.querySelectorAll("button.seta").forEach(btn => {
-      btn.onclick = () => {
-        const i = parseInt(btn.dataset.idx);
-        const operacao = btn.dataset.op;
-        let numeroAtual = parseInt(valor.join(""));
-      
-        if (operacao === "up") {
-          const incremento = Math.pow(10, 2 - i);
-          numeroAtual = Math.min(numeroAtual + incremento, valorMax);
-        } else {
-          const decremento = Math.pow(10, 2 - i);
-          numeroAtual = Math.max(numeroAtual - decremento, 0);
-        }
-      
-        valor = numeroAtual.toString().padStart(3, '0').split("").map(Number);
-        render();
-      };
-    });
+
+function atualizarVariacoes(metricasPeriodo) {
+  const primeiro = metricasPeriodo[0];
+  const ultimo = metricasPeriodo[metricasPeriodo.length - 1];
+
+  if (!primeiro || !ultimo) return;
+
+  const campos = {
+    "altura": "porcentagemAltura",
+    "cintura": "porcentagemCintura",
+    "biceps_direito": "porcentagemBicepsDireito",
+    "biceps_esquerdo": "porcentagemBicepsEsquerdo",
+    "antebraco_direito": "porcentagemAntebracoDireito",
+    "antebraco_esquerdo": "porcentagemAntebracoEsquerdo",
+    "coxa_direita": "porcentagemCoxaDireita",
+    "coxa_esquerda": "porcentagemCoxaEsquerda",
+    "panturrilha_direita": "porcentagemPanturrilhaDireita",
+    "panturrilha_esquerda": "porcentagemPanturrilhaEsquerda"
   };
 
-  render();
+  Object.entries(campos).forEach(([campo, spanId]) => {
+    const inicial = campo === "altura" ? primeiro.altura : primeiro.medidas_corporais[campo];
+    const final = campo === "altura" ? ultimo.altura : ultimo.medidas_corporais[campo];
+
+    if (inicial != null && final != null && inicial !== 0) {
+      const variacao = ((final - inicial) / inicial) * 100;
+
+      // Define cor da classe e cor do ícone
+      const corClasse = variacao > 0 ? "variacao-positiva" :
+                        variacao < 0 ? "variacao-negativa" : "variacao-neutra";
+
+      let corIcone = "#f9a825"; // amarelo padrão
+      if (variacao > 0) corIcone = "#00c853"; // verde
+      else if (variacao < 0) corIcone = "#d50000"; // vermelho
+
+      // Escolhe o ícone certo
+      const icone = variacao < 0
+        ? icones.down(corIcone)
+        : variacao > 0
+          ? icones.up(corIcone)
+          : icones.equal(corIcone);
+
+      icone.style.marginRight = "0.4rem";
+
+      const span = document.getElementById(spanId);
+      if (span) {
+        span.textContent = ""; // limpa
+        span.appendChild(icone);
+        span.append(`${variacao.toFixed(1)}%`);
+
+        // Aplica classe de cor
+        span.classList.remove("variacao-positiva", "variacao-negativa", "variacao-neutra");
+        span.classList.add(corClasse);
+      }
+    }
+  });
 }
+
+function configurarFiltrosDePeriodo(dataServidor, metricas) {
+  const botoes = document.querySelectorAll('.periodo');
+  const scrollRange = document.getElementById('scrollRange');
+
+  let metricasFiltradas = [...metricas];
+  let periodoSelecionado = 'semana';
+  let janelaInicio = 0;
+
+  function atualizarGraficoComScroll() {
+    const janela = metricasFiltradas.slice(janelaInicio, janelaInicio + 7);
+    gerarGraficoDeMedidas(janela);
+    atualizarVariacoes(metricasFiltradas);
+  }
+
+  botoes.forEach(botao => {
+    botao.addEventListener('click', () => {
+      periodoSelecionado = botao.id;
+      let dataLimite;
+
+      switch (periodoSelecionado) {
+        case 'semana':
+          dataLimite = new Date(dataServidor);
+          dataLimite.setDate(dataServidor.getDate() - 7);
+          scrollRange.classList.remove('visivel');
+          break;
+        case 'mes':
+          dataLimite = new Date(dataServidor);
+          dataLimite.setMonth(dataServidor.getMonth() - 1);
+          scrollRange.classList.add('visivel');
+          break;
+        case 'anos':
+          dataLimite = new Date(dataServidor);
+          dataLimite.setFullYear(dataServidor.getFullYear() - 1);
+          scrollRange.classList.add('visivel');
+          break;
+        case 'inicio':
+        default:
+          dataLimite = null;
+          scrollRange.classList.add('visivel');
+          break;
+      }
+
+      botoes.forEach(b => b.classList.remove('ativo'));
+      botao.classList.add('ativo');
+
+      metricasFiltradas = !dataLimite
+        ? [...metricas]
+        : metricas.filter(m => new Date(m.registrado_em) >= dataLimite);
+
+      const maxIndex = Math.max(0, metricasFiltradas.length - 7);
+      scrollRange.max = maxIndex;
+      scrollRange.value = maxIndex;
+      janelaInicio = maxIndex;
+
+      atualizarGraficoComScroll();
+    });
+  });
+
+  scrollRange.addEventListener('input', (e) => {
+    janelaInicio = parseInt(e.target.value, 10);
+    atualizarGraficoComScroll();
+  });
+
+  document.getElementById("semana").click();
+}
+
+// EXECUÇÃO
+(async () => {
+  const dataServidor = await obterDataDoServidor(API_BASE_URL);
+  const metricas = window.usuarioLogado?.historico_metricas;
+
+  if (metricas?.length > 0 && dataServidor) {
+    configurarFiltrosDePeriodo(dataServidor, metricas);
+  }
+})();

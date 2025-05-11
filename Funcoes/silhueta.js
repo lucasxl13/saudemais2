@@ -61,6 +61,30 @@ export function silhueta(ultimoRegistro, containerId = "silhueta_container") {
       el.addEventListener("mouseleave", () => ids_svg.forEach(id => document.getElementById(id)?.classList.remove("hover_medidas")));
     }
   
+    function sincronizarHover(hoverId1, hoverId2) {
+      const el1 = document.getElementById(hoverId1);
+      const el2 = document.getElementById(hoverId2);
+      if (!el1 || !el2) return;
+    
+      el1.addEventListener("mouseenter", () => {
+        el1.classList.add("texto_hover");
+        el2.classList.add("texto_hover");
+      });
+      el1.addEventListener("mouseleave", () => {
+        el1.classList.remove("texto_hover");
+        el2.classList.remove("texto_hover");
+      });
+    
+      el2.addEventListener("mouseenter", () => {
+        el1.classList.add("texto_hover");
+        el2.classList.add("texto_hover");
+      });
+      el2.addEventListener("mouseleave", () => {
+        el1.classList.remove("texto_hover");
+        el2.classList.remove("texto_hover");
+      });
+    }
+    
     function ativarHovers() {
       [
         ["hover_biceps_direito", ["biceps_direito"]],
@@ -72,7 +96,33 @@ export function silhueta(ultimoRegistro, containerId = "silhueta_container") {
         ["hover_panturrilha_direita", ["panturrilha_direita"]],
         ["hover_panturrilha_esquerda", ["panturrilha_esquerda"]],
         ["hover_cintura", ["cintura"]],
-        ["hover_altura", ["altura", "altura2", "altura3"]]
+        ["hover_altura", ["altura", "altura2", "altura3"]],
+        // novos gatilhos vindos dos <p>
+        ["p_biceps_direito", ["biceps_direito"]],
+        ["p_biceps_esquerdo", ["biceps_esquerdo"]],
+        ["p_antebraco_direito", ["antebraco_direito"]],
+        ["p_antebraco_esquerdo", ["antebraco_esquerdo"]],
+        ["p_coxa_direita", ["coxa_direita"]],
+        ["p_coxa_esquerda", ["coxa_esquerda"]],
+        ["p_panturrilha_direita", ["panturrilha_direita"]],
+        ["p_panturrilha_esquerda", ["panturrilha_esquerda"]],
+        ["p_cintura", ["cintura"]],
+        ["p_altura", ["altura", "altura2", "altura3"]],
       ].forEach(([gatilho, ids]) => Hover_medidas(gatilho, ids));
+
+      [
+        "biceps_direito",
+        "biceps_esquerdo",
+        "antebraco_direito",
+        "antebraco_esquerdo",
+        "coxa_direita",
+        "coxa_esquerda",
+        "panturrilha_direita",
+        "panturrilha_esquerda",
+        "cintura",
+        "altura"
+      ].forEach(parte => {
+        sincronizarHover(`hover_${parte}`, `p_${parte}`);
+      });
     }
   }
