@@ -57,10 +57,21 @@
   background-color: var(--bg_container_card);
   border: 2px solid var(--color1);
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1em;
   text-align: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   font-size: 1.2rem;
+}
+
+.titulo-card {
+  font-size: 1.5rem;
+  color: var(--txtTitulo);
+  margin-bottom: 0.5rem;
+}
+
+.descricao-card {
+  border-radius: 10px;
+  padding: 0.5rem;
 }
 
 .botoes-avatar {

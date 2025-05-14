@@ -37,12 +37,19 @@ async function carregarPerfil() {
   // Agora preencher as Estatísticas Recentes
   document.getElementById("streakCalorias").textContent = streak_caloria || 0;
   document.getElementById("streakHidratacao").textContent = streak_hidratacao || 0;
-
-  const ultimaMetrica = metricas?.[0];
+  const ultimaMetrica = metricas?.[metricas.length - 1];
 
   if (ultimaMetrica) {
-    document.getElementById('pesoUsuario').textContent = ultimaMetrica.peso ?? '-';
+    document.getElementById('pesoUsuario').textContent = ultimaMetrica.peso.toFixed(1) ?? '-';
     document.getElementById('alturaUsuario').textContent = ultimaMetrica.altura ?? '-';
+
+    console.log('Ultima métrica:', metricas);
+    document.getElementById("metaCalorias").textContent = ultimaMetrica.calorias.meta;
+    document.getElementById("caloriasConsumidas").textContent = ultimaMetrica.calorias.consumido;
+
+    document.getElementById("metaHidratacao").textContent = ultimaMetrica.hidratacao.meta;
+    document.getElementById("hidratacaoConsumidas").textContent = ultimaMetrica.hidratacao.consumido;
+
 
     if (ultimaMetrica.imc != null) {
       const imc = ultimaMetrica.imc.toFixed(1);
