@@ -42,8 +42,10 @@ async function carregarPerfil() {
   const ultimaMetrica = metricas?.[metricas.length - 1];
 
   if (ultimaMetrica) {
-    document.getElementById('pesoUsuario').textContent = ultimaMetrica.peso.toFixed(1) ?? '-';
-    document.getElementById('alturaUsuario').textContent = ultimaMetrica.altura ?? '-';
+    document.getElementById('pesoUsuario').textContent = 
+      typeof ultimaMetrica.peso === 'number' ? `${ultimaMetrica.peso.toFixed(1)}` : '-';
+    document.getElementById('alturaUsuario').textContent = 
+      typeof ultimaMetrica.altura === 'number' ? `${ultimaMetrica.altura}` : '-';
 
     console.log('Ultima métrica:', metricas);
     document.getElementById("metaCalorias").textContent = ultimaMetrica.calorias.meta;

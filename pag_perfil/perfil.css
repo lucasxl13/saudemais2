@@ -1,29 +1,74 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
+/* Container principal */
 .container-perfil {
   margin-top: 5rem;
-  width: 90%;
+  margin-left: 60px;
+  width: calc(100% - 60px);
   padding: 2rem;
-  background-color: var(--bg_container);
   color: var(--texto);
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
   display: flex;
-  gap: 2rem;
   flex-wrap: wrap;
+  gap: 2rem;
 }
 
+.descricao-card-texto-subtitulo {
+  font-size: 0.85rem;
+  color: var(--color4);
+  margin-bottom: 0.2rem;
+}
+
+.descricao-card-texto-meta-hidratacao,
+.descricao-card-texto-meta-caloria {
+  font-weight: bold;
+  margin-top: 0.2rem;
+}
+
+.descricao-card-texto-meta-hidratacao {
+  color: rgb(0, 225, 255);
+}
+
+.descricao-card-texto-meta-caloria {
+  color: rgb(255, 187, 0);
+}
+
+.descricao-card-texto-meta-hidratacao {
+  color: rgb(0, 225, 255);
+}
+
+.descricao-card-texto-meta-caloria {
+  color: rgb(255, 187, 0);
+}
+
+.valorContainer {
+  margin-top: auto;
+  background-color: var(--color3);
+  border-radius: 30px;
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 1rem;
+  color: var(--color6);
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+/* Lado esquerdo com avatar e info */
 .perfil-header {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  border-right: 2px solid var(--color1);
+  padding: 2rem 1rem;
+  background-color: var(--bg_container);
+  border: 2px solid var(--color1);
+  border-radius: 20px;
+  min-height: 480px;
+  position: relative;
 }
 
+/* Imagem do avatar */
 .foto-perfil img {
   width: 120px;
   height: 120px;
@@ -32,8 +77,12 @@
   border: 2px solid var(--color1);
 }
 
+/* Informações do usuário */
 .info-perfil {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .info-perfil p {
@@ -44,48 +93,20 @@
   color: var(--txtTitulo);
 }
 
-.perfil-cards {
-  flex: 2;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  padding: 1rem;
-  min-width: 300px;
-}
-
-.card-perfil {
-  background-color: var(--bg_container_card);
-  border: 2px solid var(--color1);
-  border-radius: 12px;
-  padding: 1em;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  font-size: 1.2rem;
-}
-
-.titulo-card {
-  font-size: 1.5rem;
-  color: var(--txtTitulo);
-  margin-bottom: 0.5rem;
-}
-
-.descricao-card {
-  border-radius: 10px;
-  padding: 0.5rem;
-}
-
+/* Botões de avatar */
 .botoes-avatar {
-  margin-top: 10px;
+  margin-top: auto; /* 👈 cola os botões no final do card */
   display: flex;
   gap: 10px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .botoes-avatar button {
   padding: 5px 10px;
   border: none;
-  background-color: #3adb85;
-  color: white;
+  background-color: var(--color3);
+  color: var(--color6);
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
@@ -95,26 +116,81 @@
   background-color: #2f9d6e;
 }
 
+/* Grid de cards */
+.perfil-cards {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  justify-content: center; /* centraliza os cards como um grupo */
+}
 
-/* Responsividade para tablet */
+
+/* Estilo dos cards */
+.card-perfil {
+  background-color: var(--bg_container);
+  border: 2px solid var(--color1);
+  border-radius: 16px;
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  transition: transform 0.2s ease;
+}
+
+.card-topo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.card-informacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+}
+
+.card-perfil:hover {
+  transform: translateY(-4px);
+}
+
+/* Título do card */
+.titulo-card,
+.card-perfil h4 {
+  font-size: 1.4rem;
+  color: var(--txtTitulo);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Texto dos cards */
+.descricao-card p, .descricao-card-texto {
+  margin: 0.2rem 0;
+}
+
+/* Responsivo para tablets */
 @media (max-width: 768px) {
   .container-perfil {
-    flex-direction: column;
-    display: block;
-    padding: 1.5rem;
-    margin: 0 auto;
-    width: calc(100% - 60px);
+      margin-top: 5rem;
+      margin-left: 60px;
+      padding: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
   }
 
   .perfil-header {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     border-right: none;
     border-bottom: 2px solid var(--color1);
-    width: 100%;
-    gap: 1rem;
-    padding-bottom: 1rem;
+    border-radius: 12px;
   }
 
   .foto-perfil img {
@@ -124,60 +200,46 @@
 
   .botoes-avatar {
     flex-direction: column;
-    width: 100%;
     align-items: center;
-  }
-
-  .perfil-cards {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .card-perfil {
-    padding: 1.2rem;
-    font-size: 1rem;
   }
 }
 
-
-/* Responsividade para celular pequeno */
+/* Responsivo para celulares pequenos */
 @media (max-width: 500px) {
+   .container-perfil {
+      margin-top: 5rem;
+      margin-left: 60px;
+      padding: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+  }
+
   .perfil-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-
-  .info-perfil {
-    text-align: center;
-    gap: 2rem;
-    padding: 0rem;
-  }
-
-  .container-perfil {
-    flex-direction: column;
+    flex: 1;
+    border: 2px solid var(--color1);
+    border-radius: 12px;
     padding: 1rem;
-    gap: 1rem;
-    margin-left: 60px;
-    margin-top: 5rem;
-    width: calc(100% - 60px);  }
+    margin-bottom: 1rem;
+    background-color: var(--bg_container);
+  }
 
   .foto-perfil img {
     width: 80px;
     height: 80px;
   }
 
-  .perfil-cards{
-    padding: 0.1rem;
-  }
-
-  .card-perfil{
-    font-size: xx-small;
-    margin-top: 1rem;
+  .perfil-cards {
     padding: 0;
-    display: block;
-    justify-content: center;
+    gap: 1rem;
   }
 
+  .card-perfil {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .titulo-card, .card-perfil h4 {
+    font-size: 1.2rem;
+  }
 }
