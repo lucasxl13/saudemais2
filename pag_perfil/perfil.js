@@ -4,6 +4,8 @@ import { calcularIdade } from "../Funcoes/calcularIdade.js";
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { mostrarToast } from '../Funcoes/generateToast.js';
 import { salvarAvatarNoServidor } from '../Funcoes/atualizarPerfil.js'; // ajuste o caminho se necessário
+import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+inicializarNavbarETema();
 
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"

@@ -47,17 +47,16 @@
     margin: 0;
   }
 
-  .container_peso {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
+.container_peso {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  #graficoPeso {
-    width: 100% !important;
-    height: auto !important;
-  }
+#graficoPeso {
+  width: 100% !important;
+}
 
 .container_medida {
   display: flex;

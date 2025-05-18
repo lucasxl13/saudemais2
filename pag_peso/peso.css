@@ -1,76 +1,212 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
-/* CONTAINER PRINCIPAL E ESTRUTURA DE LINHAS */
+/* =================== ESTRUTURA PRINCIPAL =================== */
+
 .container_principal {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  align-items: center;
   margin-top: 5rem;
+  gap: 1rem;
 }
 
 .linha {
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 94rem;
 }
 
-/* ELEMENTOS DO TOPO */
+/* =================== CONTAINERS TOPO =================== */
+
 .containers_topo {
   background-color: var(--bg_container);
   border-radius: 10px;
-  padding: 0.7rem;
-  width: 30rem;
-  height: 16rem;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
   text-align: center;
+  padding: 0.7rem;
+  height: 18rem;
   cursor: pointer;
+  flex: 1;
+  max-width: 33.33333333%;
   transition: transform 0.3s ease-in-out;
 }
 
-/* GRÁFICO DE PESO */
+.containers_topo > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+/* =================== PESO ATUAL =================== */
+
+.container_pesoAtual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#info_medida {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#peso_atual {
+  font-size: 5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+#peso_atual:hover {
+  color: rgb(0, 255, 140);
+}
+
+/* =================== PESO IDEAL =================== */
+
+#peso_ideal {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+#status_peso {
+  display: block;
+  margin-top:0.5rem; /* aumenta a margem pra empurrar pra baixo */
+  font-weight: bold;
+  font-size: 1.4rem;
+  text-align: center;
+  text-transform: uppercase; /* tudo em maiúsculas */
+}
+
+.status-ok {
+  color: green;
+}
+
+.status-alerta {
+  color: #ff0000;
+}
+/* =================== PESO VARIAÇÃO =================== */
+
+.container_pesoVariacao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 1rem 0;
+  gap: 2rem;
+  text-align: center;
+}
+
+#peso_periodo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--texto);
+  font-family: var(--fonte-logo);
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+
+.wrapper_variacoes {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.variacaoPercentual,
+.variacaoPeso {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#peso_variacao,
+#peso_variacaoPercentual {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* =================== ÍCONES =================== */
+
+.icone_pesoVariacao,
+.icone_porcentagem {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* =================== INFORMAÇÕES EXTRAS DE PESO =================== */
+
+.info_peso {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  gap: 2rem;
+}
+
+.info_peso > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info_peso > div p {
+  margin-bottom: 0;
+}
+
+/* =================== GRÁFICO =================== */
+
 .containers_fundo {
   background-color: var(--bg_container);
   border-radius: 10px;
   padding: 0.7rem;
   width: 100%;
-  max-width: 94rem;
-  height: auto;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
   text-align: center;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
 }
 
 #graficoPeso {
-  width: 100% !important;
-  max-width: 100%;
-  margin: 0 auto;
   display: block;
-  height: auto !important; /* evita conflitos */
+  width: 100% !important;
+  height: 400px !important;
 }
+
+/* =================== FILTROS DE PERÍODO =================== */
 
 .filtros-periodo {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 2rem;
   margin-top: 1rem;
-  flex-wrap: wrap;
 }
 
 .periodo {
-  cursor: pointer;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   background-color: var(--bg_card);
   color: var(--texto);
   font-weight: bold;
+  cursor: pointer;
   transition: 0.3s;
 }
 
-.periodo:hover {
-  color: rgb(0, 255, 115);
-}
-
+.periodo:hover,
 .periodo.ativo {
   color: rgb(0, 255, 115);
 }
@@ -78,4 +214,22 @@
 .scroll-range {
   width: 90%;
   visibility: hidden;
+}
+/* =================== AJUSTES PARA COMPONENTES DE DIGITOS =================== */
+
+.seta {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--texto);
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.seta:hover {
+  color: rgb(0, 240, 132);
+}
+
+.pagina-peso .digito button.seta {
+  font-size: 1rem;
+  padding: 0;
 }

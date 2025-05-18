@@ -1,4 +1,4 @@
-let graficoHidratacao = null;
+let graficoHidratacaoCircular = null;
 
 export function graficoHidratacaoCirculo(ultimoRegistro) {
   const ctx = document.getElementById("graficoHidratacao").getContext("2d");
@@ -7,12 +7,11 @@ export function graficoHidratacaoCirculo(ultimoRegistro) {
   const consumido = ultimoRegistro.hidratacao.consumido;
 
   const corBase = getComputedStyle(document.body).getPropertyValue('--graficoCircular').trim();
-  const corTxt = getComputedStyle(document.body).getPropertyValue('--texto').trim();
 
   const dados = [Math.min(consumido, meta), Math.max(meta - consumido, 0)];
 
-  if (!graficoHidratacao) {
-    graficoHidratacao = new Chart(ctx, {
+  if (!graficoHidratacaoCircular) {
+    graficoHidratacaoCircular = new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: ["Consumido", "Restante"],
@@ -39,7 +38,6 @@ export function graficoHidratacaoCirculo(ultimoRegistro) {
       plugins: [{
         id: "porcentagemNoCentro",
         afterDraw(chart) {
-          const dados = chart.data.datasets[0].data;
           const consumido = ultimoRegistro.hidratacao.consumido;
           const meta = ultimoRegistro.hidratacao.meta;
           const porcentagem = Math.round((consumido / meta) * 100);
@@ -61,8 +59,11 @@ export function graficoHidratacaoCirculo(ultimoRegistro) {
         }
       }]
     });
+
+    window.graficoHidratacaoCircular = graficoHidratacaoCircular; 
+
   } else {
-    graficoHidratacao.data.datasets[0].data = [Math.min(consumido, meta), Math.max(meta - consumido, 0)];
-    graficoHidratacao.update();
+    graficoHidratacaoCircular.data.datasets[0].data = [Math.min(consumido, meta), Math.max(meta - consumido, 0)];
+    graficoHidratacaoCircular.update();
   }
 }

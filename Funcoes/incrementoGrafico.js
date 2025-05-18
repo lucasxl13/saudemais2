@@ -27,18 +27,20 @@ export async function diminuirRegistro(tipo, registro, campo, atualizarFunc, atu
   function iniciarIncremento(valor, tipoOperacao, campo, atualizarFunc, atualizarGrafico) {
     let delay = velocidadeInicial;
   
-    async function repetir() {
-      const registro = window.usuarioLogado.historico_metricas.at(-1);
+async function repetir() {
+  const registro = window.usuarioLogado.historico_metricas.at(-1);
+
+  if (tipoOperacao === 'aumentar') {
+    await aumentarRegistro(valor, registro, campo, atualizarFunc, atualizarGrafico);
+  } else {
+    await diminuirRegistro(valor, registro, campo, atualizarFunc, atualizarGrafico);
+  }
+
+  delay = Math.max(50, delay * fatorAceleracao);
   
-      if (tipoOperacao === 'aumentar') {
-        await aumentarRegistro(valor, registro, campo, atualizarFunc, atualizarGrafico);
-      } else {
-        await diminuirRegistro(valor, registro, campo, atualizarFunc, atualizarGrafico);
-      }
-  
-      delay = Math.max(50, delay * fatorAceleracao);
-      intervaloIncremento = setTimeout(repetir, delay);
-    }
+  // Só chama novamente DEPOIS do await
+  intervaloIncremento = setTimeout(repetir, delay);
+}
   
     repetir();
   }
