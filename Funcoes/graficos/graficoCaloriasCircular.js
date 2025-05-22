@@ -1,4 +1,5 @@
-let graficoCaloria = null;
+let graficoCaloriaCircular = null;
+window.graficoCaloriaCircular = graficoCaloriaCircular; // torna acessível globalmente
 
 export function graficoCaloriasCirculo(ultimoRegistro) {
   const ctx = document.getElementById("graficoCaloria").getContext("2d");
@@ -7,12 +8,11 @@ export function graficoCaloriasCirculo(ultimoRegistro) {
   const consumido = ultimoRegistro.calorias.consumido;
 
   const corBase = getComputedStyle(document.body).getPropertyValue('--graficoCircular').trim();
-  const corTxt = getComputedStyle(document.body).getPropertyValue('--texto').trim();
 
   const dados = [Math.min(consumido, meta), Math.max(meta - consumido, 0)];
 
-  if (!graficoCaloria) {
-    graficoCaloria = new Chart(ctx, {
+  if (!graficoCaloriaCircular) {
+    graficoCaloriaCircular = new Chart(ctx, {
       type: "doughnut",
       data: {
         labels: ["Consumido", "Restante"],
@@ -39,7 +39,6 @@ export function graficoCaloriasCirculo(ultimoRegistro) {
       plugins: [{
         id: "porcentagemNoCentro",
         afterDraw(chart) {
-          const dados = chart.data.datasets[0].data;
           const consumido = ultimoRegistro.calorias.consumido;
           const meta = ultimoRegistro.calorias.meta;
           const porcentagem = Math.round((consumido / meta) * 100);
@@ -53,7 +52,7 @@ export function graficoCaloriasCirculo(ultimoRegistro) {
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
 
-          ctx.clearRect(chart.width / 4, chart.height / 4, chart.width / 2, chart.height / 2); // limpa o centro
+          ctx.clearRect(chart.width / 4, chart.height / 4, chart.width / 2, chart.height / 2);
           ctx.fillText(`${porcentagem}%`, chart.width / 2, chart.height / 2 - 10);
           ctx.font = "12px sans-serif";
           ctx.fillText(`${consumido}/${meta} kcal`, chart.width / 2, chart.height / 2 + 18);
@@ -61,8 +60,11 @@ export function graficoCaloriasCirculo(ultimoRegistro) {
         }
       }]
     });
+
+    window.graficoCaloriaCircular = graficoCaloriaCircular; 
   } else {
-    graficoCaloria.data.datasets[0].data = [Math.min(consumido, meta), Math.max(meta - consumido, 0)];
-    graficoCaloria.update();
+    graficoCaloriaCircular.data.datasets[0].data = dados;
+    graficoCaloriaCircular.data.datasets[0].backgroundColor = ["rgb(255, 98, 0)", corBase];
+    graficoCaloriaCircular.update();
   }
 }

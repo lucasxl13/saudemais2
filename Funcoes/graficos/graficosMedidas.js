@@ -179,10 +179,38 @@ function gerarGraficoDeMedidas(metricasFiltradas) {
             ci.update();
           }
         },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const label = context.dataset.label || '';
+              const value = context.parsed.y !== null ? context.parsed.y : '';
+              return `${label}: ${value} cm`;
+            }
+          }
+        }
       },
-      scales: {
-        y: { beginAtZero: true }
-      }
+scales: {
+  y: {
+    beginAtZero: false,
+    ticks: {
+      color: textoCor  // Cor dos números do eixo Y
+    }
+  },
+  x: {
+    ticks: {
+      color: textoCor  // Cor dos rótulos de datas no eixo X
+    }
+  }
+}
     }
   });
+  window.chartGlobal = chartGlobal;
 }
+
+
+
+window.addEventListener('resize', () => {
+  if (chartGlobal) {
+    chartGlobal.resize();
+  }
+});

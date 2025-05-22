@@ -96,9 +96,9 @@ export function atualizarVariacoes(metricasPeriodo) {
       const corClasse = variacao > 0 ? "variacao-positiva" :
                         variacao < 0 ? "variacao-negativa" : "variacao-neutra";
 
-      let corIcone = "#f9a825";
-      if (variacao > 0) corIcone = "#00c853";
-      else if (variacao < 0) corIcone = "#d50000";
+      let corIcone = "#fffb00";
+      if (variacao > 0) corIcone = "#00ff6a";
+      else if (variacao < 0) corIcone = "#ff0000";
 
       const icone = variacao < 0
         ? icones.down(corIcone)

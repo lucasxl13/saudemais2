@@ -79,13 +79,14 @@ function gerarGraficoCaloria(dates, caloriasConsumidas, caloriasMeta) {
         const yTexto = base - alturaPreenchida / 2;
 
         ctx.lineWidth = 3;
-        ctx.strokeStyle = textoColorInverso;
+        ctx.strokeStyle = 'black';
         ctx.strokeText(texto, x, yTexto); // contorno
-        ctx.fillStyle = textoColor;
+        ctx.fillStyle = 'white';
         ctx.fillText(texto, x, yTexto);   // texto
       });
 
       ctx.restore();
+      
     }
   };
 
@@ -160,6 +161,8 @@ function gerarGraficoCaloria(dates, caloriasConsumidas, caloriasMeta) {
     },
     plugins: [pluginPreenchimento]
   });
+
+  window.graficoCaloria = graficoCaloria;
 }
 
 

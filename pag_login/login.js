@@ -1,11 +1,24 @@
+const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+function aplicarTemaPreferido(e) {
+  if (e.matches) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// Aplica o tema imediatamente
+aplicarTemaPreferido(mediaQuery);
+
+// Escuta futuras mudanças
+mediaQuery.addEventListener('change', aplicarTemaPreferido);
+
 const API_BASE_URL = window.location.hostname === "127.0.0.1" 
     ? "http://localhost:3000"  // Se for localhost, usa o endpoint local
     // : "https://saude-mais-service-api.vercel.app";
     : "https://apisaudemais.danielhatz.com.br";  // Se não for localhost, usa o endpoint de produção
 
-    // document.body.classList.toggle('dark-mode');  
-
-    
 document.addEventListener("DOMContentLoaded", () => {
   // Verifica se o token está presente no localStorage ou sessionStorage
   const storedDataLocal = localStorage.getItem("jwt");

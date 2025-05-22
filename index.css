@@ -9,11 +9,11 @@
     --color6: #3adb85;
     --black: #000000;
     --white: #fff;
+    --fonte-logo: "Comfortaa", system-ui;
     
 }
 
 * {
-    --fonte-logo: "Comfortaa", system-ui;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -35,7 +35,7 @@ body {
 
 
     color: var(--texto);
-    font-family: var(--fonte-logo);
+    font-family: var(--fonte-logo, "Comfortaa", system-ui);
     background-image: url('../elementosCSS/0.png'); 
     display: flex;
     justify-content: center;
@@ -62,4 +62,78 @@ body.dark-mode {
     justify-content: center;
     height: 100vh;
     padding: 1rem; 
+}
+
+
+.switch-tema {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  margin-left: 0.5rem;
+}
+
+.switch-tema input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-tema {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: background-color 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 1rem;
+  color: #000000; /* ícones pretos no modo claro */
+  background-color: #93ffd0; /* fundo verde escuro no modo claro */
+}
+
+body.dark-mode .slider-tema {
+  background-color: #1a1a1a; /* fundo cinza escuro no modo escuro */
+  color: #ffffff; /* ícones brancos no modo escuro */
+}
+
+.slider-tema::before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  border-radius: 50%;
+  transition: transform 0.4s, background-color 0.4s;
+  z-index: 2;
+  background-color: #000000; /* botão preto no modo claro */
+}
+
+body.dark-mode .slider-tema::before {
+  background-color: #ffffff; /* botão branco no modo escuro */
+}
+
+.switch-tema input:checked + .slider-tema::before {
+  transform: translateX(30px);
+}
+
+/* Oculta a lua no modo claro */
+body:not(.dark-mode) .slider-tema i.bi-moon {
+  visibility: hidden;
+}
+
+/* Oculta o sol no modo escuro */
+body.dark-mode .slider-tema i.bi-sun {
+  visibility: hidden;
+}
+
+.slider-tema i {
+  z-index: 1;
+  pointer-events: none;
 }

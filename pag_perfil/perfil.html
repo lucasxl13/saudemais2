@@ -5,68 +5,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saúde +</title>
-    <link rel="stylesheet" href="perfil.css">
     <link rel="stylesheet" href="../elementosCSS/toast.css">
     <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="perfil.css">
   </head>
 
 <body>
-
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
-        </div>
-    </header>
-
     <div class="sidebar" id="sidebar">
         <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
     </div>
 
     <div class="container-perfil">
-      <div class="perfil-header">
-        <div class="foto-perfil">
-          <img id="fotoPerfil" src="../elementosCSS/225-default-avatar.png" alt="Avatar">
-        </div>
-        <div class="botoes-avatar">
-          <button id="gerarAvatar">Gerar Novo Avatar</button>
-          <button id="salvarAvatar">Salvar Avatar Atual</button>
-        </div>
-        
-        <div class="info-perfil">
-          <h2 id="nomeUsuario">Carregando...</h2>
-          <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
-          <p><strong>Sexo:</strong> <span id="sexoUsuario"></span></p>
-          <p><strong>Idade:</strong> <span id="idadeUsuario"></span></p>
-          <p><strong>Objetivo:</strong> <span id="objetivoUsuario"></span></p>
-        </div>      
+    <div class="perfil-header">
+      <div class="foto-perfil">
+        <img id="fotoPerfil" src="../elementosCSS/225-default-avatar.png" alt="Avatar">
       </div>
-    
-      <div class="perfil-cards">
-        <div class="card-perfil">
-          <h4>🔥 Streak Calorias</h4>
-          <p><span id="streakCalorias">--</span> dias</p>
-        </div>
-        <div class="card-perfil">
-          <h4>💧 Streak Hidratação</h4>
-          <p><span id="streakHidratacao">--</span> dias</p>
-        </div>
-        <div class="card-perfil">
-          <h4>⚖️ Peso Atual</h4>
-          <p><span id="pesoUsuario">--</span> kg</p>
-        </div>
-        <div class="card-perfil">
-          <h4>📏 Altura</h4>
-          <p><span id="alturaUsuario">--</span> cm</p>
-        </div>
-        <div class="card-perfil">
-          <h4>📈 IMC</h4>
-          <p><span id="imcUsuario">--</span></p>
-        </div>
+
+      <div class="info-perfil">
+        <h2 id="nomeUsuario">Carregando...</h2>
+        <p><strong>Email:</strong> <span id="emailUsuario"></span></p>
+        <p><strong>Sexo:</strong> <span id="sexoUsuario"></span></p>
+        <p><strong>Idade:</strong> <span id="idadeUsuario"></span></p>
+        <p><strong>Objetivo:</strong> <span id="objetivoUsuario"></span></p>
       </div>
-      
+
+      <div class="botoes-avatar">
+        <button id="gerarAvatar">Gerar Novo Avatar</button>
+        <button id="salvarAvatar">Salvar Avatar Atual</button>
+      </div>
     </div>
-       
+
+    
+    <div class="perfil-cards">
+
+      <!-- Calorias -->
+      <div class="card-perfil">
+        <div class="card-topo">
+          <h4 class="titulo-card">🔥 Calorias</h4>
+          <p class="descricao-card-texto-subtitulo">Bata a meta de calorias e mantenha o streak!</p>
+        </div>
+
+        <div class="card-informacoes">
+          <p class="descricao-card-texto-meta-caloria">Meta: <span id="metaCalorias">--</span> kcal</p>
+          <p class="descricao-card-texto">Consumido: <span id="caloriasConsumidas">--</span> kcal</p>
+        </div>
+
+        <p class="valorContainer"><span id="streakCalorias">--</span> dias de streak</p>
+      </div>
+
+      <!-- Hidratação -->
+      <div class="card-perfil">
+        <div class="card-topo">
+          <h4 class="titulo-card">💧 Hidratação</h4>
+          <p class="descricao-card-texto-subtitulo">Beba água suficiente para manter a saúde e o streak!</p>
+        </div>
+
+        <div class="card-informacoes">
+          <p class="descricao-card-texto-meta-hidratacao">Meta: <span id="metaHidratacao">--</span> ml</p>
+          <p class="descricao-card-texto">Consumido: <span id="hidratacaoConsumidas">--</span> ml</p>
+        </div>
+
+        <p class="valorContainer"><span id="streakHidratacao">--</span> dias de streak</p>
+      </div>
+
+      <!-- Peso -->
+      <div class="card-perfil">
+        <div class="card-topo">
+          <h4 class="titulo-card">Peso Atual</h4>
+          <p class="descricao-card-texto-subtitulo">Acompanhe seu peso para controlar sua evolução.</p>
+        </div>
+
+        <div class="card-informacoes">
+          <p class="descricao-card-texto">Atualize com frequência para manter os dados precisos.</p>
+        </div>
+
+        <p class="valorContainer"><span id="pesoUsuario">--</span> kg</p>
+      </div>
+
+      <!-- Altura -->
+      <div class="card-perfil">
+        <div class="card-topo">
+          <h4 class="titulo-card">Altura</h4>
+          <p class="descricao-card-texto-subtitulo">Sua altura ajuda a calcular o IMC e outras métricas.</p>
+        </div>
+
+        <div class="card-informacoes">
+          <p class="descricao-card-texto">Essa informação geralmente não muda.</p>
+          <p class="descricao-card-texto">Confirme que está correta.</p>
+        </div>
+
+        <p class="valorContainer"><span id="alturaUsuario">--</span> cm</p>
+      </div>
+
+      <!-- IMC -->
+      <div class="card-perfil">
+        <div class="card-topo">
+          <h4 class="titulo-card">IMC</h4>
+          <p class="descricao-card-texto-subtitulo">Índice de Massa Corporal baseado em seu peso e altura.</p>
+        </div>
+
+        <div class="card-informacoes">
+          <p class="descricao-card-texto">Ajuda a avaliar se está dentro do peso ideal.</p>
+          <p class="descricao-card-texto">Use como guia, não como diagnóstico.</p>
+        </div>
+
+        <p class="valorContainer"><span id="imcUsuario">--</span></p>
+      </div>
+
+    </div>
     
     <div id="toast" class="toast">Avatar salvo com sucesso!</div>
 

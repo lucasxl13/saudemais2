@@ -1,5 +1,3 @@
-document.body.classList.toggle('dark-mode');  
-
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { filtroGraficoPeso } from '../Funcoes/graficos/graficoPeso.js';
@@ -12,6 +10,9 @@ import { atualizarMetricaNoServidor } from '../Funcoes/atualizarMetrica.js';
 import { configurarBotaoIncremento } from '../Funcoes/incrementoGrafico.js';
 import icones from '../Funcoes/icones.js';
 import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
+import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+
+inicializarNavbarETema();
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -39,7 +40,7 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
       const idade = calcularIdade(dados_usuario.data_nascimento, dataServidor.toISOString());
       document.getElementById("idadeUsuario").textContent = idade;
   
-      filtroGraficoPeso(dataServidor);
+      filtroGraficoPeso(dataServidor, 'semana', 2, null, 'dd/mm');
   
       criarBarrasStreak(dataServidor, metricas); 
     }

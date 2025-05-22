@@ -2,6 +2,8 @@ document.body.classList.toggle('dark-mode');
 
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
+import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+inicializarNavbarETema();
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"

@@ -162,6 +162,8 @@ function gerarGraficoHidratacao(dates, hidratacaoConsumida, hidratacaoMeta) {
     },
     plugins: [pluginPreenchimento]
   });
+
+  window.graficoHidratacao = graficoHidratacao;
 }
 
   export function filtroGraficoHidratacao(dataServidor) {

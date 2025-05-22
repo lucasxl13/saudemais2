@@ -173,3 +173,38 @@
   color: #fffb00;
   font-weight: bold;
 }
+
+@media (max-width: 380px) {
+  .container_principal {
+    flex-direction: column;
+    align-items: center;
+    padding-left: 3.5rem; /* 50px da sidebar + margem de respiro */
+    padding-right: 1rem;
+    gap: 1rem;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 100%;
+    max-width: 21rem;
+    margin: 0 auto;
+  }
+
+  .containers_direita:first-of-type {
+    margin-top: 1rem;
+  }
+
+  /* Transforma grid de medidas em lista vertical */
+  .medidas {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .medidas p {
+    text-align: left;
+    align-self: flex-start !important;
+  }
+}
