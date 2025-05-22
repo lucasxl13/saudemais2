@@ -21,8 +21,84 @@
     <div class="sidebar" id="sidebar">
         <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
     </div>
-    
 
+    <div class="container-backdieta">
+
+      <div class="app-container">
+          <div class="calorie-ring">
+            <svg width="120" height="120">
+              <circle class="ring-bg" cx="60" cy="60" r="50" />
+              <circle class="ring-progress" cx="60" cy="60" r="50" />
+            </svg>
+            <div class="calorie-info">
+              <span id="calorie-text">0 / 2000 kcal</span>
+              <span id="calorie-remaining">Calorias restantes: 2000</span>
+            </div>
+          </div>
+    
+        <section class="meal-list" id="meal-list">
+        </section>
+  
+      </div>
+
+        <div class="container-dieta">
+            <div class="foto-dieta">
+            <img class="img-dieta" src="img/cafemanha.jpg"></div>
+            <button id="btnAdicionar" class="btn-flutuante" data-refeicao="Café da Manhã">➕</button>
+            <div class="container-refeicao">
+                <div class="conteudo-refeicao">
+                  <h3>Café da Manhã</h3>
+                </div>
+                </div>
+        </div>
+            
+        <div class="container-dieta">
+            <div class="foto-dieta">
+            <img class="img-dieta" src="img/almoco.jpg"></div>
+            <div class="container-refeicao">
+              <button id="btnAdicionar2" class="btn-flutuante" data-refeicao="Almoço">➕</button>
+                <div class="conteudo-refeicao">
+                  <h3>Almoço</h3>
+                </div>
+              </div>
+        </div>
+
+        <div class="container-dieta">
+             <div class="foto-dieta">
+             <img class="img-dieta" src="img/cafetarde.jpg"></div>
+             <div class="container-refeicao">
+              <button id="btnAdicionar3" class="btn-flutuante" data-refeicao="Café da Tarde">➕</button>
+                <div class="conteudo-refeicao">
+                  <h3>Café da Tarde</h3>
+                </div>
+              </div>
+        </div>
+        
+        <div class="container-dieta">
+            <div class="foto-dieta">
+            <img class="img-dieta" src="img/janta.jpg"></div>
+            <div class="container-refeicao">
+              <button id="btnAdicionar4" class="btn-flutuante" data-refeicao="Janta">➕</button>
+                <div class="conteudo-refeicao">
+                  <h3>Janta</h3>
+               </div>
+            </div>
+       </div>
+
+      <div id="modalAdicionar" class="modal-overlay">
+        <div class="modal-conteudo">
+          <span class="fechar-modal" onclick="fecharModal()">&times;</span>
+          <h2>Adicionar Refeição</h2>
+          <form id="formulario">
+            <input type="text" id="busca" placeholder="Digite o nome da refeição consumida" />
+            <button type="button" id="btnPesquisar" class="btn-quadrado">Pesquisar</button>
+            <button type="button" id="btnSalvar" class="btn-quadrado">Salvar</button>            
+          </form>
+          <div id="resultados"></div>
+        </div>
+      </div>
+      
+      
 
 <script type="module" src="./dieta.js"></script>
 </body>
