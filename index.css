@@ -31,7 +31,7 @@ body {
     --hoverIcones:#acf8d4;
     --bg_container:#ffffff;
     --bg_silhueta:rgba(255, 255, 255, 0);
-    --graficoCircular:#d5d5d5;
+    --graficoCircular:#ffffff;
 
 
     color: var(--texto);

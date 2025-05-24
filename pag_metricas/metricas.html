@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
     <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
     <link rel="stylesheet" href="metricas.css">
-  </head>
+</head>
 
 <body>
 
     <div class="sidebar" id="sidebar">
         <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
     </div>
-    
+
     <div class="container_principal">
-        <div class="linha"> 
+        <div class="linha">
             <div class="containers_topo">
                 <div class="container_calorias">
                     <canvas id="graficoCaloria"></canvas>
@@ -25,29 +25,56 @@
             </div>
 
             <div class="containers_topo">
-                <div class="container_calorias">
+                <div class="container_hidratacao">
                     <canvas id="graficoHidratacao"></canvas>
+                </div>
+            </div>
+
+            <div class="containers_topo">
+                <div class="container_metricas1">
+                    <p>CALORIAS/MODIFICAR - HIDRATACAO/MODIFICAR</p>
+                    <p>STREAK CALORIAS - STREAK HIDRATACAO</p>
+                    <p>MAX CALORIAS/(%) - MIN CALORIAS/(%) - MÉDIA CALORIAS/(%)</p>
+                    <p>MAX HIDRATACAO/(%) - MIN HIDRATACAO/(%) - MÉDIA HIDRATACAO/(%)</p>
+                    <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="linha">
+            <div class="containers_fundo">
+                <div class="container_metricas2">
+                    <p>METRICAS</p>
+
+                </div>
+            </div>
+
+            <div class="containers_fundo">
+                <div class="container_graficoMetricas">
+                    <p>GRAFICOS PERIODOS</p>
+                    <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
                 </div>
             </div>
 
         </div>
     </div>
-    
-<!-- <script src="..\componentes\bootstrap\js\bootstrap.bundle.min.js"></script> -->
 
-<script>
-    window.addEventListener('error', function fallbackChartJS(e) {
-      if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
-        const scriptLocal = document.createElement('script');
-        scriptLocal.src = '../componentes/chartJS/chart.min.js';
-        document.head.appendChild(scriptLocal);
-      }
-    }, true);
-</script>
+    <!-- <script src="..\componentes\bootstrap\js\bootstrap.bundle.min.js"></script> -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        window.addEventListener('error', function fallbackChartJS(e) {
+            if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
+                const scriptLocal = document.createElement('script');
+                scriptLocal.src = '../componentes/chartJS/chart.min.js';
+                document.head.appendChild(scriptLocal);
+            }
+        }, true);
+    </script>
 
-<script type="module" src="./metricas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="module" src="./metricas.js"></script>
 </body>
 
 </html>

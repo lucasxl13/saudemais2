@@ -33,7 +33,7 @@
   <div class="container_principal">
     <div class="linha">
       <div class="containers_topo">
-        <div class="container_usuario">
+        <div class="container_usuario" id="container_usuario">
           <div class="foto-perfil">
             <img id="fotoPerfil" src="../elementosCSS/225-default-avatar.png" alt="Avatar">
             <div class="info-usuario">
@@ -41,19 +41,21 @@
             </div>
           </div>
           
-          <p>Idade: <span id="idadeUsuario"></span></p>
-          <p>Objetivo: <span id="objetivoUsuario"></span></p>
+          <strong><p>IDADE: <span id="idadeUsuario"></span></p></strong>
+          <strong><p>SEXO: <span id="sexoUsuario"></span></p></strong>
+          <strong><p>OBJETIVO: <span id="objetivoUsuario"></span></p></strong>
+
         </div>
       </div>
 
       <div class="containers_topo">
-        <div class="container_peso">
+        <div class="container_peso" id="container_peso">
           <canvas id="graficoPeso"></canvas>
         </div>
       </div>
 
       <div class="containers_topo">
-        <div class="container_medida">
+        <div class="container_medida" id="container_medida">
           <div id="silhueta_container"></div>
         </div>
       </div>
@@ -107,14 +109,13 @@
       </div>
 
       <div class="containers_meio">
-        
+        <div class="container_metricas" id="container_metricas">
+        <p><span class="icones" id="icon_imc"></span>IMC: <span id="imc"></span><span id="status_imc"></span></p>
+        <p><span class="icones" id="icon_fogo"></span>TAXA BASAL: <span id="taxa_metabolica"></span></p>
+        <p><span class="icones" id="icon_gordura"></span>GORDURA CORPORAL: <span id="gordura_corporal"></span></p>
+        <p><span class="icones" id="icon_agua"></span>ÁGUA CORPORRAL: <span id="agua_corporal"></span></p>
+        <p><span class="icones" id="icon_musculo"></span>MÚSCULO ESQUELETICO: <span id="musculos"></span></p>
       </div>
-    </div>
-
-    <!-- Linha 3 -->
-    <div class="linha">
-      <div class="containers_fundo"></div>
-      <div class="containers_fundo"></div>
     </div>
   </div>
 

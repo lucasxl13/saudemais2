@@ -25,10 +25,10 @@ export function calcularIdade(dataNascimentoIso, dataServidorIso) {
   
     // Monta o texto com base na lógica que você pediu
     if (anos <= 0) {
-      return `${diasExtras} ${diasExtras === 1 ? 'dia' : 'dias'}`;
+      return `${diasExtras} ${diasExtras === 1 ? 'DIA' : 'DIAS'}`;
     } else if (diasExtras <= 0) {
-      return `${anos} ${anos === 1 ? 'ano' : 'anos'}`;
+      return `${anos} ${anos === 1 ? 'ANO' : 'ANOS'}`;
     } else {
-      return `${anos} ${anos === 1 ? 'ano' : 'anos'} e ${diasExtras} ${diasExtras === 1 ? 'dia' : 'dias'}`;
+      return `${anos} ${anos === 1 ? 'ANO' : 'ANOS'} e ${diasExtras} ${diasExtras === 1 ? 'DIA' : 'DIAS'}`;
     }
   }

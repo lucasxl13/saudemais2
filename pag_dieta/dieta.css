@@ -187,9 +187,9 @@ body {
   height: 120px;
 }
 
-svg {
+/* svg {
   transform: rotate(-90deg);
-}
+} */
 
 .ring-bg {
   fill: none;

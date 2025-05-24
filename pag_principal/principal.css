@@ -2,10 +2,10 @@
 @import url('../elementosCSS/sideBar.css');
 
 .container_principal {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top:5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 10rem;
 }
 
 .linha {
@@ -46,7 +46,7 @@
   .info-usuario p {
     margin: 0;
   }
-
+  
 .container_peso {
   width: 100%;
   display: flex;
@@ -134,12 +134,6 @@
     align-items: center;
     height: 100%;
   }
-
-  .segmento_streak.passado {
-    /* text-decoration: line-through; */
-    opacity: 0.6;
-  }
-  
 
   .container_hidratacao {
     display: flex;
@@ -237,12 +231,19 @@
   font-weight: bold;
 }
 
+  .segmento_streak.passado {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px; 
+  }
+
 .segmento_calorias.preenchido {
   background-color: #ff6a00;
+  color:white;
 }
 
 .segmento_hidro.preenchido {
   background-color: rgb(0, 110, 255);
+  color:white;
 }
   
   .containers_fundo {
@@ -261,6 +262,33 @@
     transform: scale(1.05);
   }
 
+  .container_metricas{
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .container_metricas p:hover{
+    color:#00f285;
+  }
+
+.icones {
+  width: 2rem !important;
+  height: auto;
+  margin-right:0.3rem;
+}
+ 
+#icon_imc{
+  color:rgb(26, 255, 0);
+}
+
+#icon_gordura{
+  color:rgb(255, 234, 0);
+}
+
+#icon_musculo{
+  color:rgb(255, 39, 39);
+}
 
 /* RESPONSIVIDADE */
 @media (max-width: 390px) {
@@ -268,6 +296,7 @@
     margin-left: 50px;
     width: calc(100% - 50px);
     align-items: center;
+    margin-top:5rem;
   }
 
   .linha {
@@ -349,6 +378,7 @@
     margin-left: 50px;
     width: calc(100% - 50px);
     align-items: center;
+    margin-top:5rem;
   }
 
   .linha {
@@ -425,11 +455,12 @@
 }
 
 
-@media (min-width: 769px) and (max-width: 1360px) {
+@media (min-width: 769px) and (max-width: 1278px) {
     .container_principal {
       margin-left: 60px;
       width: calc(100% - 60px);
       align-items: center;
+      margin-top:5rem;
     }
   
     .linha {
@@ -455,11 +486,12 @@
     }
   }
 
-  @media (min-width: 1361px) and (max-width: 1600px) {
+  @media (min-width: 1279px) and (max-width: 1600px) {
     .container_principal {
       margin-left: 60px;
       width: calc(100% - 60px);
       align-items: center;
+      margin-top: calc((100vh - 32rem) / 2); 
     }
 
     .linha {
@@ -471,7 +503,7 @@
   
     .containers_topo,
     .containers_meio{
-      width: 24rem;       /* reduzido para caber 3 por linha */
+      width: 23.5rem;       /* reduzido para caber 3 por linha */
       height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
     }
 
