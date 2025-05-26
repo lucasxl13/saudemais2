@@ -3,7 +3,7 @@
 
 
 .card-treino {
-  background-color: #ffffff;
+  background-color: var(--bg_container);
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 1rem;
@@ -15,7 +15,7 @@
 }
 
 .exercicio-card {
-  background-color: #f8f9fa;
+  background-color: var(--bg_container);
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border-left: 4px solid #198754;
@@ -25,7 +25,7 @@
 }
 /* Cor base do card */
 .exercicio-card {
-  background-color: #f8f9fa;
+  background-color: var(--bg_container);
   padding: 0.75rem 1rem;
   border-radius: 8px;
   border-left: 4px solid var(--bs-success); /* será sobrescrita pela classe */
@@ -61,12 +61,23 @@
   overflow-y: auto;
   transition: all 0.3s ease;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
-  background-color: #fff;
+  background-color: var(--bg_container);
   border-radius: 12px;
 }
 .grupo-card.expandido .exercicios-grid {
   max-height: 60vh;
   overflow-y: auto;
+}
+
+.titulo-exercicios{ 
+  font-size: 1.5rem;
+  color: var(--txtTitulo);
+  background-color: var(--bg_container);
+  padding: 0.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 
@@ -90,4 +101,36 @@
   z-index: 998; /* abaixo do card focado */
 }
 
+@media (max-width: 768px) {
+  .container-perfil {
+      margin-top: 5rem;
+      margin-left: 60px;
+      padding: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+  }
+
+  .titulo-exercicios{ 
+  font-size: 1.5rem;
+  color: var(--txtTitulo);
+  background-color: var(--bg_container);
+  padding: 0.5rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  margin-left: 60px;
+}
+
+  .card-treino {
+  position: relative;
+  z-index: 1; /* menor que o da sidebar */
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  margin-left: 60px;
+}
+}
 

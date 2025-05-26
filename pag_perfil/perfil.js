@@ -71,7 +71,7 @@ async function carregarPerfil() {
   }
 
   let avatarURL = dados_usuario.avatar;
-  if (avatarURL == null || avatarURL == "" || avatarURL == "0") {
+  if (avatarURL == null || avatarURL == "" || avatarURL == "0" || avatarURL == "default.png") {
     avatarURL = gerarAvatarAleatorio();
   }
   aplicarAvatar(avatarURL);
