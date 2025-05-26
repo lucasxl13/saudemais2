@@ -194,6 +194,45 @@
     display: block;
   }
 
+  #chatMessages {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  /* Estilo base das mensagens */
+  .mensagem {
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  /* Mensagem do BOT (à esquerda) */
+  .bot {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  /* Mensagem do USUÁRIO (à direita) */
+  .usuario {
+    align-self: flex-end;
+    background-color: var(--color6);
+    color: var(--bg_container);
+  }
+
+  /* Efeito suave ao aparecer */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+
   #chatToggle {
   position: fixed;
   bottom: 20px;
@@ -205,6 +244,12 @@
   cursor: pointer;
   z-index: 1001;
   font-size: 24px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #chatToggle:hover {
+    background-color: var(--color5);  /* nova cor ao passar o mouse */
+    transform: scale(1.1);            /* aumenta 10% suavemente */
   }
 
   #chatContainer {
