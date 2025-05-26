@@ -25,8 +25,8 @@ const API_BASE_URL = window.location.hostname === "127.0.0.1"
   const metricas = window.usuarioLogado?.historico_metricas;
   const ultimoRegistro = metricas[metricas.length - 1];
 
-  console.log(dados_usuario);
-  console.log(metricas);
+  // console.log(dados_usuario);
+  // console.log(metricas);
 
   let avatarURL = dados_usuario.avatar;
   document.getElementById('fotoPerfil').src = avatarURL;
