@@ -625,7 +625,69 @@ const icones = {
     }
 
     return svg;
-  }
+  },
+
+maximo() {
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("id", "icon_maximo");
+  svg.classList.add("icones");
+
+  const path1 = document.createElementNS(xmlns, "path");
+  path1.setAttribute("d", "M9 11.25V18H8v-6.75a.25.25 0 0 0-.25-.25h-1.5a.25.25 0 0 0-.25.25V18H5v-6.75a.25.25 0 0 0-.25-.25H3v7H2v-8h2.75a1.223 1.223 0 0 1 .75.276A1.223 1.223 0 0 1 6.25 10h1.5A1.251 1.251 0 0 1 9 11.25zm7-.25v7h-3.75A1.251 1.251 0 0 1 11 16.75v-2.5A1.251 1.251 0 0 1 12.25 13H15v-2h-4v-1h4a1.001 1.001 0 0 1 1 1zm-1 3h-2.75a.25.25 0 0 0-.25.25v2.5a.25.25 0 0 0 .25.25H15zm5.5-1.008L18.79 10H18v1h.21l1.714 3-1.714 3H18v1h.79l1.71-2.992L22.21 18H23v-1h-.21l-1.714-3 1.714-3H23v-1h-.79z");
+  // Deixe sem setar fill nem stroke aqui, para CSS controlar
+  path1.setAttribute("class", "icon-layer");
+
+  const path2 = document.createElementNS(xmlns, "path");
+  path2.setAttribute("d", "M0 0h24v24H0z");
+  path2.setAttribute("fill", "none");
+
+  svg.appendChild(path1);
+  svg.appendChild(path2);
+  return svg;
+},
+
+minimo() {
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("id", "icon_minimo");
+  svg.classList.add("icones");
+
+  const path1 = document.createElementNS(xmlns, "path");
+  path1.setAttribute("d", "M14 17h2v1h-5v-1h2v-6h-2v-1h3zm7.75-7h-2.5A1.251 1.251 0 0 0 18 11.25V18h1v-6.75a.25.25 0 0 1 .25-.25h2.5a.25.25 0 0 1 .25.25V18h1v-6.75A1.251 1.251 0 0 0 21.75 10zm-14 0h-1.5a1.223 1.223 0 0 0-.75.276A1.223 1.223 0 0 0 4.75 10H2v8h1v-7h1.75a.25.25 0 0 1 .25.25V18h1v-6.75a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25V18h1v-6.75A1.251 1.251 0 0 0 7.75 10zM14 9V6h-1v3z");
+  path1.setAttribute("class", "icon-layer");
+
+  const path2 = document.createElementNS(xmlns, "path");
+  path2.setAttribute("d", "M0 0h24v24H0z");
+  path2.setAttribute("fill", "none");
+
+  svg.appendChild(path1);
+  svg.appendChild(path2);
+  return svg;
+},
+
+media() {
+  const xmlns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(xmlns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("id", "icon_media");
+  svg.classList.add("icones");
+
+  const path1 = document.createElementNS(xmlns, "path");
+  path1.setAttribute("d", "M12.501 14.792l3.854 3.854-.707.707L13 16.705V23h-1v-6.293l-2.646 2.646-.707-.707zM8.647 6.354l3.854 3.854 3.854-3.854-.707-.707L13 8.295V2h-1v6.293L9.354 5.647zM6 13h13v-1H6z");
+  path1.setAttribute("class", "icon-layer");
+
+  const path2 = document.createElementNS(xmlns, "path");
+  path2.setAttribute("d", "M0 0h24v24H0z");
+  path2.setAttribute("fill", "none");
+
+  svg.appendChild(path1);
+  svg.appendChild(path2);
+  return svg;
+}
+
 
 
 };

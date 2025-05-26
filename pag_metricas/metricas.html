@@ -2,79 +2,102 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saúde +</title>
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-    <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="metricas.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saúde +</title>
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="metricas.css">
 </head>
 
 <body>
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
 
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  <div class="container_principal">
+    <div class="linha">
+      <div class="containers_topo">
+        <div class="container_graficoUnificado">
+          <canvas id="graficoUnificado"></canvas>
+          <div class="filtros-periodo">
+            <p class="periodo-unificado" data-periodo="semana">SEMANA</p>
+            <p class="periodo-unificado" data-periodo="mes">MÊS</p>
+            <p class="periodo-unificado" data-periodo="ano">ANO</p>
+            <p class="periodo-unificado" data-periodo="inicio">INÍCIO</p>
+          </div>
+          <input type="range" id="scrollRangeUnificado" class="scroll-range-unificado" min="0" value="0" step="1" />
+        </div>
+      </div>
+
+      <div class="containers_topo">
+        <div class="container_metricas1">
+          <div class="calorias">
+            <strong>
+              <p id="calorias">
+                <span id="icon_fogo"></span>
+                META CALÓRICA ATUAL
+                <span id="calorias_consumidas"></span>/
+                <span id="calorias_meta"></span>
+                <span id="calorias_porcentagem"></span>
+              </p>
+            </strong>
+          </div>
+
+          <div class="hidratacao">
+            <strong>
+              <p id="hidratacao">
+                <span id="icon_agua"></span>
+                META HIDRATAÇÃO ATUAL
+                <span id="agua_consumidas"></span>/
+                <span id="hidratacao_meta"></span>
+                <span id="hidratacao_porcentagem"></span>
+              </p>
+            </strong>
+          </div>
+
+<p class="valores" id="valores_unificados">
+  <span class="grupo-linha">
+    <span class="info"><span class="icones" id="icon_min"></span><span id="valor_min"></span></span>
+     <span class="info"><span class="icones" id="icon_media"></span><span id="valor_media"></span></span>
+    <span class="info"><span class="icones" id="icon_max"></span><span id="valor_max"></span></span>
+   
+  </span>
+
+  <span class="info total">
+    TOTAL DE DIAS <span id="valor_total"></span> DIAS
+  </span>
+</p>
+        </div>
+      </div>
     </div>
 
-    <div class="container_principal">
-        <div class="linha">
-            <div class="containers_topo">
-                <div class="container_calorias">
-                    <canvas id="graficoCaloria"></canvas>
-                </div>
-            </div>
+    <div class="linha">
+      <div class="containers_fundo">
+        <div class="container_metricas2"></div>
+      </div>
 
-            <div class="containers_topo">
-                <div class="container_hidratacao">
-                    <canvas id="graficoHidratacao"></canvas>
-                </div>
-            </div>
-
-            <div class="containers_topo">
-                <div class="container_metricas1">
-                    <p>CALORIAS/MODIFICAR - HIDRATACAO/MODIFICAR</p>
-                    <p>STREAK CALORIAS - STREAK HIDRATACAO</p>
-                    <p>MAX CALORIAS/(%) - MIN CALORIAS/(%) - MÉDIA CALORIAS/(%)</p>
-                    <p>MAX HIDRATACAO/(%) - MIN HIDRATACAO/(%) - MÉDIA HIDRATACAO/(%)</p>
-                    <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
-                </div>
-            </div>
-
+      <div class="containers_fundo">
+        <div class="container_graficoMetricas">
+          <p>GRAFICOS PERIODOS</p>
+          <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
         </div>
-
-        <div class="linha">
-            <div class="containers_fundo">
-                <div class="container_metricas2">
-                    <p>METRICAS</p>
-
-                </div>
-            </div>
-
-            <div class="containers_fundo">
-                <div class="container_graficoMetricas">
-                    <p>GRAFICOS PERIODOS</p>
-                    <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
-                </div>
-            </div>
-
-        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- <script src="..\componentes\bootstrap\js\bootstrap.bundle.min.js"></script> -->
+  <script>
+    window.addEventListener('error', function fallbackChartJS(e) {
+      if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
+        const scriptLocal = document.createElement('script');
+        scriptLocal.src = '../componentes/chartJS/chart.min.js';
+        document.head.appendChild(scriptLocal);
+      }
+    }, true);
+  </script>
 
-    <script>
-        window.addEventListener('error', function fallbackChartJS(e) {
-            if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
-                const scriptLocal = document.createElement('script');
-                scriptLocal.src = '../componentes/chartJS/chart.min.js';
-                document.head.appendChild(scriptLocal);
-            }
-        }, true);
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script type="module" src="./metricas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="./metricas.js"></script>
 </body>
 
 </html>

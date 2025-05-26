@@ -11,3 +11,5 @@ export async function obterDataDoServidor(API_BASE_URL) {
       return null;
     }
   }
+
+  

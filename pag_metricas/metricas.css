@@ -1,47 +1,209 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
-/* Principal layout */
+/* ---------------------------- */
+/* ESTILO GERAL E LAYOUT BASE  */
+/* ---------------------------- */
+
 .container_principal {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 5rem;
 }
 
 .linha {
   display: flex;
-  flex-wrap: wrap; /* permite quebra em telas menores */
-  gap: 2rem; /* espaçamento entre os blocos */
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-/* Containers superiores */
+/* ---------------------------- */
+/* SIDEBAR                      */
+/* ---------------------------- */
+
+.sidebar.expanded {
+  width: 150px;
+}
+
+.sidebar {
+  width: 50px;
+}
+
+/* ---------------------------- */
+/* TOPO: Gráfico Unificado      */
+/* ---------------------------- */
+
 .containers_topo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 30rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  height: 20rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
-/* Gráficos */
-#graficoCaloria,
-#graficoHidratacao {
-    width: 100% !important;
-    height: auto !important;
+.containers_topo:nth-child(1) {
+  width: 50rem;
 }
 
-/* Hover */
+.containers_topo:nth-child(2) {
+  width: 35rem;
+}
+
+.container_graficoUnificado {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente o canvas */
+  justify-content: center;
+}
+
+#graficoUnificado {
+  width: 100% !important;
+  max-height: 100% !important;
+  height: auto !important;
+  aspect-ratio: 3.5/1;
+  display: block;
+}
+.filtros-periodo {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.periodo-unificado {
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.periodo-unificado:hover,
+.periodo-unificado.ativo {
+  color: rgb(0, 255, 115);
+}
+
+.scroll-range-unificado {
+  width: 90%;
+  visibility: hidden;
+  margin: 0 auto;
+  display: block;
+}
+
 .containers_topo:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
+
+/* ---------------------------- */
+/* BLOCO CALORIAS E HIDRATAÇÃO */
+/* ---------------------------- */
+
+.container_metricas1 {
+  text-align: left;
+}
+
+.calorias, .hidratacao {
+  cursor: pointer;
+}
+
+#calorias:hover,
+#hidratacao:hover {
+  color: #00f285;
+}
+
+#calorias.ativo,
+#hidratacao.ativo {
+  color: #00f285;
+}
+
+.valores {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-weight: bold;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.grupo-linha {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 1rem; /* opcional: para dar um respiro nas laterais */
+}
+
+.grupo-linha .info {
+  text-align: center;
+  min-width: 100px; /* ou um valor razoável que garanta espaço visual */
+}
+
+.grupo-linha .info:first-child {
+  text-align: left;
+}
+
+.grupo-linha .info:last-child {
+  text-align: right;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.icones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;  /* mantém o ícone grande */
+  height:4rem;
+  margin-top: -0.3rem; /* pequeno ajuste fino */
+}
+
+#icon_maximo .icon-layer {
+  fill: red;
+  stroke: black;
+  stroke-width: 0.4;
+  filter: drop-shadow(0 0 0.4px red);
+}
+
+#icon_minimo .icon-layer {
+  fill: #00bcd4; /* azul claro */
+  stroke: black;
+  stroke-width: 0.4;
+  filter: drop-shadow(0 0 0.4px #00f2ff); /* glow azul neon */
+}
+
+#icon_media {
+  margin-right:-0.4rem;
+}
+
+#icon_media .icon-layer {
+  fill: gold;
+  stroke: black;
+  stroke-width: 0.4;
+  filter: drop-shadow(0 0 0.4px gold); /* efeito glow amarelo */
+}
+
+.icone_streak {
+  width: 3rem !important;
+  height: auto;
+}
+
+
+
+/* ---------------------------- */
+/* LINHA INFERIOR (Containers) */
+/* ---------------------------- */
 
 .containers_fundo {
-  height: auto; /* ou o valor que desejar */
+  height: auto;
   background-color: var(--bg_container);
   border-radius: 10px;
   padding: 0.7rem;
@@ -51,150 +213,129 @@
   transition: transform 0.3s ease-in-out;
 }
 
-/* Primeira ocupa 1/3 */
 .containers_fundo:nth-child(1) {
   width: 30rem;
 }
 
-/* Segunda ocupa 2/3 */
 .containers_fundo:nth-child(2) {
   flex: 2;
 }
 
 .containers_fundo:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
-/* RESPONSIVIDADE */
+/* ---------------------------- */
+/* RESPONSIVIDADE MOBILE        */
+/* ---------------------------- */
 
-/* Dispositivos menores */
-@media (max-width: 768px) {
-    .container_principal {
-        margin-left: 50px;
-        width: calc(100% - 50px);
-        align-items: center;
-    }
+@media (max-width: 766px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+  }
 
-    .linha {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
+  .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-    .containers_topo {
-        width: 80vw;
-        min-width: 280px;
-        height: auto;
-    }
+  .containers_topo,
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 80vw;
+    min-width: 280px;
+    height: auto;
+  }
 
-    .containers_topo:hover {
-        transform: none;
-    }
+  #graficoUnificado {
+    width: 100% !important;
+    aspect-ratio: 1.4/1;
+  }
 
-
-/* Primeira ocupa 1/3 */
-.containers_fundo:nth-child(1) {
-        width: 80vw;
-        min-width: 280px;
-        height: auto;
-}
-
-/* Segunda ocupa 2/3 */
-.containers_fundo:nth-child(2) {
-        width: 80vw;
-        min-width: 280px;
-        height: auto;
-}
-
-.containers_fundo:hover {
+  .containers_topo:hover,
+  .containers_fundo:hover {
     transform: none;
+  }
 }
 
-    .sidebar.expanded {
-        width: 150px;
-    }
+/* ---------------------------- */
+/* RESPONSIVIDADE TABLET        */
+/* ---------------------------- */
 
-    .sidebar {
-        width: 50px;
-    }
-}
+@media (min-width: 767px) and (max-width: 1278px) {
+  .container_principal {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    align-items: center;
+  }
 
-/* Tablets */
-@media (min-width: 769px) and (max-width: 1278px) {
-    .container_principal {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-        align-items: center;
-    }
+  .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-    .linha {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 40rem;
+    height: auto;
+    min-width: 300px;
+  }
 
-    .containers_topo {
-        width: 40rem;
-        height: auto;
-        min-width: 300px;
-    }
+  #graficoUnificado {
+    width: 100% !important;
+    aspect-ratio: 2.5/1;
+  }
 
-    .containers_fundo:nth-child(1) {
-        width: 40rem;
-        height: auto;
-        min-width: 300px;
-}
-
-
-.containers_fundo:nth-child(2) {
-        width: 40rem;
-        height: auto;
-        min-width: 300px;
-}
-
-.containers_fundo:hover {
+  .containers_fundo:hover {
     transform: none;
+  }
 }
 
-    .sidebar.expanded {
-        width: 150px;
-    }
+/* ---------------------------- */
+/* RESPONSIVIDADE DESKTOP MÉDIO */
+/* ---------------------------- */
 
-    .sidebar {
-        width: 50px;
-    }
-}
-
-/* Desktops médios */
 @media (min-width: 1279px) and (max-width: 1600px) {
-    .container_principal {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-        align-items: center;
-    }
+  .container_principal {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    align-items: center;
+  }
 
-    .linha {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
-    }
+  .linha {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
 
-    .containers_topo {
-        width: 22rem;
-        height: 15rem;
-    }
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 40rem;
+    height: auto;
+    min-width: 300px;
+  }
 
-        .containers_fundo:nth-child(1) {
-        width: 22rem;
-        height: 15rem;
-}
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    height: 15rem;
+  }
 
-.containers_fundo:nth-child(2) {
-        width: 45.5rem;
-        height: 15rem;
-}
+  #graficoUnificado {
+    width: 100% !important;
+    aspect-ratio: 2.5/1;
+  }
 
-.containers_fundo:hover {
+  .containers_fundo:hover {
     transform: none;
-}
+  }
 }

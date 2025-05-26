@@ -80,6 +80,13 @@ inputToggle.addEventListener('change', () => {
   window.graficoHidratacaoCircular.update();
 }
 
+if (window.graficoUnificado) {
+  window.graficoUnificado.options.scales.x.ticks.color = textoCor;
+  window.graficoUnificado.options.scales.y.ticks.color = textoCor;
+  window.graficoUnificado.options.plugins.title.color = textoCor;
+  window.graficoUnificado.update();
+}
+
 });
 
   grupoBotoes.appendChild(btnMenu);

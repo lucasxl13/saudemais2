@@ -11,8 +11,6 @@ import { configurarBotaoIncremento } from '../Funcoes/incrementoGrafico.js';
 import icones from '../Funcoes/icones.js';
 import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
-import { maior, menor } from '../Funcoes/filtroMaiorMenor.js';
-
 
 inicializarNavbarETema();
 
