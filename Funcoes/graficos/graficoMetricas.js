@@ -5,7 +5,14 @@ function calcularAspectRatio() {
   if (largura < 500) return 1;
   if (largura < 768) return 1.8;
   if (largura < 1024) return 2.5;
-  return 3.2;
+  return 3.4;
+}
+
+function calcularFonte() {
+  const largura = window.innerWidth;
+  if (largura < 400) return 9;
+  if (largura < 768) return 12;
+  return 14;
 }
 
 export function graficoMetricas(metricas, dataServidor) {
@@ -16,122 +23,146 @@ export function graficoMetricas(metricas, dataServidor) {
   let periodoSelecionado = 'semana';
   let janelaInicio = 0;
 
-  function gerarGrafico(metricasFiltradas) {
-    const ctx = document.getElementById("graficosMetricasGerais").getContext("2d");
+function gerarGrafico(metricasFiltradas) {
+  const ctx = document.getElementById("graficosMetricasGerais").getContext("2d");
 
-    const labels = metricasFiltradas.map(m => {
-      const data = new Date(m.registrado_em);
-      return `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${String(data.getFullYear()).slice(-2)}`;
-    });
+  const labels = metricasFiltradas.map(m => {
+    const data = new Date(m.registrado_em);
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = String(data.getFullYear()).slice(-2);
 
-    const campos = [
-      { label: "IMC", chave: "imc" },
-      { label: "MÚSCULO", chave: "musculo" },
-      { label: "GORDURA", chave: "gordura" },
-      { label: "ÁGUA", chave: "agua" },
-      { label: "OCULTO", chave: "oculto" }
-    ];
+    return periodoSelecionado === 'inicio' ? `${dia}/${mes}/${ano}` : `${dia}/${mes}`;
+  });
 
-    const cores = [
-      'rgb(55, 255, 0)',
-      'rgb(255, 0, 0)',
-      'rgb(255, 234, 0)',
-      'rgb(0, 136, 255)',
-    ];
+  const campos = [
+    { label: "IMC", chave: "imc" },
+    { label: "MÚSCULO", chave: "musculo" },
+    { label: "GORDURA", chave: "gordura" },
+    { label: "ÁGUA", chave: "agua" }
+  ];
 
-    const datasets = campos.map((campo, i) => {
-      let dados;
+  const cores = [
+    'rgb(55, 255, 0)',
+    'rgb(255, 0, 0)',
+    'rgb(255, 234, 0)',
+    'rgb(0, 136, 255)'
+  ];
 
-      if (campo.label === "OCULTO") {
-        dados = new Array(metricasFiltradas.length).fill(null);
-      } else {
-        dados = metricasFiltradas.map(m => m[campo.chave] || 0);
-      }
+  const datasets = campos.map((campo, i) => {
+    const dados = metricasFiltradas.map(m => m[campo.chave] || 0);
+    return {
+      label: campo.label,
+      data: dados,
+      borderColor: cores[i % cores.length],
+      backgroundColor: cores[i % cores.length],
+      fill: false,
+      tension: 0.3
+    };
+  });
 
-      return {
-        label: campo.label,
-        data: dados,
-        borderColor: campo.label === "OCULTO" ? 'rgba(0,0,0,0)' : cores[i % cores.length],
-        backgroundColor: campo.label === "OCULTO" ? 'rgba(0,0,0,0)' : cores[i % cores.length],
-        hidden: campo.label === "OCULTO",
-        fill: false,
-        tension: 0.3
-      };
-    });
+  const textoCor = getComputedStyle(document.body).getPropertyValue('--texto').trim();
+  const fonteDinamica = calcularFonte();
 
-    if (chartMetricasGerais) chartMetricasGerais.destroy();
+  if (chartMetricasGerais) {
+    chartMetricasGerais.data.labels = labels;
+    chartMetricasGerais.data.datasets = datasets;
+    chartMetricasGerais.options.aspectRatio = calcularAspectRatio();
 
-    const textoCor = getComputedStyle(document.body).getPropertyValue('--texto').trim();
+    chartMetricasGerais.options.scales.x.ticks.font.size = fonteDinamica;
+    chartMetricasGerais.options.scales.y.ticks.font.size = fonteDinamica;
+    chartMetricasGerais.options.plugins.legend.labels.font.size = fonteDinamica;
+    chartMetricasGerais.options.plugins.tooltip.titleFont.size = fonteDinamica;
+    chartMetricasGerais.options.plugins.tooltip.bodyFont.size = fonteDinamica;
 
-    chartMetricasGerais = new Chart(ctx, {
-      type: 'line',
-      data: { labels, datasets },
-      options: {
-        responsive: true,
-        aspectRatio: calcularAspectRatio(), // dinâmico
-        plugins: {
-          legend: {
-            labels: {
-              color: textoCor,
-              padding: 30,
-              usePointStyle: true,
-              boxWidth: 14,
-              boxHeight: 14,
-              generateLabels(chart) {
-                const original = Chart.defaults.plugins.legend.labels.generateLabels;
-                const labels = original(chart);
+    chartMetricasGerais.update();
+    return;
+  }
 
-                // OCULTO fora da legenda
-                return labels
-                  .filter(label => label.text !== "OCULTO")
-                  .map(label => ({
-                    ...label,
-                    strokeStyle: "black",
-                    lineWidth: 2
-                  }));
-              }
+  chartMetricasGerais = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      aspectRatio: calcularAspectRatio(),
+      plugins: {
+        legend: {
+          labels: {
+            color: textoCor,
+            padding: 10,
+            usePointStyle: true,
+            boxWidth: 14,
+            boxHeight: 14,
+            font: {
+              size: fonteDinamica
             },
-            position: 'top',
-            onClick: (e, legendItem, legend) => {
-              const ci = legend.chart;
-              const index = legendItem.datasetIndex;
-
-              const isOnlyVisible = ci.data.datasets.every((d, i) =>
-                i === index ? ci.isDatasetVisible(i) : !ci.isDatasetVisible(i)
-              );
-
-              if (isOnlyVisible) {
-                ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, true));
-              } else {
-                ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, i === index));
-              }
-
-              ci.update();
+            generateLabels(chart) {
+              const original = Chart.defaults.plugins.legend.labels.generateLabels;
+              const labels = original(chart);
+              return labels.map(label => ({
+                ...label,
+                strokeStyle: "black",
+                lineWidth: 2
+              }));
             }
           },
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const label = context.dataset.label || '';
-                const value = context.parsed.y !== null ? context.parsed.y : '';
-                return `${label}: ${value}`;
-              }
+          position: 'bottom',
+          onClick: (e, legendItem, legend) => {
+            const ci = legend.chart;
+            const index = legendItem.datasetIndex;
+
+            const isOnlyVisible = ci.data.datasets.every((d, i) =>
+              i === index ? ci.isDatasetVisible(i) : !ci.isDatasetVisible(i)
+            );
+
+            if (isOnlyVisible) {
+              ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, true));
+            } else {
+              ci.data.datasets.forEach((_, i) => ci.setDatasetVisibility(i, i === index));
+            }
+
+            ci.update();
+          }
+        },
+        tooltip: {
+          titleFont: {
+            size: fonteDinamica
+          },
+          bodyFont: {
+            size: fonteDinamica
+          },
+          callbacks: {
+            label: function (context) {
+              const label = context.dataset.label || '';
+              const value = context.parsed.y !== null ? context.parsed.y : '';
+              return `${label}: ${value}`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            color: textoCor,
+            font: {
+              size: fonteDinamica
             }
           }
         },
-        scales: {
-          y: {
-            ticks: { color: textoCor }
-          },
-          x: {
-            ticks: { color: textoCor }
+        x: {
+          ticks: {
+            color: textoCor,
+            font: {
+              size: fonteDinamica
+            }
           }
         }
       }
-    });
+    }
+  });
 
-    window.chartMetricasGerais = chartMetricasGerais;
-  }
+  window.chartMetricasGerais = chartMetricasGerais;
+}
 
   function atualizarGraficoComScroll() {
     const janela = metricasFiltradas.slice(janelaInicio, janelaInicio + 7);
@@ -189,10 +220,17 @@ export function graficoMetricas(metricas, dataServidor) {
 
   document.getElementById("semana").click();
 
-  // Redimensionamento ajusta o aspectRatio dinamicamente
   window.addEventListener('resize', () => {
     if (chartMetricasGerais) {
+      const novaFonte = calcularFonte();
+
       chartMetricasGerais.options.aspectRatio = calcularAspectRatio();
+      chartMetricasGerais.options.scales.x.ticks.font.size = novaFonte;
+      chartMetricasGerais.options.scales.y.ticks.font.size = novaFonte;
+      chartMetricasGerais.options.plugins.legend.labels.font.size = novaFonte;
+      chartMetricasGerais.options.plugins.tooltip.titleFont.size = novaFonte;
+      chartMetricasGerais.options.plugins.tooltip.bodyFont.size = novaFonte;
+
       chartMetricasGerais.update();
     }
   });

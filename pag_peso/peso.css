@@ -240,12 +240,6 @@ h1 {
   padding: 0;
 }
 
-.espaco-final {
-  width: 100%;
-  height: 20px;
-  flex-shrink: 0;
-  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
-}
 
 @media (max-width: 388px) {
 
@@ -341,6 +335,14 @@ h1,#peso_periodo {
   cursor: pointer;
   transition: 0.3s;
 }
+
+.espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
 
 }
 
@@ -535,8 +537,6 @@ h1,#peso_periodo {
   transition: 0.3s;
 }
 
-
-  
 }
 
 @media (min-width: 1001px) and (max-width: 1600px) {
@@ -628,5 +628,7 @@ h1,#peso_periodo {
   cursor: pointer;
   transition: 0.3s;
 }
+
+
 
 }

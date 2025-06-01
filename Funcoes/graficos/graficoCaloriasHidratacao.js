@@ -1,9 +1,17 @@
 function formatDate(dataISO) {
-    const data = new Date(dataISO);
-    const dia = String(data.getDate()).padStart(2, '0');
-    const mes = String(data.getMonth() + 1).padStart(2, '0');
-    return `${dia}/${mes}`;
-  }
+  const data = new Date(dataISO);
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  return `${dia}/${mes}`;
+}
+
+function calcularAspectRatio() {
+  const largura = window.innerWidth;
+  if (largura < 500) return 1;
+  if (largura < 768) return 1.8;
+  if (largura < 1024) return 2.5;
+  return 3.2;
+}
 
 function gerarGraficoMetricas({
   idCanvas,
@@ -17,19 +25,19 @@ function gerarGraficoMetricas({
 }) {
   const ctx = document.getElementById(idCanvas).getContext('2d');
 
-if (window[idCanvas] && typeof window[idCanvas].destroy === 'function') {
-  window[idCanvas].destroy();
-}
+  if (window[idCanvas] && typeof window[idCanvas].destroy === 'function') {
+    window[idCanvas].destroy();
+  }
 
   const textoColor = getComputedStyle(document.body).getPropertyValue('--texto');
   const larguraTela = window.innerWidth;
 
-let fontSizeBase = 11;
-if (larguraTela < 500) fontSizeBase = 8;
-else if (larguraTela < 768) fontSizeBase = 10;
-else if (larguraTela > 1200) fontSizeBase = 13;
+  let fontSizeBase = 11;
+  if (larguraTela < 500) fontSizeBase = 10;
+  else if (larguraTela < 768) fontSizeBase = 12;
+  else if (larguraTela > 1200) fontSizeBase = 14;
 
-const fontInterno = fontSizeBase + 3;
+  const fontInterno = fontSizeBase + 2;
 
   const maxValor = Math.max(...dadosConsumidos.map((v, i) => Math.max(v, dadosMeta[i])));
   const step = Math.ceil(maxValor / 10);
@@ -91,80 +99,76 @@ const fontInterno = fontSizeBase + 3;
     type: 'bar',
     data: {
       labels: datas,
-      datasets: [
-        {
-          label: 'Meta',
-          data: dadosMeta,
-          backgroundColor: corBarra,
-          borderColor: 'black',
-          borderWidth: 1,
-          // barThickness: dadosConsumidos.length < 7 ? 40 : 'flex'
+      datasets: [{
+        label: 'Meta',
+        data: dadosMeta,
+        backgroundColor: corBarra,
+        borderColor: 'black',
+        borderWidth: 1,
+        maxBarThickness: 40 
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: calcularAspectRatio(),
+      plugins: {
+        title: {
+          display: true,
+          text: titulo,
+          font: { size: fontSizeBase + 1 },
+          color: textoColor,
+        },
+        legend: { display: false },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          bodyFont: { size: fontSizeBase },
+          callbacks: {
+            label: function (tooltipItem) {
+              const i = tooltipItem.dataIndex;
+              const consumido = dadosConsumidos[i] ?? 0;
+              const meta = dadosMeta[i] ?? 0;
+              return `Consumido: ${consumido} ${unidade} / Meta: ${meta} ${unidade}`;
+            }
+          }
         }
-      ]
-    },
-options: {
-  responsive: true,
-  maintainAspectRatio: true,
-  aspectRatio: 1,
-  plugins: {
-    title: {
-      display: true,
-      text: titulo,
-      font: {
-        size: fontSizeBase + 1,
       },
-      color: textoColor,
-    },
-    legend: {
-      display: false
-    },
-    tooltip: {
-      mode: 'index',
-      intersect: false,
-      bodyFont: {
-        size: fontSizeBase
-      },
-      callbacks: {
-        label: function (tooltipItem) {
-          const i = tooltipItem.dataIndex;
-          const consumido = dadosConsumidos[i] ?? 0;
-          const meta = dadosMeta[i] ?? 0;
-          return `Consumido: ${consumido} ${unidade} / Meta: ${meta} ${unidade}`;
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: limiteY,
+          ticks: {
+            stepSize: step,
+            color: textoColor,
+            font: { size: fontSizeBase }
+          }
+        },
+        x: {
+          type: 'category',
+          ticks: {
+            color: textoColor,
+            font: { size: fontSizeBase }
+          }
         }
       }
-    }
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      max: limiteY,
-      ticks: {
-        stepSize: step,
-        color: textoColor,
-        callback: value => value,
-        font: { size: fontSizeBase }
-      }
     },
-    x: {
-      type: 'category',
-      ticks: {
-        color: textoColor,
-        font: { size: fontSizeBase }
-      }
-    }
-  }
-},
     plugins: [pluginPreenchimento]
   });
 
   window[idCanvas] = chart;
+if (idCanvas === 'graficoUnificado') {
+  window.graficoUnificado = chart; // <== isso é o que o resize vai usar
+}
 }
 
-
+// Variáveis globais
 window.dadosGraficoUnificado = [];
 window.periodoAtualUnificado = 'semana';
 window.tipoAtualUnificado = 'calorias';
+window.offsetAtualUnificado = null;
 
+// Função principal para filtrar e gerar o gráfico
 export function filtroGraficoMetricas(dataServidor, tipo = 'calorias', periodo = 'semana', offset = null) {
   const metricas = window.usuarioLogado?.historico_metricas;
   if (!metricas || !dataServidor) return;
@@ -176,18 +180,10 @@ export function filtroGraficoMetricas(dataServidor, tipo = 'calorias', periodo =
   let dataInicio = new Date(hoje);
 
   switch (periodo) {
-    case 'semana':
-      dataInicio.setDate(hoje.getDate() - 7);
-      break;
-    case 'mes':
-      dataInicio.setDate(hoje.getDate() - 30);
-      break;
-    case 'ano':
-      dataInicio.setFullYear(hoje.getFullYear() - 1);
-      break;
-    case 'inicio':
-      dataInicio = null;
-      break;
+    case 'semana': dataInicio.setDate(hoje.getDate() - 7); break;
+    case 'mes': dataInicio.setDate(hoje.getDate() - 30); break;
+    case 'ano': dataInicio.setFullYear(hoje.getFullYear() - 1); break;
+    case 'inicio': dataInicio = null; break;
   }
 
   const dadosFiltrados = dataInicio
@@ -225,23 +221,18 @@ export function filtroGraficoMetricas(dataServidor, tipo = 'calorias', periodo =
     }
   }
 
+  // Armazena o offset atual
+  window.offsetAtualUnificado = offsetCalculado;
+
   const visiveis = window.dadosGraficoUnificado.slice(offsetCalculado, offsetCalculado + 7);
 
-let tituloPersonalizado = '';
-switch (periodo) {
-  case 'semana':
-    tituloPersonalizado = 'ÚLTIMA SEMANA';
-    break;
-  case 'mes':
-    tituloPersonalizado = 'ÚLTIMO MÊS';
-    break;
-  case 'ano':
-    tituloPersonalizado = 'ÚLTIMO ANO';
-    break;
-  case 'inicio':
-    tituloPersonalizado = 'DESDE O INÍCIO';
-    break;
-}
+  let tituloPersonalizado = '';
+  switch (periodo) {
+    case 'semana': tituloPersonalizado = 'ÚLTIMA SEMANA'; break;
+    case 'mes': tituloPersonalizado = 'ÚLTIMO MÊS'; break;
+    case 'ano': tituloPersonalizado = 'ÚLTIMO ANO'; break;
+    case 'inicio': tituloPersonalizado = 'DESDE O INÍCIO'; break;
+  }
 
   gerarGraficoMetricas({
     idCanvas: 'graficoUnificado',
@@ -254,3 +245,15 @@ switch (periodo) {
     datas: visiveis.map(d => d.data)
   });
 }
+
+// Listener para recriar o gráfico quando a tela for redimensionada
+window.addEventListener('resize', () => {
+  if (!window.graficoUnificado) return;
+
+  const chart = window.graficoUnificado;
+
+  // Atualiza o aspectRatio dinamicamente
+  chart.options.aspectRatio = calcularAspectRatio();
+
+  chart.update(); 
+});

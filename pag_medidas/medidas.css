@@ -41,8 +41,8 @@
   background-color: var(--bg_container);
   border-radius: 10px;
   padding: 0.7rem;
-  width: 46rem;
-  height: 100%;
+  width: 44rem;
+  height: 830px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
   text-align: center;
   cursor: pointer;
@@ -147,7 +147,7 @@
 }
 .periodo:hover,
 .periodo.ativo {
-  color: rgb(157, 255, 0);
+  color:var(--hoverPeriodo);
 }
 .scroll-range {
   width: 90%;
@@ -160,7 +160,7 @@
 /* VARIAÇÕES DE COR */
 .variacao-positiva {
   margin-left: 0.2rem;
-  color: #00ff6a;
+  color: #27be66;
   font-weight: bold;
 }
 .variacao-negativa {
@@ -170,41 +170,294 @@
 }
 .variacao-neutra {
   margin-left: 0.2rem;
-  color: #fffb00;
+  color: #0091ff;
   font-weight: bold;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 388px) {
+
   .container_principal {
-    flex-direction: column;
+    flex-direction: column; /* Empilha as colunas */
     align-items: center;
-    padding-left: 3.5rem; /* 50px da sidebar + margem de respiro */
-    padding-right: 1rem;
-    gap: 1rem;
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
   }
 
   .container_esquerda,
   .containers_direita {
-    width: 100%;
-    max-width: 21rem;
-    margin: 0 auto;
+    width: 80vw;
+    max-width:300px;
+    height: auto;
+    margin-top: 0.2rem;
   }
-
   .containers_direita:first-of-type {
-    margin-top: 1rem;
-  }
+  margin-top: 0rem;
+  min-height: 330px;
+}
+  .containers_direita:first-of-type p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+  .silhueta {
+  width: 6rem;
+  height: auto;
+}
 
-  /* Transforma grid de medidas em lista vertical */
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 0.1rem;
+  font-weight: bold;
+}
+
+.container_esquerda p{
+  font-size: 0.6rem;
+}
+
+.area_silhueta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
   .medidas {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.85rem;
-    padding: 1rem;
-    gap: 0.6rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 0 !important;
+    padding: 0 0;
   }
 
   .medidas p {
-    text-align: left;
-    align-self: flex-start !important;
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
   }
+
+  .periodo {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  font-size:0.8rem;
+}
+
+.espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
+}
+
+@media (min-width: 390px) and (max-width: 754px) {
+  .container_principal {
+    flex-direction: column; /* Empilha as colunas */
+    align-items: center;
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 80vw;
+    max-width:320px;
+    height: auto;
+    margin-top: 0.2rem;
+  }
+  .containers_direita:first-of-type {
+  margin-top: 0rem;
+  min-height: 330px;
+}
+  .containers_direita:first-of-type p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+  .silhueta {
+  width: 6rem;
+  height: auto;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 0.1rem;
+  font-weight: bold;
+}
+
+.container_esquerda p{
+  font-size: 0.6rem;
+}
+
+.area_silhueta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+  .medidas {
+    display: grid;
+    grid-template-columns: 2fr;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 0 !important;
+    padding: 0 0;
+  }
+
+  .medidas p {
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
+  }
+
+  .periodo {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  font-size:0.8rem;
+}
+
+.espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+}
+
+
+@media (min-width: 755px) and (max-width: 1300px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .coluna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .coluna:nth-of-type(2) {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 80vw;
+    max-width: 550px;
+    height: auto;
+    margin-top: 0;
+  }
+
+  .containers_direita:first-of-type {
+    margin-top: 0;
+  }
+
+  .silhueta {
+    width: 8rem;
+    height: auto;
+  }
+
+  .texto_lateral {
+    color: var(--texto);
+    text-align: left;
+    padding: 0.7rem;
+    font-weight: bold;
+  }
+
+  .container_esquerda p {
+    font-size: 0.8rem;
+  }
+
+  .area_silhueta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+
+  .medidas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 1rem;
+  }
+
+  .medidas p {
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
+  }
+
+  .periodo {
+    display: inline-block;
+    border: none;
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
+
+  .espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
+}
+
+@media (min-width: 1301px) and (max-width: 1600px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 1rem;
+  }
+
+  .container_esquerda {
+  width:100%;  
+}
+.containers_direita{
+  width:100%;
+}
+  .silhueta {
+  width: 10rem;
+  height: auto;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 1.7rem;
+  font-weight: bold;
+}
+.container_esquerda p{
+  font-size: 1rem;
+}
+
+  .medidas {
+    font-size: 0.6rem;
+    gap: 0.01rem !important;
+    padding: 0rem 0rem;
+  }
+
 }

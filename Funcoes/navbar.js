@@ -100,11 +100,15 @@ if (window.graficoUnificado) {
   grupoBotoes.appendChild(btnMenu);
   grupoBotoes.appendChild(btnTema);
 
-  const logo = document.createElement('a');
-  logo.id = 'button_menu';
-  logo.className = 'style_logo';
-  logo.href = '#';
-  logo.innerHTML = 'Saúde <strong id="itemMais_logo">+</strong>';
+const logo = document.createElement('a');
+logo.id = 'button_menu';
+logo.className = 'style_logo';
+logo.href = '#';
+logo.innerHTML = 'Saúde <strong id="itemMais_logo">+</strong>';
+logo.addEventListener('click', (e) => {
+  e.preventDefault(); // impede o comportamento padrão do link
+  location.reload();  // recarrega a página atual
+});
 
   container.appendChild(grupoBotoes);
   container.appendChild(logo);
