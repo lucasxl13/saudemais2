@@ -4,7 +4,8 @@
 .container-backdieta {
   margin-top: 5rem;
   width: 90%;
-  height: 1100px;
+  height: 1300px; /* altura fixa padrão */
+  min-height: 220px;
   padding: 2rem;
   background-color: var(--bg_container);
   color: var(--texto);
@@ -13,11 +14,23 @@
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
+  margin-left: 70px; /* espaço para o menu lateral */
 }
+
+/* Em telas pequenas, altura automática para melhor responsividade */
+@media (max-width: 768px) {
+  .container-backdieta {
+    height: auto; /* remove altura fixa no celular */
+    margin-left: 0; /* remove espaço lateral para sidebar */
+    flex-direction: column;
+    padding: 1rem;
+  }
+}
+
 
 .container-dieta {
   width: 100%;
-  height: 220px;
+  min-height: 220px;
   padding: 2rem;
   background-color: var(--bg_container);
   color: var(--texto);
@@ -26,6 +39,7 @@
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
+  align-items: center; /* para alinhar verticalmente */
 }
 
 .foto-dieta {
@@ -34,6 +48,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--color1);
+  flex-shrink: 0;
 }
 
 .img-dieta {
@@ -46,22 +61,19 @@
 
 .conteudo-refeicao {
   width: 100%;
-  height: 180px;
-  color: var(--texto);
-  display: block;
-  gap: 2rem;
+  display: flex;
   flex-wrap: wrap;
-}
-  
-.barra-pesquisa {
-  width: 100%;
-  height: 180px;
+  gap: 1rem;
   color: var(--texto);
-  display: block;
-  gap: 2rem;
-  flex-wrap: wrap;
 }
 
+.barra-pesquisa {
+  width: 100%;
+  color: var(--texto);
+  display: block;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
 
 .btn-flutuante {
   position: absolute;
@@ -76,24 +88,96 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: background 0.3s ease;
+  z-index: 10;
 }
 
 .btn-flutuante:hover {
   background-color: #00e08a;
 }
 
+@media (max-width: 768px) {
+  .btn-flutuante {
+    right: 20px;
+    bottom: 20px;
+    position: fixed; /* para fixar no canto inferior */
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .container-backdieta {
+    margin-left: 0; /* remove espaço lateral do menu no celular */
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+    height: auto;
+  }
+
+  .container-dieta {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    min-height: auto;
+  }
+
+  .foto-dieta {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+  }
+
+  .img-dieta {
+    width: 90px;
+    height: 90px;
+  }
+
+  .calorie-ring {
+    width: 150px !important;
+    height: 150px !important;
+    margin: 0 auto;
+  }
+
+
+  .svg {
+    transform: rotate(-90deg);
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  
+
+  .calorie-info {
+    position: static;
+    transform: none;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .app-container {
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .container-recomendadieta {
+    max-width: 100%;
+    min-width: auto;
+    flex: 1 1 100%;
+  }
+}
+
+/* mantendo o resto do CSS original */
 .btn-quadrado {
   display: inline-block;
   padding: 10px 20px;
-  background-color: var(--color1); /* mesma cor usada no flutuante */
-  color: white; 
+  background-color: var(--color1);
+  color: white;
   border: none;
-  border-radius: 12px; /* cantos levemente arredondados */
+  border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.1s ease;
-  margin: 5px; /* espaço entre os botões */
+  margin: 5px;
 }
 
 .btn-quadrado:hover {
@@ -136,8 +220,9 @@
   margin: 0.5rem 0 1rem;
   border: none;
   border-radius: 8px;
-  background: #2a2a2a;
+  background: #1e1e1e;
   color: white;
+  border: 1px solid #444;
 }
 
 .modal-conteudo button[type="submit"] {
@@ -208,8 +293,10 @@ body {
 
 .calorie-info {
   position: absolute;
-  top: 35px;
-  left: 130px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 #resultados {
@@ -222,16 +309,18 @@ body {
 }
 
 .container-recomendadieta {
-  width: 23%;
-  height: 400px;
-  padding: 2rem;
+  flex: 1 1 220px;
+  max-width: 300px;
+  min-width: 220px;
+  height: auto;
+  padding: 1rem;
   background-color: var(--bg_container);
   color: var(--texto);
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
   display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .foto-recomendadieta {
@@ -251,11 +340,10 @@ body {
 }
 
 .conteudo-recomendarefeicao {
-  width: 180%;
-  height: 180px;
+  width: 100%;
+  height: auto;
   color: var(--texto);
   display: block;
   gap: 2rem;
   flex-wrap: wrap;
 }
-
