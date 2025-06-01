@@ -35,7 +35,7 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.containers_topo > div {
+.containers_topo>div {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -68,6 +68,7 @@ h1 {
   font-weight: bold;
   cursor: pointer;
 }
+
 #peso_atual:hover {
   color: rgb(0, 255, 140);
 }
@@ -81,11 +82,13 @@ h1 {
 
 #status_peso {
   display: block;
-  margin-top:0.5rem; /* aumenta a margem pra empurrar pra baixo */
+  margin-top: 0.5rem;
+  /* aumenta a margem pra empurrar pra baixo */
   font-weight: bold;
   font-size: 1.4rem;
   text-align: center;
-  text-transform: uppercase; /* tudo em maiúsculas */
+  text-transform: uppercase;
+  /* tudo em maiúsculas */
 }
 
 .status-ok {
@@ -93,8 +96,9 @@ h1 {
 }
 
 .status-alerta {
-  color: #ff0000;
+  color:var(--vermelho);
 }
+
 /* =================== PESO VARIAÇÃO =================== */
 
 .container_pesoVariacao {
@@ -157,13 +161,13 @@ h1 {
   gap: 2rem;
 }
 
-.info_peso > div {
+.info_peso>div {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.info_peso > div p {
+.info_peso>div p {
   margin-bottom: 0;
 }
 
@@ -208,13 +212,14 @@ h1 {
 
 .periodo:hover,
 .periodo.ativo {
-  color: rgb(0, 255, 115);
+  color:var(--hoverPeriodo);
 }
 
 .scroll-range {
   width: 90%;
   visibility: hidden;
 }
+
 /* =================== AJUSTES PARA COMPONENTES DE DIGITOS =================== */
 
 .seta {
@@ -225,6 +230,7 @@ h1 {
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }
+
 .seta:hover {
   color: rgb(0, 240, 132);
 }
@@ -232,4 +238,395 @@ h1 {
 .pagina-peso .digito button.seta {
   font-size: 1rem;
   padding: 0;
+}
+
+.espaco-final {
+  width: 100%;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
+@media (max-width: 388px) {
+
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+    margin-top:5rem;
+  }
+
+    .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .containers_topo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    min-width: 260px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+  }
+
+.containers_topo>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+.containers_fundo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    max-width: 260px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+}
+
+h1,#peso_periodo {
+  font-size: 1rem;
+}
+
+#peso_atual {
+  font-size: 2rem;
+}
+
+#peso_ideal {
+  font-size: 2rem;
+}
+
+#status_peso{
+  font-size: 0.8rem;
+}
+
+#peso_variacaoPercentual,#peso_variacao{
+  font-size: 0.9rem;
+}
+
+.icone_pesoVariacao,
+.icone_porcentagem {
+  width: 2rem;
+  height: 2rem;
+}
+
+.info_peso {
+  font-size: 0.6rem;
+  font-weight: bold;
+  gap:1rem;
+}
+
+#graficoPeso {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.filtros-periodo {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.periodo {
+  padding: 0rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+}
+
+@media (min-width: 390px) and (max-width: 754px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+    margin-top:5rem;
+  }
+
+    .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .containers_topo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    min-width: 300px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+  }
+
+.containers_topo>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+.containers_fundo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    max-width: 300px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+}
+
+h1,#peso_periodo {
+  font-size: 1.5rem;
+}
+
+#peso_atual {
+  font-size: 1.5rem;
+}
+
+#peso_ideal {
+  font-size: 2rem;
+}
+
+#status_peso{
+  font-size: 0.8rem;
+}
+
+#peso_variacaoPercentual,#peso_variacao{
+  font-size: 1.2rem;
+}
+
+.icone_pesoVariacao,
+.icone_porcentagem {
+  width: 2rem;
+  height: 2rem;
+}
+
+.info_peso {
+  font-size: 0.7rem;
+  font-weight: bold;
+  gap:1rem;
+}
+
+#graficoPeso {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.filtros-periodo {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.periodo {
+  padding: 0rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+}
+
+
+@media (min-width: 755px) and (max-width: 1000px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+    margin-top:5rem;
+  }
+
+    .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .containers_topo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    min-width: 450px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+  }
+
+.containers_topo>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+.containers_fundo {
+    width: 80vw;            /* ocupa 90% da largura visível */
+    max-width: 450px;       /* não encolhe demais */
+    height: auto;
+    border-radius: 10px;
+}
+
+h1,#peso_periodo {
+  font-size: 1.5rem;
+}
+
+#peso_atual {
+  font-size:2rem;
+}
+
+#peso_ideal {
+  font-size: 2rem;
+}
+
+#status_peso{
+  font-size: 0.8rem;
+}
+
+#peso_variacaoPercentual,#peso_variacao{
+  font-size: 1.6rem;
+}
+
+.icone_pesoVariacao,
+.icone_porcentagem {
+  width: 3rem;
+  height: 3rem;
+}
+
+.info_peso {
+  font-size: 0.9rem;
+  font-weight: bold;
+  gap:1rem;
+}
+
+#graficoPeso {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.filtros-periodo {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.periodo {
+  padding: 0rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+
+  
+}
+
+@media (min-width: 1001px) and (max-width: 1600px) {
+
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+    margin-top:5rem;
+  }
+
+  .containers_topo {
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 0.7rem;
+  height: 18rem;
+  cursor: pointer;
+  flex: 1;
+  max-width: 33.33333333%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.containers_topo>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  padding-top: 1rem;
+}
+
+
+h1,#peso_periodo {
+  font-size: 1.8rem;
+}
+
+#peso_atual {
+  font-size:3rem;
+}
+
+#peso_ideal {
+  font-size: 2.5rem;
+}
+
+#status_peso{
+  font-size: 1.3rem;
+}
+
+#peso_variacaoPercentual,#peso_variacao{
+  font-size: 1.2rem;
+}
+
+.icone_pesoVariacao,
+.icone_porcentagem {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.info_peso {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  display: flex;
+  gap: 1rem;
+}
+#graficoPeso {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.filtros-periodo {
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 1rem;
+}
+
+.periodo {
+  padding: 0rem 0.6rem;
+  border-radius: 6px;
+  background-color: var(--bg_card);
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
 }

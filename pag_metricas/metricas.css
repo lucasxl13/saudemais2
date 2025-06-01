@@ -62,9 +62,9 @@
 
 #graficoUnificado {
   width: 100% !important;
-  max-height: 100% !important;
+  max-height: 225px;
   height: auto !important;
-  aspect-ratio: 3.5/1;
+  aspect-ratio: 1/1;
   display: block;
 }
 .filtros-periodo {
@@ -104,12 +104,10 @@
 /* BLOCO CALORIAS E HIDRATAÇÃO */
 /* ---------------------------- */
 
-.container_metricas1 {
-  text-align: left;
-}
-
 .calorias, .hidratacao {
-  cursor: pointer;
+
+  text-align: left;
+   justify-content: left;
 }
 
 #calorias:hover,
@@ -170,14 +168,14 @@
   fill: red;
   stroke: black;
   stroke-width: 0.4;
-  filter: drop-shadow(0 0 0.4px red);
+  /* filter: drop-shadow(0 0 0.4px red); */
 }
 
 #icon_minimo .icon-layer {
   fill: #00bcd4; /* azul claro */
   stroke: black;
   stroke-width: 0.4;
-  filter: drop-shadow(0 0 0.4px #00f2ff); /* glow azul neon */
+  /* filter: drop-shadow(0 0 0.4px #00f2ff); */
 }
 
 #icon_media {
@@ -188,7 +186,7 @@
   fill: gold;
   stroke: black;
   stroke-width: 0.4;
-  filter: drop-shadow(0 0 0.4px gold); /* efeito glow amarelo */
+  /* filter: drop-shadow(0 0 0.4px gold); */
 }
 
 .icone_streak {
@@ -196,6 +194,29 @@
   height: auto;
 }
 
+.info_total {
+  text-align: center;
+  font-size:0.9rem;
+}
+
+.info_total h1 {
+  margin-top: 0.1rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding: 0 1rem;
+}
+
+.linha_streaks {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  padding: 0 1rem;
+}
+
+#valor_streakAtual:hover,#valor_streakTotal:hover, #valor_total:hover{
+  color:#00f285;
+}
 
 
 /* ---------------------------- */
@@ -203,12 +224,11 @@
 /* ---------------------------- */
 
 .containers_fundo {
-  height: auto;
+  height: 23rem;
   background-color: var(--bg_container);
   border-radius: 10px;
   padding: 0.7rem;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-  text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
 }
@@ -218,12 +238,96 @@
 }
 
 .containers_fundo:nth-child(2) {
-  flex: 2;
+  width: 55rem;
 }
 
 .containers_fundo:hover {
   transform: scale(1.02);
 }
+
+.container_metricas2 {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.linha_metrica {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.icone_metrica {
+  display: inline-flex;
+  width: 4rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.container_metricas2 p.linha_metrica:not(:nth-child(-n+2)):hover {
+  color: #00f285;
+}
+
+#icon_imc{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(26, 255, 0);
+}
+#icon_fogo2{
+    width: 2rem !important;
+  height: auto;
+}
+#icon_agua2{
+    width: 2rem !important;
+  height: auto;
+}
+
+#icon_gordura{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(255, 234, 0);
+}
+
+#icon_musculo{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(255, 39, 39);
+}
+
+.container_graficoMetricas {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* isso centraliza tudo que tiver dentro */
+  /* gap: 1rem; espaçamento entre canvas, filtros e range */
+}
+
+
+.scroll-range {
+  visibility: hidden;
+  width: 80%;
+  margin: 0 auto;
+}
+.scroll-range.visivel {
+  visibility: visible;
+}
+
+.periodo-geral {
+  border-radius: 6px;
+  background-color: var(--bg_card); /* ou algo neutro */
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.periodo-geral:hover,
+.periodo-geral.ativo {
+  color: #00f285; /* VERDE brilhante para ativo */
+}
+
+
 
 /* ---------------------------- */
 /* RESPONSIVIDADE MOBILE        */

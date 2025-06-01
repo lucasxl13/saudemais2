@@ -68,6 +68,14 @@ inputToggle.addEventListener('change', () => {
     window.chartGlobal.update();
   }
 
+    if (window.chartMetricasGerais) {
+    window.chartMetricasGerais.options.scales.x.ticks.color = textoCor;
+    window.chartMetricasGerais.options.scales.y.ticks.color = textoCor;
+    window.chartMetricasGerais.options.plugins.legend.labels.color = textoCor;
+    window.chartMetricasGerais.update();
+  }
+
+
   if (window.graficoCaloriaCircular) {
   const corBase = getComputedStyle(document.body).getPropertyValue('--graficoCircular').trim();
   window.graficoCaloriaCircular.data.datasets[0].backgroundColor = ["rgb(255, 98, 0)", corBase];

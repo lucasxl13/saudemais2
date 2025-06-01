@@ -264,7 +264,7 @@ const icones = {
     const svg = document.createElementNS(xmlns, "svg");
     svg.setAttribute("viewBox", "-33 -20 255 295");
 
-    // Aplica classes fixas
+        svg.setAttribute("id", "icon_fogo2"); // para aplicar transformações via CSS
     svg.classList.add("icones");
 
     const createPath = (d, fill, stroke = null, strokeWidth = 0) => {
@@ -339,7 +339,7 @@ const icones = {
     const xmlns = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(xmlns, "svg");
     svg.setAttribute("viewBox", "0 0 32 32");
-
+    svg.setAttribute("id", "icon_agua2"); // para aplicar transformações via CSS
     svg.classList.add("icones");
 
     const createPath = (d, fill, stroke = null, strokeWidth = 0) => {

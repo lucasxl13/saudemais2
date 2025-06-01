@@ -29,7 +29,7 @@ if (larguraTela < 500) fontSizeBase = 8;
 else if (larguraTela < 768) fontSizeBase = 10;
 else if (larguraTela > 1200) fontSizeBase = 13;
 
-const fontInterno = fontSizeBase + 2;
+const fontInterno = fontSizeBase + 3;
 
   const maxValor = Math.max(...dadosConsumidos.map((v, i) => Math.max(v, dadosMeta[i])));
   const step = Math.ceil(maxValor / 10);
@@ -98,7 +98,7 @@ const fontInterno = fontSizeBase + 2;
           backgroundColor: corBarra,
           borderColor: 'black',
           borderWidth: 1,
-          barThickness: dadosConsumidos.length < 7 ? 40 : 'flex'
+          // barThickness: dadosConsumidos.length < 7 ? 40 : 'flex'
         }
       ]
     },
