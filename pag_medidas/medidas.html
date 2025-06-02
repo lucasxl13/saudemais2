@@ -4,25 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saúde +</title>
-    <link rel="stylesheet" href="medidas.css">
+      <title>Saúde +</title>
+  <link rel="icon" href="..\Icones\logo.png" type="image/png">
     <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
+    <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="medidas.css">
   </head>
 
 <body>
 
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
-        </div>
-    </header>
-
     <div class="sidebar" id="sidebar">
         <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
     </div>
-    
 
+    <div class="container_principal">
+        <div class="coluna">
+            <div class="container_esquerda">
+                <div id="silhueta_container"></div>               
+            </div>
+        </div>
+
+        <div class="coluna">
+            <div class="containers_direita" id="info_medida">
+                <div class="medidas">
+                    <p id="p_altura">ALTURA:<span id="porcentagemAltura"></span></p>
+                    <p id="p_cintura">CINTURA:<span id="porcentagemCintura"></span></p>
+                    <p id="p_biceps_direito">BÍCEPS DIREITO:<span id="porcentagemBicepsDireito"></span></p>
+                    <p id="p_biceps_esquerdo">BÍCEPS ESQUERDO:<span id="porcentagemBicepsEsquerdo"></span></p>
+                    <p id="p_antebraco_direito">ANTEBRAÇO DIREITO:<span id="porcentagemAntebracoDireito"></span></p>
+                    <p id="p_antebraco_esquerdo">ANTEBRAÇO ESQUERDO:<span id="porcentagemAntebracoEsquerdo"></span></p>
+                    <p id="p_coxa_direita">COXA DIREITA:<span id="porcentagemCoxaDireita"></span></p>
+                    <p id="p_coxa_esquerda">COXA ESQUERDA:<span id="porcentagemCoxaEsquerda"></span></p>
+                    <p id="p_panturrilha_direita">PANTURRILHA DIREITA:<span id="porcentagemPanturrilhaDireita"></span></p>
+                    <p id="p_panturrilha_esquerda">PANTURRILHA ESQUERDA:<span id="porcentagemPanturrilhaEsquerda"></span></p>
+                </div>
+            </div>
+            
+            <div class="containers_direita"> 
+                <div class="graficosMedidas">
+                    <canvas id="graficosMedidas"></canvas>
+                </div>
+                <p class="periodo" id="semana">SEMANA</p>
+                <p class="periodo" id="mes">MÊS</p>
+                <p class="periodo" id="anos">ANO</p>
+                <p class="periodo" id="inicio">INICIO</p>
+                <input type="range" id="scrollRange" min="0" value="0" step="1" class="scroll-range">
+            </div>
+        </div>
+        <div class="espaco-final"></div>
+    </div>
+
+
+    
+    <script>
+        window.addEventListener('error', function fallbackChartJS(e) {
+          if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
+            const scriptLocal = document.createElement('script');
+            scriptLocal.src = '../componentes/chartJS/chart.min.js';
+            document.head.appendChild(scriptLocal);
+          }
+        }, true);
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script type="module" src="./medidas.js"></script>
 </body>

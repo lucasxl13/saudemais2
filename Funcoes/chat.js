@@ -11,9 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chatInput');
     const chatMessages = document.getElementById('chatMessages');
   
+    let chatIniciado = false; // garante que só mostre uma vez
+
     function toggleChat() {
-      chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+      const isOpen = chatContainer.style.display === 'flex';
+
+      if (isOpen) {
+        chatContainer.style.display = 'none';
+      } else {
+        chatContainer.style.display = 'flex';
+
+        if (!chatIniciado) {
+          appendMessage('Bot', 'Olá! 👋 Estou aqui para te ajudar com sua saúde. Como posso te ajudar hoje?');
+          chatIniciado = true;
+        }
+      }
     }
+
   
     chatToggle.addEventListener('click', toggleChat);
   
@@ -56,9 +70,33 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function appendMessage(sender, message) {
       const msgDiv = document.createElement('div');
-      msgDiv.innerHTML = `<strong>${sender}:</strong> ${message}`;
+      const isBot = sender === 'Bot';
+
+      msgDiv.classList.add('mensagem'); // classe base
+      msgDiv.classList.add(isBot ? 'bot' : 'usuario'); // classe condicional
+
+      msgDiv.innerHTML = `<strong>${sender}:</strong> <span class="typing"></span>`;
       chatMessages.appendChild(msgDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      if (isBot) {
+        const typingSpan = msgDiv.querySelector('.typing');
+        let index = 0;
+
+        const typingInterval = setInterval(() => {
+          if (index < message.length) {
+            typingSpan.textContent += message.charAt(index);
+            index++;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } else {
+            clearInterval(typingInterval);
+          }
+        }, 20);
+      } else {
+        msgDiv.querySelector('.typing').textContent = message;
+      }
     }
+
+
   });
   

@@ -5,27 +5,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saúde +</title>
-  <link rel="stylesheet" href="principal.css" />
+  <link rel="icon" href="..\Icones\logo.png" type="image/png">
   <link rel="stylesheet" href="../elementosCSS/chat.css" />
   <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="principal.css" />
 </head>
 
 <body>
-  <!-- Navbar -->
-  <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-    <div class="container-fluid">
-      <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-      <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
-    </div>
-  </header>
-
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
   </div>
 
   <!-- Botão flutuante -->
-  <div id="chatToggle">💬</div>
+  <div id="chatToggle">🤖</div>
 
   <!-- Janela do chat -->
   <div id="chatContainer">
@@ -40,7 +34,7 @@
   <div class="container_principal">
     <div class="linha">
       <div class="containers_topo">
-        <div class="container_usuario">
+        <div class="container_usuario" id="container_usuario">
           <div class="foto-perfil">
             <img id="fotoPerfil" src="../elementosCSS/225-default-avatar.png" alt="Avatar">
             <div class="info-usuario">
@@ -48,19 +42,21 @@
             </div>
           </div>
           
-          <p>Idade: <span id="idadeUsuario"></span></p>
-          <p>Objetivo: <span id="objetivoUsuario"></span></p>
+          <strong><p>IDADE: <span id="idadeUsuario"></span></p></strong>
+          <strong><p>SEXO: <span id="sexoUsuario"></span></p></strong>
+          <strong><p>OBJETIVO: <span id="objetivoUsuario"></span></p></strong>
+
         </div>
       </div>
 
       <div class="containers_topo">
-        <div class="container_peso">
+        <div class="container_peso" id="container_peso">
           <canvas id="graficoPeso"></canvas>
         </div>
       </div>
 
       <div class="containers_topo">
-        <div class="container_medida">
+        <div class="container_medida" id="container_medida">
           <div id="silhueta_container"></div>
         </div>
       </div>
@@ -74,6 +70,7 @@
             <div class="botoes-lado">
               <button class="botao_diminui" data-valor="1">-1</button>
               <button class="botao_diminui" data-valor="10">-10</button>
+              <button class="botao_diminui" data-valor="100">-100</button>
             </div>
         
             <canvas id="graficoCaloria"></canvas>
@@ -81,6 +78,7 @@
             <div class="botoes-lado">
               <button class="botao_aumenta" data-valor="1">+1</button>
               <button class="botao_aumenta" data-valor="10">+10</button>
+              <button class="botao_aumenta" data-valor="100">+100</button>
             </div>
           </div>
           <div id="icone_streak"></div>
@@ -94,6 +92,7 @@
             <div class="botoes-lado">
               <button class="botao_diminui" data-valor="1">-1</button>
               <button class="botao_diminui" data-valor="10">-10</button>
+              <button class="botao_diminui" data-valor="100">-100</button>
             </div>
 
             <canvas id="graficoHidratacao"></canvas>
@@ -101,6 +100,7 @@
             <div class="botoes-lado">
               <button class="botao_aumenta" data-valor="1">+1</button>
               <button class="botao_aumenta" data-valor="10">+10</button>
+              <button class="botao_aumenta" data-valor="100">+100</button>
 
             </div>
           </div>
@@ -110,16 +110,16 @@
       </div>
 
       <div class="containers_meio">
-        
+        <div class="container_metricas" id="container_metricas">
+        <p><span class="icones" id="icon_imc"></span>IMC: <span id="imc"></span><span id="status_imc"></span></p>
+        <p><span class="icones" id="icon_fogo"></span>TAXA BASAL: <span id="taxa_metabolica"></span></p>
+        <p><span class="icones" id="icon_gordura"></span>GORDURA CORPORAL: <span id="gordura_corporal"></span></p>
+        <p><span class="icones" id="icon_agua"></span>ÁGUA CORPORAL: <span id="agua_corporal"></span></p>
+        <p><span class="icones" id="icon_musculo"></span>MÚSCULO ESQUELETICO: <span id="musculos"></span></p>
       </div>
     </div>
-
-    <!-- Linha 3 -->
-    <div class="linha">
-      <div class="containers_fundo"></div>
-      <div class="containers_fundo"></div>
-    </div>
   </div>
+  <div class="espaco-final"></div>
 
   <!-- Fallback para Chart.js -->
   <script>

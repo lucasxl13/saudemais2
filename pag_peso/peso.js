@@ -1,106 +1,120 @@
-document.body.classList.toggle('dark-mode');  
-
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { filtroGraficoPeso } from '../Funcoes/graficos/graficoPeso.js';
 import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
-import { silhueta } from '../Funcoes/silhueta.js';
 import { atualizarMetricaNoServidor } from '../Funcoes/atualizarMetrica.js';
+import { exibirControleDeDigitos  } from '../Funcoes/atualizarMedidas.js';
+import icones from '../Funcoes/icones.js';
+import { inicializarNavbarETema } from '../Funcoes/navbar.js';
 
+inicializarNavbarETema();
+
+// ⚠️ Adicionamos a função local para calcular o aspectRatio inicial
+function calcularAspectRatio() {
+  const largura = window.innerWidth;
+  if (largura < 390) return 1.3;
+  if (largura < 768) return 2.2;
+  if (largura < 1024) return 3;
+  return 3.7;
+}
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
-  // : "https://saude-mais-service-api.vercel.app";
   : "https://apisaudemais.danielhatz.com.br";
 
-  await verificarAutenticacao(API_BASE_URL); 
+await verificarAutenticacao(API_BASE_URL); 
 
-  const { dados_usuario } = window.usuarioLogado;
-  const metricas = window.usuarioLogado?.historico_metricas;
-  const ultimoRegistro = metricas[metricas.length - 1];
+const { dados_usuario } = window.usuarioLogado;
+const metricas = window.usuarioLogado?.historico_metricas;
+const ultimoRegistro = metricas[metricas.length - 1];
 
+console.log(dados_usuario);
+console.log(metricas);
 
-  console.log(dados_usuario);
-  console.log(metricas);
-
-  async function inicializarStreak(API_BASE_URL) {
-    const dataServidor = await obterDataDoServidor(API_BASE_URL);
-  
-    if (dataServidor) {
-      filtroGraficoPeso(dataServidor);
-    }
-  }
-
-  
 gerarSidebar();
-silhueta(ultimoRegistro);
 inicializarStreak(API_BASE_URL);
 
-const pesoIdeal = 21.75 * ((ultimoRegistro.altura / 100) ** 2);
-const diferencaPeso = ultimoRegistro.peso - pesoIdeal;
-const porcento = (ultimoRegistro.peso / pesoIdeal) * 100 - 100;
+async function inicializarStreak(API_BASE_URL) {
+  const dataServidor = await obterDataDoServidor(API_BASE_URL);
 
-document.getElementById("pesos").textContent = `${ultimoRegistro.peso.toFixed(2)} / ${pesoIdeal.toFixed(2)}Kg`;
-document.getElementById("variacaoPesos").textContent = `${diferencaPeso.toFixed(2)}kg || ${porcento.toFixed(2)}%`;
-
-const status = Math.abs(diferencaPeso) <= 2
-  ? "VOCÊ ESTÁ NO SEU PESO IDEAL"
-  : `VOCÊ ESTÁ ${Math.abs(diferencaPeso).toFixed(2)}KG ${diferencaPeso > 0 ? "ACIMA" : "ABAIXO"} DO PESO IDEAL`;
-
-document.getElementById("StatusPesos").textContent = status;
-
-
-
-const partes = {
-  hover_biceps_direito: "biceps_direito",
-  hover_biceps_esquerdo: "biceps_esquerdo",
-  hover_antebraco_direito: "antebraco_direito",
-  hover_antebraco_esquerdo: "antebraco_esquerdo",
-  hover_coxa_direita: "coxa_direita",
-  hover_coxa_esquerda: "coxa_esquerda",
-  hover_panturrilha_direita: "panturrilha_direita",
-  hover_panturrilha_esquerda: "panturrilha_esquerda",
-  hover_altura: "altura",
-  hover_cintura: "cintura",
-  graficoPeso: "peso"
-};
-
-const container = document.querySelector(".container_atualizacao");
-
-Object.keys(partes).forEach(id => {
-  const elemento = document.getElementById(id);
-  if (elemento) {
-    elemento.addEventListener("click", () => {
-      const nomeCampo = partes[id];
-      container.innerHTML = `
-        <p>Manipulando: <strong>${nomeCampo.replaceAll('_', ' ')}</strong></p>
-        <input type="number" id="input_valor_metrica" placeholder="Digite o valor em cm..." />
-        <button id="btn_salvar_metrica">Salvar</button>
-      `;
-
-      document.getElementById("btn_salvar_metrica").addEventListener("click", async () => {
-        const valor = parseFloat(document.getElementById("input_valor_metrica").value);
-        if (isNaN(valor)) {
-          alert("Digite um valor válido.");
-          return;
-        }
-
-        try {
-          if (nomeCampo === "peso") {
-            await atualizarMetricaNoServidor("peso", valor);
-          } else if (nomeCampo === "altura") {
-            await atualizarMetricaNoServidor("altura", valor);
-          } else {
-            await atualizarMetricaNoServidor("medidas_corporais", { [nomeCampo]: valor });
-          }
-      
-          // Após a atualização bem-sucedida, recarrega a página
-          location.reload();
-        } catch (erro) {
-          console.error("Erro ao atualizar métrica:", erro);
-          alert("Erro ao salvar a métrica. Tente novamente.");
-        }
-      });
-    });
+  if (dataServidor) {
+    window.periodoAtualPeso = 'semana'; // default
+    window.aspectRatioPeso = calcularAspectRatio(); // ✅ uso dinâmico
+    filtroGraficoPeso(dataServidor, 'semana', window.aspectRatioPeso, null, 'dd/mm');
+    configurarEventosPeriodo(dataServidor);
   }
-});
+}
+
+function configurarEventosPeriodo(dataServidor) {
+  const botoes = document.querySelectorAll('.periodo');
+  const scroll = document.getElementById("scrollRangePeso");
+
+  botoes.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botoes.forEach(b => b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+
+      const tipo = btn.dataset.periodo;
+      window.periodoAtualPeso = tipo;
+
+      const formatoData = tipo === 'inicio' ? 'dd/mm/aa' : 'dd/mm';
+      const aspectRatioAtual = calcularAspectRatio(); // ✅ recalcular no clique
+
+      filtroGraficoPeso(dataServidor, tipo, aspectRatioAtual, null, formatoData);
+    });
+  });
+
+  scroll.addEventListener("input", (e) => {
+    const offset = parseInt(e.target.value);
+    const tipo = window.periodoAtualPeso || "semana";
+    const formatoData = tipo === 'inicio' ? 'dd/mm/aa' : 'dd/mm';
+    const aspectRatioAtual = calcularAspectRatio(); // ✅ recalcular no scroll
+
+    filtroGraficoPeso(dataServidor, tipo, aspectRatioAtual, offset, formatoData);
+  });
+
+  const btnSemana = document.querySelector('.periodo[data-periodo="semana"]');
+  if (btnSemana) btnSemana.classList.add('ativo');
+}
+
+const peso = document.getElementById("peso_atual");
+peso.textContent = ultimoRegistro.peso.toFixed(1).replace('.', ',') + " kg";
+
+const peso_ideal = document.getElementById("peso_ideal");
+const pesoIdeal = 21.75 * ((ultimoRegistro.altura / 100) ** 2);
+peso_ideal.textContent = pesoIdeal.toFixed(1).replace('.', ',') + " kg";
+
+const statusPeso = document.getElementById("status_peso");
+const diferenca = ultimoRegistro.peso - pesoIdeal;
+
+// Limpa classes anteriores
+statusPeso.classList.remove("status-ok", "status-alerta");
+
+if (diferenca < -5.1) {
+  statusPeso.textContent = `Você está ${Math.abs(diferenca).toFixed(1).replace('.', ',')} kg abaixo do seu peso ideal`;
+  statusPeso.classList.add("status-alerta");
+} else if (diferenca > 5) {
+  statusPeso.textContent = `Você está ${diferenca.toFixed(1).replace('.', ',')} kg acima do seu peso ideal`;
+  statusPeso.classList.add("status-alerta");
+} else {
+  statusPeso.textContent = "Você está no seu peso ideal";
+  statusPeso.classList.add("status-ok");
+}
+
+if (peso) {
+  peso.addEventListener("click", () => {
+    exibirControleDeDigitos(ultimoRegistro.peso, "PESO");
+  });
+}
+
+const container = document.getElementById("icone_variacaoPeso");
+if (container) {
+  container.appendChild(icones.peso2("var(--texto)"));
+}
+
+const container2 = document.getElementById("icone_variacaoPercentual");
+if (container2) {
+  const icone = icones.metricas("var(--texto)");
+  icone.classList.add("icone_pesoVariacao"); 
+  container2.appendChild(icone);
+}

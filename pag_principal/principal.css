@@ -2,10 +2,10 @@
 @import url('../elementosCSS/sideBar.css');
 
 .container_principal {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top:5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 10rem;
 }
 
 .linha {
@@ -46,18 +46,17 @@
   .info-usuario p {
     margin: 0;
   }
+  
+.container_peso {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .container_peso {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  #graficoPeso {
-    width: 100% !important;
-    height: auto !important;
-  }
+#graficoPeso {
+  width: 100% !important;
+}
 
 .container_medida {
   display: flex;
@@ -136,12 +135,6 @@
     height: 100%;
   }
 
-  .segmento_streak.passado {
-    /* text-decoration: line-through; */
-    opacity: 0.6;
-  }
-  
-
   .container_hidratacao {
     display: flex;
     flex-direction: column;
@@ -201,6 +194,120 @@
     display: block;
   }
 
+  #chatMessages {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  /* Estilo base das mensagens */
+  .mensagem {
+    padding: 8px 12px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  /* Mensagem do BOT (à esquerda) */
+  .bot {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  /* Mensagem do USUÁRIO (à direita) */
+  .usuario {
+    align-self: flex-end;
+    background-color: var(--color6);
+    color: var(--bg_container);
+  }
+
+  /* Efeito suave ao aparecer */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+
+  #chatToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--color6);
+  color: var(--bg_container);
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1001;
+  font-size: 24px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  #chatToggle:hover {
+    background-color: var(--color5);  /* nova cor ao passar o mouse */
+    transform: scale(1.1);            /* aumenta 10% suavemente */
+  }
+
+  #chatContainer {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 90%;
+  max-width: 350px;
+  max-height: 80vh;
+  display: none;
+  flex-direction: column;
+  background-color: var(--bg_container);
+  border: 1px solid var(--color6);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+  #chatHeader {
+    background-color: var(--color6);
+    color: var(--texto);
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+  }
+
+  #chatMessages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: var(--bg_container);
+  }
+
+
+  #chatForm {
+    display: flex;
+    border-top: 1px solid;
+  }
+
+  #chatInput {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background-color: var(--bg_container);
+    color: var(--texto);
+  }
+
+  #chatForm button {
+    background-color: var(--color6);
+    color: var(--texto);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+
+
   .icone_streak{
     margin-top: 1rem;
     width:3.5rem;
@@ -238,29 +345,60 @@
   font-weight: bold;
 }
 
+  .segmento_streak.passado {
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px; 
+  }
+
 .segmento_calorias.preenchido {
   background-color: #ff6a00;
+  color:white;
 }
 
 .segmento_hidro.preenchido {
   background-color: rgb(0, 110, 255);
+  color:white;
 }
-  
-  .containers_fundo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 46rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor:pointer;
-    transition: transform 0.3s ease-in-out;
-  }
 
-  .containers_topo:hover,.containers_meio:hover,.containers_fundo:hover {
+  .containers_topo:hover,.containers_meio:hover{
     transform: scale(1.05);
   }
+
+  .container_metricas{
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .container_metricas p:hover{
+    color:#00f285;
+  }
+
+  
+
+.icones {
+  width: 2rem !important;
+  height: auto;
+  margin-right:0.3rem;
+}
+ 
+#icon_imc{
+  color:rgb(26, 255, 0);
+}
+
+#icon_gordura{
+  color:rgb(255, 234, 0);
+}
+
+#icon_musculo{
+  color:rgb(255, 39, 39);
+}
+
+.espaco-final {
+  padding:1rem;
+  height: 4rem; /* ou 5rem, como preferir */
+  width: 100%;
+}
 
 
 /* RESPONSIVIDADE */
@@ -269,6 +407,7 @@
     margin-left: 50px;
     width: calc(100% - 50px);
     align-items: center;
+    margin-top:5rem;
   }
 
   .linha {
@@ -350,6 +489,7 @@
     margin-left: 50px;
     width: calc(100% - 50px);
     align-items: center;
+    margin-top:5rem;
   }
 
   .linha {
@@ -423,14 +563,39 @@
     min-width: 3rem;
   }
 
+ 
+  #chatContainer {
+    width: 90vw;
+    right: 2.5vw;
+    bottom: 100px;
+    max-height: 80vh;
+    display: none;
+  }
+
+  #chatToggle {
+    bottom: 15px;
+    right: 15px;
+    font-size: 20px;
+    padding: 8px 12px;
+  }
+
+  #chatForm button {
+    padding: 8px 10px;
+  }
+
+  #chatInput {
+    font-size: 14px;
+  }
+
 }
 
 
-@media (min-width: 769px) and (max-width: 1360px) {
+@media (min-width: 769px) and (max-width: 1278px) {
     .container_principal {
       margin-left: 60px;
       width: calc(100% - 60px);
       align-items: center;
+      margin-top:5rem;
     }
   
     .linha {
@@ -456,11 +621,12 @@
     }
   }
 
-  @media (min-width: 1361px) and (max-width: 1600px) {
+  @media (min-width: 1279px) and (max-width: 1600px) {
     .container_principal {
       margin-left: 60px;
       width: calc(100% - 60px);
       align-items: center;
+      margin-top: calc((100vh - 32rem) / 2); 
     }
 
     .linha {
@@ -472,7 +638,7 @@
   
     .containers_topo,
     .containers_meio{
-      width: 24rem;       /* reduzido para caber 3 por linha */
+      width: 23.5rem;       /* reduzido para caber 3 por linha */
       height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
     }
 

@@ -1,5 +1,7 @@
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
+import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+inicializarNavbarETema();
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -99,7 +101,7 @@ function criarCardTreino(grupo) {
         <span class="resumo-quantidade">0 exercícios</span>
         <span class="resumo-tempo">⏱ 0min</span>
       </div>
-      <div class="exercicios-grid mt-2 lista-${grupoId}"></div>
+      <div class="exercicios mt-2 lista-${grupoId}"></div>
       <div class="form-container mt-3 d-none">
         <form class="form-add-exercicio d-flex gap-2 flex-wrap">
           <select class="form-select form-select-sm select-exercicio" required style="min-width:160px;">
@@ -148,6 +150,9 @@ function criarCardTreino(grupo) {
     const tempoFormatado = formatarTempo(totalMin);
     resumoQtd.textContent = `${cards.length} exercício${cards.length !== 1 ? "s" : ""}`;
     resumoTempo.textContent = tempoFormatado ? `⏱ ${tempoFormatado}` : "⏱ 0min";
+    resumoQtd.classList.add("sub-titulo-exercicios");
+    resumoTempo.classList.add("sub-titulo-exercicios");
+
   }
 
   carregarTreinosLocal(grupoId, container, atualizarResumo);
@@ -174,11 +179,11 @@ function criarCardTreino(grupo) {
     const descricao = partes.join(" • ");
 
     const exercicioCard = document.createElement("div");
-    exercicioCard.className = `exercicio-card d-flex flex-column align-items-start border-${grupoId}`;
+    exercicioCard.className = `sub-titulo-exercicios exercicio-card d-flex flex-column align-items-start border-${grupoId}`;
     exercicioCard.innerHTML = `
       <strong>${nome}</strong>
-      <span class="desc-exercicio text-muted">${descricao}</span>
-      <button class="btn btn-sm btn-danger mt-2">🗑️ Remover</button>
+      <span class="sub-titulo-exercicios">${descricao}</span>
+      <button class="sub-titulo-exercicios btn btn-sm btn-danger mt-2">🗑️ Remover</button>
     `;
 
     exercicioCard.querySelector("button").addEventListener("click", () => {

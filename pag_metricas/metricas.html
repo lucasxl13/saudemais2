@@ -2,46 +2,114 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saúde +</title>
-    <link rel="stylesheet" href="metricas.css">
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-  </head>
+  <link rel="icon" href="..\Icones\logo.png" type="image/png">
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="metricas.css">
+</head>
 
 <body>
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
 
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+  <div class="container_principal">
+    <div class="linha">
+      <div class="containers_topo">
+        <div class="container_graficoUnificado">
+          <canvas id="graficoUnificado"></canvas>
+          <div class="filtros-periodo">
+            <p class="periodo-unificado" data-periodo="semana">SEMANA</p>
+            <p class="periodo-unificado" data-periodo="mes">MÊS</p>
+            <p class="periodo-unificado" data-periodo="ano">ANO</p>
+            <p class="periodo-unificado" data-periodo="inicio">INÍCIO</p>
+          </div>
+          <input type="range" id="scrollRangeUnificado" class="scroll-range-unificado" min="0" value="0" step="1" />
         </div>
-    </header>
+      </div>
 
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
-    
-    <div class="container_principal">
-        <div class="linha"> 
-            <div class="containers_topo">
-                <div class="container_calorias">
-                    <canvas id="graficoCaloria"></canvas>
-                </div>
+      <div class="containers_topo">
+        <div class="container_metricas1">
+          <div class="calorias">
+            <strong>
+              <p id="calorias">
+                <span id="icon_fogo"></span>
+                META CALÓRICA ATUAL
+                <span id="calorias_consumidas"></span>/
+                <span id="calorias_meta"></span>
+                <span id="calorias_porcentagem"></span>
+              </p>
+            </strong>
+          </div>
+
+          <div class="hidratacao">
+            <strong>
+              <p id="hidratacao">
+                <span id="icon_agua"></span>
+                META HIDRATAÇÃO ATUAL
+                <span id="agua_consumidas"></span>/
+                <span id="hidratacao_meta"></span>
+                <span id="hidratacao_porcentagem"></span>
+              </p>
+            </strong>
+          </div>
+
+          <p class="valores" id="valores_unificados">
+            <span class="grupo-linha">
+              <span class="info"><span class="icones" id="icon_min"></span><span id="valor_min"></span></span>
+              <span class="info"><span class="icones" id="icon_media"></span><span id="valor_media"></span></span>
+              <span class="info"><span class="icones" id="icon_max"></span><span id="valor_max"></span></span>
+            </span>
+
+          <div class="info_total">
+            <h1>STREAKS</h1>
+            <div class="linha_streaks">
+              <span id="valor_streakAtual"></span>
+              <span id="valor_streakTotal"></span>
+              <span id="valor_total"></span>
             </div>
-
-            <div class="containers_topo">
-                <div class="container_calorias">
-                    <canvas id="graficoHidratacao"></canvas>
-                </div>
-            </div>
-
+          </div>
+          </p>
         </div>
+      </div>
     </div>
-    
-<!-- <script src="..\componentes\bootstrap\js\bootstrap.bundle.min.js"></script> -->
 
-<script>
+    <div class="linha">
+      <div class="containers_fundo">
+        <div class="container_metricas2">
+          <p class="linha_metrica"><span id="icon_imc" class="icone_metrica"></span>IMC: <span id="imc"></span><span
+              id="status_imc"></span></p>
+          <p class="linha_metrica"><span id="icon_fogo2" class="icone_metrica"></span>TAXA BASAL: <span
+              id="taxa_metabolica"></span></p>
+          <p class="linha_metrica"><span id="icon_gordura" class="icone_metrica"></span>GORDURA CORPORAL: <span
+              id="gordura_corporal"></span></p>
+          <p class="linha_metrica"><span id="icon_agua2" class="icone_metrica"></span>ÁGUA CORPORAL: <span
+              id="agua_corporal"></span></p>
+          <p class="linha_metrica"><span id="icon_musculo" class="icone_metrica"></span>MÚSCULO ESQUELÉTICO: <span
+              id="musculos"></span></p>
+        </div>
+      </div>
+
+      <div class="containers_fundo">
+        <div class="container_graficoMetricas">
+          <canvas id="graficosMetricasGerais"></canvas>
+          <div class="filtros-periodo">
+            <p class="periodo-geral" id="semana">SEMANA</p>
+            <p class="periodo-geral" id="mes">MÊS</p>
+            <p class="periodo-geral" id="ano">ANO</p>
+            <p class="periodo-geral" id="inicio">INÍCIO</p>
+          </div>
+          <input type="range" id="scrollRangeGerais" class="scroll-range" min="0" value="0" step="1" />
+        </div>
+      </div>
+    </div>
+            <div class="espaco-final"></div>
+  </div>
+
+  <script>
     window.addEventListener('error', function fallbackChartJS(e) {
       if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
         const scriptLocal = document.createElement('script');
@@ -49,11 +117,10 @@
         document.head.appendChild(scriptLocal);
       }
     }, true);
-</script>
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script type="module" src="./metricas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="./metricas.js"></script>
 </body>
 
 </html>

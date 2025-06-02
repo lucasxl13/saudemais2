@@ -1,2 +1,463 @@
+/* IMPORTAÇÕES */
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
+
+/* ===== HEADER (navbar) ===== */
+.seta {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: var(--texto);
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.seta:hover {
+  color: #00f285;
+}
+
+/* ===== SIDEBAR ===== */
+/* já importada pelo sideBar.css */
+
+/* ===== CONTAINER PRINCIPAL (estrutura base das colunas) ===== */
+.container_principal {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+}
+.coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ===== COLUNA ESQUERDA ===== */
+.container_esquerda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 44rem;
+  height: 830px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* SVG Silhueta e Medidas Laterais */
+#svg_medidas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+.silhueta {
+  width: 15rem;
+  height: auto;
+}
+.s0 {
+  fill: var(--bg_silhueta) !important;
+}
+.area_silhueta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.coluna_esquerda,
+.coluna_direita {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.texto_meio {
+  margin: 0;
+  color: var(--texto);
+  text-align: center;
+  font-weight: bold;
+}
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 3rem;
+  font-weight: bold;
+}
+.hover_medidas {
+  fill: var(--color6) !important;
+  stroke: #00f285 !important;
+  stroke-width: 0.01rem !important;
+  stroke-linejoin: round !important;
+}
+.texto_hover {
+  color: var(--color6) !important;
+}
+
+/* ===== CONTAINERS DIREITA ===== */
+.containers_direita {
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 46rem;
+  height: 32rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  cursor: pointer;
+}
+.containers_direita:first-of-type {
+  margin-top: 4rem;
+  height: 18.9rem;
+}
+
+/* BLOCO DE MEDIDAS (direita topo) */
+.medidas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 1rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-align: left;
+  height: 100%;
+  gap: 1rem;
+}
+.medidas p:nth-child(1),
+.medidas p:nth-child(5) {
+  align-self: start;
+}
+.medidas p:nth-child(2),
+.medidas p:nth-child(3),
+.medidas p:nth-child(6),
+.medidas p:nth-child(7) {
+  align-self: center;
+}
+.medidas p:nth-child(4),
+.medidas p:nth-child(8) {
+  align-self: end;
+}
+
+/* GRÁFICO E FILTROS (direita base) */
+.periodo {
+  display: inline-block;
+  border: none;
+  padding: 1rem;
+}
+.periodo:hover,
+.periodo.ativo {
+  color:var(--hoverPeriodo);
+}
+.scroll-range {
+  width: 90%;
+  visibility: hidden;
+}
+.scroll-range.visivel {
+  visibility: visible;
+}
+
+/* VARIAÇÕES DE COR */
+.variacao-positiva {
+  margin-left: 0.2rem;
+  color: #27be66;
+  font-weight: bold;
+}
+.variacao-negativa {
+  margin-left: 0.2rem;
+  color: #ff0000;
+  font-weight: bold;
+}
+.variacao-neutra {
+  margin-left: 0.2rem;
+  color: #0091ff;
+  font-weight: bold;
+}
+
+@media (max-width: 388px) {
+
+  .container_principal {
+    flex-direction: column; /* Empilha as colunas */
+    align-items: center;
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 80vw;
+    max-width:300px;
+    height: auto;
+    margin-top: 0.2rem;
+  }
+  .containers_direita:first-of-type {
+  margin-top: 0rem;
+  min-height: 330px;
+}
+  .containers_direita:first-of-type p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+  .silhueta {
+  width: 6rem;
+  height: auto;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 0.1rem;
+  font-weight: bold;
+}
+
+.container_esquerda p{
+  font-size: 0.6rem;
+}
+
+.area_silhueta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+  .medidas {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 0 !important;
+    padding: 0 0;
+  }
+
+  .medidas p {
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
+  }
+
+  .periodo {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  font-size:0.8rem;
+}
+
+.espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
+}
+
+@media (min-width: 390px) and (max-width: 754px) {
+  .container_principal {
+    flex-direction: column; /* Empilha as colunas */
+    align-items: center;
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 80vw;
+    max-width:320px;
+    height: auto;
+    margin-top: 0.2rem;
+  }
+  .containers_direita:first-of-type {
+  margin-top: 0rem;
+  min-height: 330px;
+}
+  .containers_direita:first-of-type p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+  .silhueta {
+  width: 6rem;
+  height: auto;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 0.1rem;
+  font-weight: bold;
+}
+
+.container_esquerda p{
+  font-size: 0.6rem;
+}
+
+.area_silhueta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+  .medidas {
+    display: grid;
+    grid-template-columns: 2fr;
+    font-size: 0.5rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 0 !important;
+    padding: 0 0;
+  }
+
+  .medidas p {
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
+  }
+
+  .periodo {
+  display: inline-block;
+  border: none;
+  padding: 0;
+  font-size:0.8rem;
+}
+
+.espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+}
+
+
+@media (min-width: 755px) and (max-width: 1300px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .coluna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .coluna:nth-of-type(2) {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .container_esquerda,
+  .containers_direita {
+    width: 80vw;
+    max-width: 550px;
+    height: auto;
+    margin-top: 0;
+  }
+
+  .containers_direita:first-of-type {
+    margin-top: 0;
+  }
+
+  .silhueta {
+    width: 8rem;
+    height: auto;
+  }
+
+  .texto_lateral {
+    color: var(--texto);
+    text-align: left;
+    padding: 0.7rem;
+    font-weight: bold;
+  }
+
+  .container_esquerda p {
+    font-size: 0.8rem;
+  }
+
+  .area_silhueta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+
+  .medidas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-align: left;
+    height: 100%;
+    gap: 1rem;
+  }
+
+  .medidas p {
+    align-self: unset;
+    margin: 0; 
+    min-height: 1.8rem;
+  }
+
+  .periodo {
+    display: inline-block;
+    border: none;
+    padding: 0.6rem;
+    font-size: 1rem;
+  }
+
+  .espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent; /* ou coloque uma cor temporária para teste, ex: rgba(255, 0, 0, 0.2); */
+}
+
+}
+
+@media (min-width: 1301px) and (max-width: 1600px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    margin-top: 1rem;
+  }
+
+  .container_esquerda {
+  width:100%;  
+}
+.containers_direita{
+  width:100%;
+}
+  .silhueta {
+  width: 10rem;
+  height: auto;
+}
+
+.texto_lateral {
+  color: var(--texto);
+  text-align: left;
+  padding: 1.7rem;
+  font-weight: bold;
+}
+.container_esquerda p{
+  font-size: 1rem;
+}
+
+  .medidas {
+    font-size: 0.6rem;
+    gap: 0.01rem !important;
+    padding: 0rem 0rem;
+  }
+
+}

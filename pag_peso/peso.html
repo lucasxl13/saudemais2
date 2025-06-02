@@ -2,59 +2,111 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saúde +</title>
-    <link rel="stylesheet" href="peso.css">
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-  </head>
+  <link rel="icon" href="..\Icones\logo.png" type="image/png">
 
-<body>
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css" />
+  <link rel="stylesheet" href="peso.css" />
+</head>
 
-    <header class="navbar navbar-expand-lg navbar-dark fixed-top style_bg_nav">
-        <div class="container-fluid">
-            <button class="btn_sidebar" id="toggleSidebar">Menu</button>
-            <a id="button_menu" class="style_logo" href="#">Saúde <strong id="itemMais_logo">+</strong></a>
+<body class="pagina-peso">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="container_principal">
+
+    <!-- LINHA 1: Peso Atual, Ideal, Variação -->
+    <div class="linha">
+
+      <!-- Peso Atual -->
+      <div class="containers_topo">
+        <div class="container_pesoAtual">
+          <div id="info_medida">
+            <h1><strong>PESO ATUAL</strong></h1>
+            <span id="peso_atual"></span>
+          </div>
         </div>
-    </header>
-
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
-
-    <div class="container_principal">
-
-      <div class="linha">
-          <div class="containers_topo" id="attPeso">
-            <h1><span id="pesos"></span></h1>
-            <h1><span id="variacaoPesos"></span></h1>
-            <h1><span id="StatusPesos"></span></h1>
-          </div>
-
-          <div class="containers_topo">
-            <div class="container_atualizacao"></div>
-          </div>
-
-          <div class="containers_topo">
-            <h1>METRICA ATUAL(MAIOR METRICA)</h1>
-          </div>
       </div>
 
-      <div class="linha">
-          <div class="containers_fundo">
-            <canvas id="graficoPeso"></canvas>
+      <!-- Peso Ideal -->
+<div class="containers_topo">
+  <div class="container_pesoComparacao">
+    <h1><strong>PESO IDEAL</strong></h1>
+    <span id="peso_ideal"></span>
+    <span id="status_peso"></span> <!-- <-- agora DENTRO -->
+  </div>
+</div>
+
+      <!-- Variação -->
+      <div class="containers_topo">
+        <div class="container_pesoVariacao">
+
+          <div class="wrapper_periodo">
+            <span id="peso_periodo">ÚLTIMA SEMANA</span>
           </div>
 
-          <div class="containers_fundo">
-            <div class="container_medida">
-              <div id="silhueta_container"></div>
+          <div class="wrapper_variacoes">
+            <div class="variacaoPercentual">
+              <span id="icone_variacaoPercentual"></span>
+              <span id="peso_variacaoPercentual"></span>
+            </div>
+
+            <div class="variacaoPeso">
+              <span id="icone_variacaoPeso"></span>
+              <span id="peso_variacao"></span>
             </div>
           </div>
+
+          <div class="info_peso">
+            <div>
+              <p>PESO MÉDIO</p>
+              <span id="peso_medio"></span>
+            </div>
+            <div>
+              <p>MAIOR PESO</p>
+              <span id="peso_max"></span>
+            </div>
+            <div>
+              <p>MENOR PESO</p>
+              <span id="peso_min"></span>
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>
-    
-<script>
+
+    <!-- LINHA 2: Gráfico -->
+    <div class="linha">
+      <div class="containers_fundo">
+        <div class="grafico-wrapper">
+          <canvas id="graficoPeso"></canvas>
+
+          <div class="filtros-periodo">
+            <p class="periodo" data-periodo="semana">SEMANA</p>
+            <p class="periodo" data-periodo="mes">MÊS</p>
+            <p class="periodo" data-periodo="ano">ANO</p>
+            <p class="periodo" data-periodo="inicio">INÍCIO</p>
+          </div>
+
+          <input type="range" id="scrollRangePeso" class="scroll-range" min="0" value="0" step="1" />
+        </div>
+      </div>
+    </div>
+<div class="espaco-final"></div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
     window.addEventListener('error', function fallbackChartJS(e) {
       if (e.target.tagName === 'SCRIPT' && e.target.src.includes('chart.js')) {
         const scriptLocal = document.createElement('script');
@@ -62,11 +114,10 @@
         document.head.appendChild(scriptLocal);
       }
     }, true);
-</script>
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script type="module" src="./peso.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="./peso.js"></script>
 </body>
 
 </html>

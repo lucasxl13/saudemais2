@@ -1,159 +1,347 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
+/* ---------------------------- */
+/* ESTILO GERAL E LAYOUT BASE  */
+/* ---------------------------- */
+
 .container_principal {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    margin-top:5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 5rem;
 }
 
 .linha {
-    display:flex;
-    gap:2rem;
-  }
-  
-  .containers_topo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 30rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor:pointer;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .container_usuario{
-    text-align: left;
-  }
-
-  .container_peso {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-  #graficoPeso {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-.container_medida {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.7rem;
-  font-family: var(--fonte-logo);
-  font-weight: bold;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap:1rem;
 }
 
-.area_silhueta {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
+/* ---------------------------- */
+/* SIDEBAR                      */
+/* ---------------------------- */
+
+.sidebar.expanded {
+  width: 150px;
 }
 
-.coluna_esquerda,
-.coluna_direita {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+.sidebar {
+  width: 50px;
 }
 
-#svg_medidas {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+/* ---------------------------- */
+/* TOPO: Gráfico Unificado      */
+/* ---------------------------- */
 
-.silhueta {
-  width: 4.8rem;
-  height: auto;
-}
-
-.s0 {
-  fill: var(--bg_silhueta) !important;
-}
-
-.texto_meio {
-  margin: 0;
-  color: var(--texto);
+.containers_topo {
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  height: 21rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
   text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
-.texto_lateral {
+.containers_topo:nth-child(1) {
+  width: 50rem;
+}
+
+.containers_topo:nth-child(2) {
+  width: 35rem;
+}
+
+.container_graficoUnificado {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centraliza horizontalmente o canvas */
+  justify-content: center;
+}
+
+.filtros-periodo {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.periodo-unificado {
+  border-radius: 6px;
+  background-color: var(--bg_card);
   color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size:1rem;
+}
+
+.periodo-unificado:hover,
+.periodo-unificado.ativo {
+  color:var(--hoverPeriodo);
+}
+
+.scroll-range-unificado {
+  width: 90%;
+  visibility: hidden;
+  margin: 0 auto;
+  display: block;
+}
+
+/* .containers_topo:hover {
+  transform: scale(1.02);
+} */
+
+/* ---------------------------- */
+/* BLOCO CALORIAS E HIDRATAÇÃO */
+/* ---------------------------- */
+
+.calorias, .hidratacao {
+
+  text-align: left;
+   justify-content: left;
+}
+
+#calorias:hover,
+#hidratacao:hover {
+  color:var(--hoverPeriodo);
+}
+
+#calorias.ativo,
+#hidratacao.ativo {
+  color:var(--hoverPeriodo);
+}
+
+.valores {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-weight: bold;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.grupo-linha {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 1rem; /* opcional: para dar um respiro nas laterais */
+}
+
+.grupo-linha .info {
+  text-align: center;
+  min-width: 100px; 
+}
+
+.grupo-linha .info:first-child {
   text-align: left;
 }
 
-  .hover_medidas {
-    fill: var(--color6) !important;
-    stroke: #00f285 !important;
-    stroke-width: 0.2rem !important;
-    stroke-linejoin: round !important;
+.grupo-linha .info:last-child {
+  text-align: right;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.icones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;  /* mantém o ícone grande */
+  height:4rem;
+  margin-top: -0.3rem; /* pequeno ajuste fino */
+}
+
+#icon_maximo .icon-layer {
+  fill: red;
+  stroke: black;
+  stroke-width: 0.4;
+  /* filter: drop-shadow(0 0 0.4px red); */
+}
+
+#icon_minimo .icon-layer {
+  fill: #00bcd4; /* azul claro */
+  stroke: black;
+  stroke-width: 0.4;
+  /* filter: drop-shadow(0 0 0.4px #00f2ff); */
+}
+
+#icon_media {
+  margin-right:-0.4rem;
+}
+
+#icon_media .icon-layer {
+  fill: gold;
+  stroke: black;
+  stroke-width: 0.4;
+  /* filter: drop-shadow(0 0 0.4px gold); */
+}
+
+.icone_streak {
+  width: 3rem !important;
+  height: auto;
+}
+
+.info_total {
+  text-align: center;
+  font-size:0.9rem;
+}
+
+.info_total h1 {
+  margin-top: 0.1rem;
+  font-size: 1.7rem;
+  font-weight: bold;
+  padding: 0 1rem;
+}
+
+.linha_streaks {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  padding: 0 1rem;
+}
+
+#valor_streakAtual:hover,#valor_streakTotal:hover, #valor_total:hover{
+ color:var(--hoverPeriodo);
+}
+
+
+/* ---------------------------- */
+/* LINHA INFERIOR (Containers) */
+/* ---------------------------- */
+
+.containers_fundo {
+  height: 23rem;
+  background-color: var(--bg_container);
+  border-radius: 10px;
+  padding: 0.7rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.containers_fundo:nth-child(1) {
+  width: 30rem;
+}
+
+.containers_fundo:nth-child(2) {
+  width: 55rem;
+}
+
+/* .containers_fundo:hover {
+  transform: scale(1.02);
+} */
+
+.container_metricas2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* <-- muda de space-between para center */
+  height: 100%; /* ou mantenha 80% se o pai permitir */
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+  padding: 0.2rem 0;
+  gap: 0.7rem; /* opcional: adiciona espaçamento entre as métricas */
+}
+
+.linha_metrica {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.icone_metrica {
+  display: inline-flex;
+  width: 4rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.container_metricas2 p.linha_metrica:not(:nth-child(-n+2)):hover {
+  color:var(--hoverPeriodo);
+}
+
+#icon_imc{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(26, 255, 0);
+}
+#icon_fogo2{
+    width: 2rem !important;
+  height: auto;
+}
+#icon_agua2{
+    width: 2rem !important;
+  height: auto;
+}
+
+#icon_gordura{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(255, 234, 0);
+}
+
+#icon_musculo{
+    width: 2rem !important;
+  height: auto;
+  color:rgb(255, 39, 39);
+}
+
+.container_graficoMetricas {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* isso centraliza tudo que tiver dentro */
+  /* gap: 1rem; espaçamento entre canvas, filtros e range */
+}
+
+
+.scroll-range {
+  visibility: hidden;
+  width: 80%;
+  margin: 0 auto;
+}
+.scroll-range.visivel {
+  visibility: visible;
+}
+
+.periodo-geral {
+  border-radius: 6px;
+  background-color: var(--bg_card); /* ou algo neutro */
+  color: var(--texto);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size:1rem;
+}
+
+.periodo-geral:hover,
+.periodo-geral.ativo {
+  color:var(--hoverPeriodo);
+}
+
+
+  .espaco-final {
+  width: 100%;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: transparent;
   }
 
-  .containers_meio {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 30rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor:pointer;
-    transition: transform 0.3s ease-in-out;
-  }
 
-  .container_calorais {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-  
-  #graficoCaloria {
-    width: 100% !important;
-    height: auto !important;
-  }
+/* ---------------------------- */
+/* RESPONSIVIDADE MOBILE        */
+/* ---------------------------- */
 
-  .container_hidratacao {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-  
-  #graficoHidratacao {
-    width: 100% !important;
-    height: auto !important;
-  }
-
-
-  .containers_fundo {
-    background-color: var(--bg_container);
-    border-radius: 10px;
-    padding: 0.7rem;
-    width: 46rem;
-    height: 16rem;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    cursor:pointer;
-    transition: transform 0.3s ease-in-out;
-  }
-
-  .containers_topo:hover,.containers_meio:hover,.containers_fundo:hover {
-    transform: scale(1.05);
-  }
-
-
-/* RESPONSIVIDADE */
-@media (max-width: 768px) {
+@media (max-width: 389px) {
   .container_principal {
     margin-left: 50px;
     width: calc(100% - 50px);
@@ -163,121 +351,207 @@
   .linha {
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: auto; /* respeita o tamanho do container pai */
   }
 
   .containers_topo,
-  .containers_meio,
-  .containers_fundo {
-    width: 80vw;            /* ocupa 90% da largura visível */
-    min-width: 280px;       /* não encolhe demais */
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 80vw;
+    min-width: 280px;
     height: auto;
-    border-radius: 10px;
   }
 
   .containers_topo:hover,
-  .containers_meio:hover,
   .containers_fundo:hover {
     transform: none;
   }
 
-  .sidebar.expanded {
-    width: 150px;
+  .container_metricas1 p{
+    font-size: 0.8rem;
   }
 
-  .sidebar {
-    width: 50px;
+  .containers_fundo p {
+    font-size: 0.7rem;
   }
 
-  .silhueta {
-    width:4.5rem;
-    height: auto;
+  .grupo-linha {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+    font-size: 0.8rem;
+    width: 100%;
   }
 
-  .container_medida {
+  .grupo-linha .info {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.56rem;
-    font-family: var(--fonte-logo);
-    font-weight: bold;
-    gap: 0.5rem;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0; /* impede que estoure o layout */
+  }
+
+  .grupo-linha .info:first-child {
+    align-items: flex-start;
+  }
+
+  .grupo-linha .info:last-child {
+    align-items: flex-end;
+  }
+
+  .icones {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .linha_streaks {
+    font-size:0.6rem;
+    padding: 0 0.1rem;
+  }
+
+}
+@media (min-width: 390px) and (max-width: 766px) {
+  .container_principal {
+    margin-left: 50px;
+    width: calc(100% - 50px);
+    align-items: center;
+  }
+
+  .linha {
+    flex-direction: column;
+    align-items: center;
+    width: auto; /* respeita o tamanho do container pai */
+  }
+
+  .containers_topo,
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 80vw;
+    min-width: 280px;
+    height: auto;
+  }
+
+  .containers_topo:hover,
+  .containers_fundo:hover {
+    transform: none;
+  }
+
+  .container_metricas1 p{
+    font-size: 0.8rem;
+  }
+
+  .containers_fundo p {
+    font-size: 0.7rem;
+  }
+
+  .grupo-linha {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+
+  .grupo-linha .info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0; /* impede que estoure o layout */
+  }
+
+  .grupo-linha .info:first-child {
+    align-items: flex-start;
+  }
+
+  .grupo-linha .info:last-child {
+    align-items: flex-end;
+  }
+
+  .icones {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .linha_streaks {
+    font-size:0.6rem;
+    padding: 0 0.1rem;
   }
 
 }
 
-@media (min-width: 769px) and (max-width: 1360px) {
-    .container_principal {
-      margin-left: 60px;
-      width: calc(100% - 60px);
-      align-items: center;
-    }
-  
-    .linha {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-    }
-  
-    .containers_topo,
-    .containers_meio,
-    .containers_fundo {
-      width: 40rem;         /* largura intermediária para tablets */
-      height: auto;
-      min-width: 300px;
-    }
-  
-    .sidebar.expanded {
-      width: 150px;
-    }
-  
-    .sidebar {
-      width: 50px;
-    }
+
+/* ---------------------------- */
+/* RESPONSIVIDADE TABLET        */
+/* ---------------------------- */
+
+@media (min-width: 767px) and (max-width: 1278px) {
+  .container_principal {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    align-items: center;
   }
 
-  @media (min-width: 1361px) and (max-width: 1600px) {
-    .container_principal {
-      margin-left: 60px;
-      width: calc(100% - 60px);
-      align-items: center;
-    }
-
-    .linha {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-    }
-  
-    .containers_topo,
-    .containers_meio{
-      width: 24rem;       /* reduzido para caber 3 por linha */
-      height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
-    }
-
-
-    .containers_fundo {
-        width: 37rem;       /* reduzido para caber 3 por linha */
-        height: 15rem;      /* ligeiramente menor se quiser mais espaço vertical */
-    }
-
-    .silhueta {
-      width:4.5rem;
-      height: auto;
-    }
-
-    .container_medida {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-size: 0.67rem;
-      font-family: var(--fonte-logo);
-      font-weight: bold;
-      gap: 0.5rem;
-    }
-
+  .linha {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 
-  
-  
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 40rem;
+    height: auto;
+    min-width: 300px;
+  }
+
+
+  .containers_fundo:hover {
+    transform: none;
+  }
+}
+
+/* ---------------------------- */
+/* RESPONSIVIDADE DESKTOP MÉDIO */
+/* ---------------------------- */
+
+@media (min-width: 1279px) and (max-width: 1600px) {
+  .container_principal {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+    align-items: center;
+  }
+
+  .linha {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .containers_topo:nth-child(1),
+  .containers_topo:nth-child(2),
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    width: 40rem;
+    height: auto;
+    min-width: 300px;
+  }
+
+  .containers_fundo:nth-child(1),
+  .containers_fundo:nth-child(2) {
+    height: 19rem;
+  }
+
+
+  .containers_fundo:hover {
+    transform: none;
+  }
+}
