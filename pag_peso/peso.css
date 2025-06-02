@@ -604,11 +604,6 @@ h1,#peso_periodo {
   display: flex;
   gap: 1rem;
 }
-#graficoPeso {
-  display: block;
-  width: 100% !important;
-  height: auto !important;
-}
 
 .filtros-periodo {
   font-size: 0.7rem;
