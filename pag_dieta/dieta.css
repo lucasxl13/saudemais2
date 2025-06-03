@@ -139,7 +139,6 @@
 
 
   .svg {
-    transform: rotate(-90deg);
     width: 150px !important;
     height: 150px !important;
   }
@@ -279,13 +278,13 @@ body {
 .ring-bg {
   fill: none;
   stroke: #333;
-  stroke-width: 10;
+  stroke-width: 20;
 }
 
 .ring-progress {
   fill: none;
   stroke: #66ffcc;
-  stroke-width: 10;
+  stroke-width: 20;
   stroke-dasharray: 314;
   stroke-dashoffset: 314;
   transition: stroke-dashoffset 0.5s;
