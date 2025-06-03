@@ -52,7 +52,7 @@ body {
 
 .titulo {
     font-size: 2.5rem;
-    color: #000000;
+    color:var(--texto);
     margin-top: 25px;
     margin-bottom: 25px;
 }
@@ -134,7 +134,7 @@ outline: 2px solid black;
   }
   
   input.erro {
-    background-color: rgba(255, 0, 0, 0.055);
+     box-shadow: inset 0 0 0 1000px rgba(255, 0, 0, 0.1);
     border-color: #ff0000;
   }
 
@@ -150,14 +150,14 @@ outline: 2px solid black;
   .btn_progresso {
     font-size: 40px;
     cursor: pointer;
-    color: rgb(0, 0, 0);
+    color: var(--texto);
     background: none;
     border: none;
     transition: background-color 0.5s ease, color 0.5s ease;
   }
   
   .btn_progresso:hover {
-    color: aqua;
+    color: rgb(0, 255, 179);
   }
 
 .progresso_cadastro{
@@ -170,16 +170,16 @@ outline: 2px solid black;
   .dot1, .dot2, .dot3, .dot4 {
     width: 10px;
     height: 10px;
-    background-color: #c4c4c4;
+    background-color: var(--dots);
     border-radius: 50%;
   }
   
   .dot1.active, .dot2.active, .dot3.active, .dot4.active {
-    background-color: #444444;
+    background-color:var(--dotsAtivo);
   }
 
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .container-principal {
         width: 95%; 
     }
@@ -317,7 +317,7 @@ input[type="range"]::-webkit-slider-thumb {
 .sexo-btn svg {
   width: 2rem;
   height: 2rem;
-  fill: #000; /* Cor padrão do SVG */
+  fill: var(--texto);
 }
 
 #sexo-feminino svg:hover{
@@ -349,9 +349,13 @@ input[type="range"]::-webkit-slider-thumb {
   gap: 15px; 
 }
 
-#metaicon{
+.metaicon{
   width: 50px;
   height: 50px;
+}
+
+.dark-mode .metaicon {
+  filter: brightness(0) invert(1);
 }
 
 .meta-text {
@@ -389,13 +393,14 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .scroll_termos{
+  color:var(--texto);
   width: 100%;
   height: 9rem;
-  border: 1px solid #ccc; 
+  border: 2px solid var(--texto);
   padding: 10px;
   overflow-y: scroll; 
   overflow-x: hidden;
-  background-color: #f9f9f9; 
+  background-color:var(--scroll);
   font-size: 14px;
   line-height: 1.8;
   word-wrap: break-word;

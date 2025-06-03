@@ -6,8 +6,17 @@ import { atualizarMetricaNoServidor } from '../Funcoes/atualizarMetrica.js';
 import { exibirControleDeDigitos  } from '../Funcoes/atualizarMedidas.js';
 import icones from '../Funcoes/icones.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+
 inicializarNavbarETema();
 
+// ⚠️ Adicionamos a função local para calcular o aspectRatio inicial
+function calcularAspectRatio() {
+  const largura = window.innerWidth;
+  if (largura < 390) return 1.3;
+  if (largura < 768) return 2.2;
+  if (largura < 1024) return 3;
+  return 3.7;
+}
 
 const API_BASE_URL = window.location.hostname === "127.0.0.1"
   ? "http://localhost:3000"
@@ -30,8 +39,8 @@ async function inicializarStreak(API_BASE_URL) {
 
   if (dataServidor) {
     window.periodoAtualPeso = 'semana'; // default
-    window.aspectRatioPeso = 3.7; // default
-    filtroGraficoPeso(dataServidor, 'semana', 3.7);
+    window.aspectRatioPeso = calcularAspectRatio(); // ✅ uso dinâmico
+    filtroGraficoPeso(dataServidor, 'semana', window.aspectRatioPeso, null, 'dd/mm');
     configurarEventosPeriodo(dataServidor);
   }
 }
@@ -48,28 +57,31 @@ function configurarEventosPeriodo(dataServidor) {
       const tipo = btn.dataset.periodo;
       window.periodoAtualPeso = tipo;
 
-      // Começar do final ao mudar período
-      filtroGraficoPeso(dataServidor, tipo, window.aspectRatioPeso || 3.7, null);
+      const formatoData = tipo === 'inicio' ? 'dd/mm/aa' : 'dd/mm';
+      const aspectRatioAtual = calcularAspectRatio(); // ✅ recalcular no clique
+
+      filtroGraficoPeso(dataServidor, tipo, aspectRatioAtual, null, formatoData);
     });
   });
 
   scroll.addEventListener("input", (e) => {
     const offset = parseInt(e.target.value);
     const tipo = window.periodoAtualPeso || "semana";
-    filtroGraficoPeso(dataServidor, tipo, window.aspectRatioPeso || 3.7, offset);
+    const formatoData = tipo === 'inicio' ? 'dd/mm/aa' : 'dd/mm';
+    const aspectRatioAtual = calcularAspectRatio(); // ✅ recalcular no scroll
+
+    filtroGraficoPeso(dataServidor, tipo, aspectRatioAtual, offset, formatoData);
   });
 
   const btnSemana = document.querySelector('.periodo[data-periodo="semana"]');
   if (btnSemana) btnSemana.classList.add('ativo');
 }
 
-
 const peso = document.getElementById("peso_atual");
 peso.textContent = ultimoRegistro.peso.toFixed(1).replace('.', ',') + " kg";
 
 const peso_ideal = document.getElementById("peso_ideal");
 const pesoIdeal = 21.75 * ((ultimoRegistro.altura / 100) ** 2);
-
 peso_ideal.textContent = pesoIdeal.toFixed(1).replace('.', ',') + " kg";
 
 const statusPeso = document.getElementById("status_peso");

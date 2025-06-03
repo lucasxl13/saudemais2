@@ -155,8 +155,9 @@ function default_pag1(){
   pag2.style.display = 'none';
   pag3.style.display = 'none';
   pag4.style.display = 'none';
-  btn_back.style.display ="none";
+  btn_back.style.display = "block"; // <-- Deixa o botão visível
 }
+
 
 //Disposição Default dos elementos da Pag2
 function default_pag2(){
@@ -258,9 +259,12 @@ function atualizarPagina() {
 //Para retroceder o formulario a qualquer momento.
 btn_back.addEventListener("click", function (event) {
   event.preventDefault();
-  if(pag>0){
+  if (pag > 0) {
     pag--;
     atualizarPagina();
+  } else {
+    // Se estiver na primeira página, redireciona para login
+    window.location.href = "../pag_login/login.html";
   }
 });
 
@@ -723,6 +727,8 @@ function validarTerceiraPagina() {
   return valido3;
 }
 
+const scroll = getComputedStyle(document.documentElement).getPropertyValue('--scroll');
+
 //Função para o texto da checkbox funcionar como parte do checkbox.
 const scroll_termos = document.getElementById('scroll_termos');
 document.getElementById('termos_texto').addEventListener('click', function() {
@@ -735,7 +741,7 @@ document.getElementById('termos_texto').addEventListener('click', function() {
     checkbox.checked = true;
     checkbox.style.outline = "none";
     scroll_termos.style.outline = "none";
-    scroll_termos.style.background = "#f9f9f9";
+    scroll_termos.style.background = scroll;
   }
   });
 

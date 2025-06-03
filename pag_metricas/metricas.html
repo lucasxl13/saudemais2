@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Saúde +</title>
+    <title>Saúde +</title>
+  <link rel="icon" href="..\Icones\logo.png" type="image/png">
   <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
   <link rel="stylesheet" href="metricas.css">
@@ -56,34 +57,56 @@
             </strong>
           </div>
 
-<p class="valores" id="valores_unificados">
-  <span class="grupo-linha">
-    <span class="info"><span class="icones" id="icon_min"></span><span id="valor_min"></span></span>
-     <span class="info"><span class="icones" id="icon_media"></span><span id="valor_media"></span></span>
-    <span class="info"><span class="icones" id="icon_max"></span><span id="valor_max"></span></span>
-   
-  </span>
+          <p class="valores" id="valores_unificados">
+            <span class="grupo-linha">
+              <span class="info"><span class="icones" id="icon_min"></span><span id="valor_min"></span></span>
+              <span class="info"><span class="icones" id="icon_media"></span><span id="valor_media"></span></span>
+              <span class="info"><span class="icones" id="icon_max"></span><span id="valor_max"></span></span>
+            </span>
 
-  <span class="info total">
-    TOTAL DE DIAS <span id="valor_total"></span> DIAS
-  </span>
-</p>
+          <div class="info_total">
+            <h1>STREAKS</h1>
+            <div class="linha_streaks">
+              <span id="valor_streakAtual"></span>
+              <span id="valor_streakTotal"></span>
+              <span id="valor_total"></span>
+            </div>
+          </div>
+          </p>
         </div>
       </div>
     </div>
 
     <div class="linha">
       <div class="containers_fundo">
-        <div class="container_metricas2"></div>
+        <div class="container_metricas2">
+          <p class="linha_metrica"><span id="icon_imc" class="icone_metrica"></span>IMC: <span id="imc"></span><span
+              id="status_imc"></span></p>
+          <p class="linha_metrica"><span id="icon_fogo2" class="icone_metrica"></span>TAXA BASAL: <span
+              id="taxa_metabolica"></span></p>
+          <p class="linha_metrica"><span id="icon_gordura" class="icone_metrica"></span>GORDURA CORPORAL: <span
+              id="gordura_corporal"></span></p>
+          <p class="linha_metrica"><span id="icon_agua2" class="icone_metrica"></span>ÁGUA CORPORAL: <span
+              id="agua_corporal"></span></p>
+          <p class="linha_metrica"><span id="icon_musculo" class="icone_metrica"></span>MÚSCULO ESQUELÉTICO: <span
+              id="musculos"></span></p>
+        </div>
       </div>
 
       <div class="containers_fundo">
         <div class="container_graficoMetricas">
-          <p>GRAFICOS PERIODOS</p>
-          <p>PERIODO(SEMANA/MES/ANO/INICIO)</p>
+          <canvas id="graficosMetricasGerais"></canvas>
+          <div class="filtros-periodo">
+            <p class="periodo-geral" id="semana">SEMANA</p>
+            <p class="periodo-geral" id="mes">MÊS</p>
+            <p class="periodo-geral" id="ano">ANO</p>
+            <p class="periodo-geral" id="inicio">INÍCIO</p>
+          </div>
+          <input type="range" id="scrollRangeGerais" class="scroll-range" min="0" value="0" step="1" />
         </div>
       </div>
     </div>
+            <div class="espaco-final"></div>
   </div>
 
   <script>

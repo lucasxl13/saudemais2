@@ -31,7 +31,12 @@ body {
     --hoverIcones:#acf8d4;
     --bg_container:#ffffff;
     --bg_silhueta:rgba(255, 255, 255, 0);
-    --graficoCircular:#ffffff;
+    --graficoCircular:#f4f4f4;
+    --dots:#c4c4c4;
+    --dotsAtivo: #737373;
+    --scroll:rgb(255, 255, 255);
+    --hoverPeriodo:rgb(255, 0, 0);
+    --vermelho:rgb(255, 0, 0);
 
 
     color: var(--texto);
@@ -54,6 +59,11 @@ body.dark-mode {
     --bg_container:#3b3b3b;
     --bg_silhueta:rgba(255, 255, 255, 0.224);
     --graficoCircular:#636363;
+    --dots:#ffffff;
+    --dotsAtivo: #75ffb6;
+    --scroll:rgb(35, 35, 35);
+    --hoverPeriodo:rgb(0, 255, 115);
+    --vermelho:rgb(255, 91, 91);
     
     color: var(--texto);
     font-family: var(--fonte-logo);

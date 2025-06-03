@@ -68,6 +68,14 @@ inputToggle.addEventListener('change', () => {
     window.chartGlobal.update();
   }
 
+    if (window.chartMetricasGerais) {
+    window.chartMetricasGerais.options.scales.x.ticks.color = textoCor;
+    window.chartMetricasGerais.options.scales.y.ticks.color = textoCor;
+    window.chartMetricasGerais.options.plugins.legend.labels.color = textoCor;
+    window.chartMetricasGerais.update();
+  }
+
+
   if (window.graficoCaloriaCircular) {
   const corBase = getComputedStyle(document.body).getPropertyValue('--graficoCircular').trim();
   window.graficoCaloriaCircular.data.datasets[0].backgroundColor = ["rgb(255, 98, 0)", corBase];
@@ -92,11 +100,15 @@ if (window.graficoUnificado) {
   grupoBotoes.appendChild(btnMenu);
   grupoBotoes.appendChild(btnTema);
 
-  const logo = document.createElement('a');
-  logo.id = 'button_menu';
-  logo.className = 'style_logo';
-  logo.href = '#';
-  logo.innerHTML = 'Saúde <strong id="itemMais_logo">+</strong>';
+const logo = document.createElement('a');
+logo.id = 'button_menu';
+logo.className = 'style_logo';
+logo.href = '#';
+logo.innerHTML = 'Saúde <strong id="itemMais_logo">+</strong>';
+logo.addEventListener('click', (e) => {
+  e.preventDefault(); // impede o comportamento padrão do link
+  location.reload();  // recarrega a página atual
+});
 
   container.appendChild(grupoBotoes);
   container.appendChild(logo);

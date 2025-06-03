@@ -14,12 +14,29 @@ function formatDate(dataISO, formato = 'dd/mm/aa') {
   return `${dia}/${mes}/${ano}`;
 }
 
+// Define o aspectRatio ideal com base na largura da tela
+function calcularAspectRatio() {
+  const largura = window.innerWidth;
+
+  if (largura < 400) return 1.3;
+  if (largura < 768) return 2.2;
+  if (largura < 1024) return 3;
+  return 3.7;
+}
 
 // Atualiza ou cria o gráfico de peso
-export function atualizarGraficoPeso(dados, aspectRatio = 2, formatoData = 'dd/mm/aa') {
+export function atualizarGraficoPeso(dados, aspectRatio = calcularAspectRatio(), formatoData = 'dd/mm/aa') {
   const datas = dados.map(m => formatDate(m.registrado_em, formatoData));
   const pesos = dados.map(m => +(parseFloat(m.peso).toFixed(1)));
   const textoCor = getComputedStyle(document.body).getPropertyValue('--texto').trim();
+
+  // Fonte dinâmica
+  const largura = window.innerWidth;
+  let fontSizeBase = 11;
+  if (largura < 400) fontSizeBase = 10;
+  else if (largura < 768) fontSizeBase = 11;
+  else if (largura < 1024) fontSizeBase = 12;
+  else fontSizeBase = 14;
 
   if (!graficoPeso) {
     const ctx = document.getElementById('graficoPeso').getContext('2d');
@@ -43,6 +60,9 @@ export function atualizarGraficoPeso(dados, aspectRatio = 2, formatoData = 'dd/m
           title: { display: false },
           legend: { display: false },
           tooltip: {
+            bodyFont: {
+              size: fontSizeBase + 1
+            },
             callbacks: {
               label: function (context) {
                 return `${context.parsed.y} kg`;
@@ -54,19 +74,20 @@ export function atualizarGraficoPeso(dados, aspectRatio = 2, formatoData = 'dd/m
           y: {
             beginAtZero: false,
             ticks: {
-              color: textoCor
+              color: textoCor,
+              font: { size: fontSizeBase }
             }
           },
           x: {
             ticks: {
-              color: textoCor
+              color: textoCor,
+              font: { size: fontSizeBase }
             }
           }
         }
       }
     });
 
-    // Expõe globalmente para atualização futura
     window.graficoPeso = graficoPeso;
 
   } else {
@@ -74,14 +95,18 @@ export function atualizarGraficoPeso(dados, aspectRatio = 2, formatoData = 'dd/m
     graficoPeso.data.datasets[0].data = pesos;
     graficoPeso.options.aspectRatio = aspectRatio;
 
-    // Atualiza as cores com base no tema
     graficoPeso.options.scales.y.ticks.color = textoCor;
     graficoPeso.options.scales.x.ticks.color = textoCor;
+    graficoPeso.options.scales.y.ticks.font.size = fontSizeBase;
+    graficoPeso.options.scales.x.ticks.font.size = fontSizeBase;
+    graficoPeso.options.plugins.tooltip.bodyFont.size = fontSizeBase + 1;
 
     graficoPeso.update();
   }
 }
-export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = 2, offset = null, formatoData = 'dd/mm/aa') {
+
+// Filtra e atualiza os dados do gráfico
+export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = calcularAspectRatio(), offset = null, formatoData = 'dd/mm/aa') {
   const metricas = window.usuarioLogado?.historico_metricas;
   if (!metricas || !dataServidor) return;
 
@@ -105,9 +130,9 @@ export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = 2
 
   const dadosFiltrados = dataInicio
     ? metricas.filter(item => {
-      const data = new Date(item.registrado_em);
-      return data >= dataInicio && data <= hoje;
-    })
+        const data = new Date(item.registrado_em);
+        return data >= dataInicio && data <= hoje;
+      })
     : metricas;
 
   window.dadosGraficoPeso = dadosFiltrados;
@@ -150,9 +175,8 @@ export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = 2
     const spanVariacaoPercentual = document.getElementById('peso_variacaoPercentual');
     if (spanVariacaoPercentual) {
       spanVariacaoPercentual.textContent = `${prefixo}${variacaoFormatada} %`;
-      spanVariacaoPercentual.style.color = variacao > 0 ? 'rgb(0, 255, 140)' : variacao < 0 ? 'rgb(255, 0, 0)' : 'var(--texto)';
+      spanVariacaoPercentual.style.color = variacao > 0 ? 'rgb(0, 163, 89)' : variacao < 0 ? 'rgb(255, 0, 0)' : 'var(--texto)';
       spanVariacaoPercentual.style.fontWeight = 'bold';
-
     }
 
     const diferencaKg = pesoFinal - pesoInicial;
@@ -162,8 +186,8 @@ export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = 2
     const spanVariacaoKg = document.getElementById('peso_variacao');
     if (spanVariacaoKg) {
       spanVariacaoKg.textContent = `${prefixoKg}${diferencaKgFormatada} kg`;
-      spanVariacaoKg.style.color = diferencaKg > 0 ? 'rgb(0, 255, 140)' : diferencaKg < 0 ? 'rgb(255, 0, 0)' : 'var(--texto)';
-      spanVariacaoPercentual.style.fontWeight = 'bold';
+      spanVariacaoKg.style.color = diferencaKg > 0 ? 'rgb(0, 163, 89)' : diferencaKg < 0 ? 'rgb(255, 0, 0)' : 'var(--texto)';
+      spanVariacaoKg.style.fontWeight = 'bold';
     }
 
     const pesosDoPeriodo = dadosFiltrados.map(item => parseFloat(item.peso));
@@ -180,23 +204,50 @@ export function filtroGraficoPeso(dataServidor, tipo = 'semana', aspectRatio = 2
     if (spanMax) spanMax.textContent = `${maxPeso} kg`;
     if (spanMin) spanMin.textContent = `${minPeso} kg`;
 
-    const spanPeriodo = document.getElementById('peso_periodo');
-    if (spanPeriodo) {
-      const nomes = {
-        semana: 'ÚLTIMA SEMANA',
-        mes: 'ÚLTIMO MÊS',
-        ano: 'ÚLTIMO ANO',
-        inicio: 'DESDE O INICIO'
-      };
-      spanPeriodo.textContent = nomes[tipo] || '';
+  } else if (dadosFiltrados.length === 1) {
+    const peso = parseFloat(dadosFiltrados[0].peso).toFixed(1).replace('.', ',');
+
+    const spanVariacaoPercentual = document.getElementById('peso_variacaoPercentual');
+    if (spanVariacaoPercentual) {
+      spanVariacaoPercentual.textContent = `0,0 %`;
+      spanVariacaoPercentual.style.color = 'var(--texto)';
+      spanVariacaoPercentual.style.fontWeight = 'bold';
     }
 
+    const spanVariacaoKg = document.getElementById('peso_variacao');
+    if (spanVariacaoKg) {
+      spanVariacaoKg.textContent = `0,0 kg`;
+      spanVariacaoKg.style.color = 'var(--texto)';
+      spanVariacaoKg.style.fontWeight = 'bold';
+    }
+
+    const spanMedia = document.getElementById('peso_medio');
+    const spanMax = document.getElementById('peso_max');
+    const spanMin = document.getElementById('peso_min');
+
+    if (spanMedia) spanMedia.textContent = `${peso} kg`;
+    if (spanMax) spanMax.textContent = `${peso} kg`;
+    if (spanMin) spanMin.textContent = `${peso} kg`;
+  }
+
+  const spanPeriodo = document.getElementById('peso_periodo');
+  if (spanPeriodo) {
+    const nomes = {
+      semana: 'ÚLTIMA SEMANA',
+      mes: 'ÚLTIMO MÊS',
+      ano: 'ÚLTIMO ANO',
+      inicio: 'DESDE O INÍCIO'
+    };
+    spanPeriodo.textContent = nomes[tipo] || '';
   }
 }
 
 // Redimensiona o gráfico corretamente ao redimensionar a janela
 window.addEventListener('resize', () => {
   if (graficoPeso) {
+    const novoAspect = calcularAspectRatio();
+    graficoPeso.options.aspectRatio = novoAspect;
     graficoPeso.resize();
+    graficoPeso.update();
   }
 });

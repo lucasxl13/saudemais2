@@ -2,6 +2,7 @@ import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { obterDataDoServidor } from '../Funcoes/dataServidor.js';
 import { filtroGraficoMetricas } from '../Funcoes/graficos/graficoCaloriasHidratacao.js';
+import { graficoMetricas } from '../Funcoes/graficos/graficoMetricas.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
 import icones from '../Funcoes/icones.js';
 import { maior, menor, media, streak } from '../Funcoes/filtroMaiorMenor.js';
@@ -24,6 +25,7 @@ console.log(metricas);
 const dataServidorInicial = await obterDataDoServidor(API_BASE_URL);
 if (dataServidorInicial) {
   filtroGraficoMetricas(dataServidorInicial, 'calorias'); // default
+  graficoMetricas(metricas, dataServidorInicial);
   atualizarValores("calorias", dataServidorInicial); // ✅ corrigido
 }
 
@@ -38,6 +40,9 @@ document.getElementById("icon_agua").appendChild(icones.water(ultimoRegistro.str
 document.getElementById("agua_consumidas").textContent = " : " + ultimoRegistro.hidratacao.consumido;
 document.getElementById("hidratacao_meta").textContent = ultimoRegistro.hidratacao.meta + " ml";
 document.getElementById("hidratacao_porcentagem").textContent = "(" + ((ultimoRegistro.hidratacao.consumido / ultimoRegistro.hidratacao.meta) * 100).toFixed(0) + "%)";
+
+document.getElementById("valor_streakAtual").textContent = "ATUAL " + ultimoRegistro.streak_caloria + " Dia(s)";
+document.getElementById("valor_streakTotal").textContent = "RECORDE " + maior(metricas, "streak_caloria") + " Dia(s)";
 
 function atualizarValores(tipo, dataServidor) {
   const sufixo = tipo === 'calorias' ? 'kcal' : 'ml';
@@ -67,7 +72,7 @@ function atualizarValores(tipo, dataServidor) {
     `${media(metricas, chave, dataServidor, periodo).toFixed(0)} ${sufixo}`;
 
   document.getElementById("valor_total").textContent =
-    `(${streak(metricas, streakKey, dataServidor, periodo)})`;
+    `HISTÓRICO (${streak(metricas, streakKey, dataServidor, periodo)}) Dia(s)`;
 }
 
 const caloriasEl = document.getElementById("calorias");
@@ -81,9 +86,12 @@ caloriasEl.addEventListener("click", async () => {
 
   caloriasEl.classList.add("ativo");
   hidratacaoEl.classList.remove("ativo");
-  
+
   document.querySelectorAll('.periodo-unificado').forEach(b => b.classList.remove('ativo'));
   document.querySelector('[data-periodo="semana"]').classList.add('ativo');
+
+  document.getElementById("valor_streakAtual").textContent = "ATUAL " + ultimoRegistro.streak_caloria + " Dia(s)";
+  document.getElementById("valor_streakTotal").textContent = "RECORDE " + maior(metricas, "streak_caloria") + " Dia(s)";
 
   const dataServidor = await obterDataDoServidor(API_BASE_URL);
   filtroGraficoMetricas(dataServidor, 'calorias', 'semana');
@@ -99,6 +107,9 @@ hidratacaoEl.addEventListener("click", async () => {
 
   document.querySelectorAll('.periodo-unificado').forEach(b => b.classList.remove('ativo'));
   document.querySelector('[data-periodo="semana"]').classList.add('ativo');
+
+  document.getElementById("valor_streakAtual").textContent = "ATUAL " + ultimoRegistro.streak_hidratacao + " Dia(s)";
+  document.getElementById("valor_streakTotal").textContent = "RECORDE " + maior(metricas, "streak_hidratacao") + " Dia(s)";
 
   const dataServidor = await obterDataDoServidor(API_BASE_URL);
   filtroGraficoMetricas(dataServidor, 'hidratacao', 'semana');
@@ -129,3 +140,43 @@ document.getElementById("scrollRangeUnificado").addEventListener("input", async 
   filtroGraficoMetricas(dataServidor, window.tipoAtualUnificado, window.periodoAtualUnificado, offset);
   atualizarValores(window.tipoAtualUnificado, dataServidor); // ✅ opcional, se quiser atualizar ao scroll
 });
+
+let basal;
+
+if (dados_usuario.objetivo == 1) {
+  basal = (ultimoRegistro.calorias.meta / 0.8).toFixed(0);
+} else if (dados_usuario.objetivo == 2) {
+  basal = (ultimoRegistro.calorias.meta / 1.2).toFixed(0);
+} else {
+  basal = ultimoRegistro.calorias.meta;
+}
+
+document.getElementById("icon_imc").appendChild(icones.imc());
+document.getElementById("imc").textContent = ultimoRegistro.imc.toFixed(2);
+let status_imc;
+
+if (ultimoRegistro.imc < 18.5) {
+  status_imc = "ABAIXO DO PESO";
+} else if (ultimoRegistro.imc < 24.9) {
+  status_imc = "PESO NORMAL";
+} else if (ultimoRegistro.imc < 29.9) {
+  status_imc = "SOBREPESO";
+} else if (ultimoRegistro.imc < 34.9) {
+  status_imc = "OBESIDADE GRAU 1";
+} else if (ultimoRegistro.imc < 39.9) {
+  status_imc = "OBESIDADE GRAU 2";
+} else {
+  status_imc = "OBESIDADE GRAU 3";
+}
+
+document.getElementById("icon_fogo2").appendChild(icones.fire2(0, false));
+document.getElementById("taxa_metabolica").textContent = basal + " kCal";
+
+document.getElementById("icon_gordura").appendChild(icones.porcentagem2());
+document.getElementById("gordura_corporal").textContent = ultimoRegistro.gordura.toFixed(2) + "%";
+
+document.getElementById("icon_agua2").appendChild(icones.water2(0, false));
+document.getElementById("agua_corporal").textContent = ultimoRegistro.agua.toFixed(2) + " kg";
+
+document.getElementById("icon_musculo").appendChild(icones.musculo());
+document.getElementById("musculos").textContent = ultimoRegistro.musculo.toFixed(2) + " kg";
