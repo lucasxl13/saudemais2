@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../Funcoes/seletorProd_local.js";
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { filtroGraficoPeso } from '../Funcoes/graficos/graficoPeso.js';
@@ -13,11 +14,6 @@ import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
 
 inicializarNavbarETema();
-
-const API_BASE_URL = window.location.hostname === "127.0.0.1"
-  ? "http://localhost:3000"
-  // : "https://saude-mais-service-api.vercel.app";
-  : "https://apisaudemais.danielhatz.com.br";
 
   await verificarAutenticacao(API_BASE_URL); 
 

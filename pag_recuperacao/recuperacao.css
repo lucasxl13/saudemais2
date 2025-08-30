@@ -1,0 +1,167 @@
+/* recuperacao.css > ../pag_recuperacao/recuperacao.css */
+
+@import url('../index.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button,
+input[type="password"]::-webkit-reveal {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+}
+
+body {
+  font-family: var(--fonte-logo);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 1rem;
+}
+
+.container_principal {
+  background-color: var(--bg_container);
+  padding: 2rem;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 24rem;
+  text-align: center;
+  border: 2px solid #000;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.logo_icon {
+  width: 5rem;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  color: var(--texto);
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.subtitulo {
+  font-size: 3rem;
+  color: var(--color1);
+  -webkit-text-stroke: 0.5px var(--black);
+}
+
+.box_recuperacao p{
+  margin-bottom: 1rem;
+}
+
+.formulario {
+  display: grid;
+  grid-template-rows: auto 0.2rem; /* input + linha fixa pro erro */
+  row-gap: 4px;
+  margin-bottom: 0.8rem;
+}
+
+.formulario input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
+.formulario input:focus {
+  outline: 2px solid black;
+}
+
+.campo-senha {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-senha input {
+  flex: 1;
+  padding-right: 2rem; /* espaço pro ícone */
+}
+
+.campo-senha i {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.campo-senha i:hover {
+  color: black;
+}
+
+/* ===== estilos de erro iguais ao login ===== */
+.erro {
+  grid-row: 2;
+  display: block;
+  height: 1rem;
+  line-height: 0.7rem;
+  overflow: hidden;
+  color: red;
+  font-size: 0.65rem;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.erro.mostrar {
+  opacity: 1;
+  visibility: visible;
+}
+
+input.falha {
+  box-shadow: inset 0 0 0 1000px rgba(255, 0, 0, 0.1);
+  border-color: #ff0000;
+}
+
+.acoes {
+  margin: 0.3rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background: var(--color1);
+}
+
+.acoes:hover {
+  background:rgb(0, 228, 121);
+}
+
+@media (max-width: 390px) {
+  .logo_icon {
+    width: 3.6rem;
+  }
+
+  .titulo {
+    font-size: 1.8rem;
+    color: var(--texto);
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .subtitulo {
+    font-size: 2.1rem;
+    color: var(--color1);
+    -webkit-text-stroke: 0.5px var(--black);
+  }
+}

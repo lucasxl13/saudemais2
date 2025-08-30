@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../Funcoes/seletorProd_local.js";
 import { gerarSidebar } from '../Funcoes/sidebar.js';
 import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
 import { silhueta } from '../Funcoes/silhueta.js';
@@ -6,10 +7,6 @@ import { inicializarGraficos } from '../Funcoes/graficos/graficosMedidas.js';
 import { inicializarControlesDeMedidas } from '../Funcoes/atualizarMedidas.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
 inicializarNavbarETema();
-
-const API_BASE_URL = window.location.hostname === "127.0.0.1"
-  ? "http://localhost:3000"
-  : "https://apisaudemais.danielhatz.com.br";
 
 await verificarAutenticacao(API_BASE_URL);
 

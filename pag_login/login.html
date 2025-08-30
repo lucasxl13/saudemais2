@@ -1,51 +1,103 @@
+<!-- login.html > ../pag_login/login.html -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Saúde +</title>
-  <link rel="icon" href="..\Icones\logo.png" type="image/png">
-    <link rel="stylesheet" href="login.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saúde +</title>
+  <link rel="icon" href="../Icones/logo.png" type="image/png" />
+  <link rel="stylesheet" href="login.css" />
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
-
-<div class="container-principal">
-
-    <div class ="logo">
-        <img src="..\Icones\logo.png" alt="Saúde mais" class="logo_icon">
-        <h1 class="titulo">SAÚDE <strong class="subtitulo">+</strong></h1>
+  <div class="container_principal">
+    <div class="logo">
+      <img src="../Icones/logo.png" alt="Saúde mais" class="logo_icon" />
+      <h1 class="titulo">SAÚDE <strong class="subtitulo">+</strong></h1>
     </div>
 
-    <form id="dados">
-        <div class="formulario">
-            <input type="text" id="usuario" name="usuario" placeholder="E-mail" maxlength="25">
-            <span class="mensagem-erro" id="usuario-erro"></span>
-        </div>
+    <!-- ===== Login ===== -->
+    <form id="login" novalidate>
+      <div class="formulario">
+        <input type="email" id="email" name="email" placeholder="E-mail" maxlength="254" required
+          autocomplete="username" />
+        <span class="erro" id="email_erro"></span>
+      </div>
 
-        <div class="formulario">
-            <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="25">
-            <span class="mensagem-erro" id="senha-erro"></span>
+      <div class="formulario">
+        <div class="campo-senha">
+          <input type="password" id="senha" name="senha" placeholder="Senha" maxlength="128" required
+            autocomplete="current-password" />
+          <!-- Ícone de olho -->
+          <i class="bi bi-eye toggle-senha" data-target="senha"></i>
         </div>
+        <span class="erro" id="senha_erro"></span>
+      </div>
 
-        <div class="remember">
-            <input type="checkbox" id="manter-conectado" name="manter-conectado">
-            <label for="manter-conectado">Manter-se conectado</label>
-        </div>
+      <div class="lembrar_acesso">
+        <input type="checkbox" id="manter_conectado" name="lembrar_conectado" />
+        <label for="manter_conectado">Manter-se conectado</label>
+      </div>
 
-        <button type="submit" class="btn-entrar" id="btn-entrar">Entrar</button>
+      <button type="submit" id="btn_entrar">Entrar</button>
 
-        <div class="regitro_esqueceu">
-            <button type="button" class="registro" id="btn-registro">Primeiro acesso</button>
-            <button type="button" class="registro" id="btn-esqueceu">Esqueci a senha</button>
-        </div>
-        
+      <div class="btns_acoes">
+        <button type="button" class="acoes" id="btn_registro">Primeiro acesso</button>
+        <button type="button" class="acoes" id="btn_esqueceu">Esqueci a senha</button>
+      </div>
     </form>
 
-</div>
+    <!-- ===== Modal de Recuperação ===== -->
+    <div class="recuperacao" id="container_recuperacao">
+      <!-- Passo 1 -->
+      <div class="container_recuperacao">
+        <h1>Recuperar senha</h1>
+        <p>Digite seu e-mail para redefinir a senha:</p>
 
-<script src="login.js"></script>
+        <form id="formulario_recuperacao" novalidate>
+          <div class="formulario">
+            <input type="email" id="email_rec" name="email_rec" placeholder="E-mail" maxlength="254"
+              autocomplete="username" required />
+            <span class="erro" id="email_rec_erro"></span>
+          </div>
+
+          <button type="submit" id="enviar_email">Enviar</button>
+          <button type="button" class="fechar" id="fechar_recuperacao">Fechar</button>
+        </form>
+      </div>
+
+      <!-- Passo 2 -->
+      <div class="container_recuperacao2">
+        <h1>Recuperar senha</h1>
+        <p>Digite o token recebido em e-mail:</p>
+
+        <form id="formulario_recuperacao2" novalidate autocomplete="one-time-code">
+          <div class="formulario">
+            <div class="otp" id="otp_group" aria-label="Token de 6 dígitos">
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+              <input class="otp_input" type="text" inputmode="numeric" maxlength="1" />
+            </div>
+            <input type="hidden" id="token_rec" name="token_rec" />
+            <span class="erro" id="token_erro"></span>
+          </div>
+
+          <button type="submit" id="enviar_token">Enviar</button>
+          <button type="button" class="fechar" id="fechar_recuperacao2">Fechar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="login.js"></script>
+  </script>
 </body>
-
 </html>
