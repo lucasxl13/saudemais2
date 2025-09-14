@@ -9,7 +9,6 @@ export function bloquearTecla(campoId, tecla) {
   const handler = (e) => {
     if (normalizar(e.key) === alvo) {
       e.preventDefault();
-      // e.stopPropagation(); // opcional, caso queira bloquear a propagação
     }
   };
 

@@ -92,7 +92,6 @@ body {
 .campo-senha input {
   flex: 1;
   padding-right: 2rem;
-  /* espaço pro ícone */
 }
 
 .campo-senha i {

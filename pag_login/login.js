@@ -3,10 +3,18 @@ import { API_BASE_URL } from "../Funcoes/seletorProd_local.js";
 import { tema } from "../Funcoes/temaNavegador.js";
 import { mostrarSenha } from "../Funcoes/mostrarSenha.js";
 import { bloquearTecla } from "../Funcoes/teclas.js";
-import { mostrarErro, limparErros } from "../Funcoes/errosUI.js";
+import { mostrarErro, resetErros } from "../Funcoes/errosUI.js";
+import { validade_email } from "../Funcoes/validar_email.js";
 
 tema();
+bloquearTecla("email", " ");
+bloquearTecla("senha", " ");
 mostrarSenha();
+resetErros(
+  ["email", "senha", "email_rec", "token_rec", "#otp_group .otp_input"],
+  ["email_erro", "senha_erro", "email_rec_erro", "token_erro"]
+);
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const storedDataLocal = localStorage.getItem("jwt");
@@ -30,21 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// ================== HELPERS ==================
-function validade_email(v) {
-  const probe = document.createElement("input");
-  probe.type = "email";
-  probe.value = v;
-  return probe.checkValidity();
-}
-
 // ================== LOGIN ==================
 const formLogin = document.getElementById("login");
 if (formLogin) {
   formLogin.addEventListener("submit", async (event) => {
     event.preventDefault();
-
-    limparErros(["email", "senha"], ["email_erro", "senha_erro"]);
 
     const form = event.target;
     const formData = new FormData(form);
@@ -104,11 +102,6 @@ if (formLogin) {
   });
 }
 
-// ================== BLOQUEAR TECLAS ==================
-bloquearTecla("email", " "); // espaço
-bloquearTecla("senha", " "); // espaço
-
-// ================== BOTÕES AUX ==================
 const btnRegistro = document.getElementById("btn_registro");
 if (btnRegistro) {
   btnRegistro.addEventListener("click", () => {
@@ -252,7 +245,6 @@ function startOrResumeTokenTimer() {
 function resetRecuperacao() {
   document.getElementById("formulario_recuperacao")?.reset();
   document.getElementById("formulario_recuperacao2")?.reset();
-  limparErros(["email_rec", "token_rec", "#otp_group .otp_input"], ["email_rec_erro", "token_erro"]);
 }
 
 function abrirRecuperacao() {
@@ -374,6 +366,9 @@ function abrirPasso2OTP() {
   document.querySelector(".container_recuperacao")?.classList.remove("ativo");
   document.querySelector(".container_recuperacao2")?.classList.add("ativo");
   setupOTP();
+
+  document.getElementById("email_target").textContent = getResetEmail();
+
   setTimeout(() => {
     focarPrimeiroVazioOTP();
   }, 50);
@@ -401,7 +396,6 @@ if (formRecuperacao) {
   formRecuperacao.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    limparErros("email_rec", "email_rec_erro");
 
     const fd = new FormData(e.target);
     const email_rec = (fd.get("email_rec") || "").toString().trim();
@@ -459,6 +453,7 @@ if (formRecuperacao) {
       const expiresAt = Date.now() + (data.expiresInSec ?? 300) * 1000;
       setTokenExpiry(expiresAt);
       setResetEmail(email_rec);
+      document.getElementById("email_target").textContent = email_rec;
 
       abrirPasso2OTP();
     } catch (err) {
@@ -529,15 +524,3 @@ if (formRecuperacao2) {
     }
   });
 }
-
-// ================== LIMPAR ERROS GLOBAL ==================
-function limparTodosErros() {
-  limparErros(
-    ["email", "senha", "email_rec", "token_rec", "#otp_group .otp_input"],
-    ["email_erro", "senha_erro", "email_rec_erro", "token_erro"]
-  );
-}
-document.querySelectorAll("form input, form select, form textarea").forEach((el) => {
-  el.addEventListener("input", limparTodosErros);
-  el.addEventListener("change", limparTodosErros);
-});

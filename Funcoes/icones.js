@@ -686,10 +686,10 @@ media() {
   svg.appendChild(path1);
   svg.appendChild(path2);
   return svg;
-}
-
-
+},
 
 };
 
 export default icones;
+
+

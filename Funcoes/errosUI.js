@@ -62,3 +62,14 @@ export function limparErros(campoRefs, erroRefs) {
     }
   });
 }
+
+export function resetErros(campoRefs, erroRefs) {
+  const handler = () => limparErros(campoRefs, erroRefs);
+
+  resolveTargets(campoRefs).forEach((el) => {
+    // Além de input/change, escute keyup/click/blur
+    ["input", "change", "keyup", "click", "blur"].forEach((evt) => {
+      el.addEventListener(evt, handler, { passive: true });
+    });
+  });
+}
