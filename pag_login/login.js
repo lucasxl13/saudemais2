@@ -91,13 +91,6 @@ if (formLogin) {
         } else {
           sessionStorage.setItem("jwt", data.token);
         }
-          // >>> redireciona conforme a categoria vinda do backend
-          const cat = data?.user?.categoria;
-          if (cat === "professor") {
-            window.location.href = "youtube.com";
-          } else {
-            window.location.href = "../pag_principal/principal.html";
-          }
       } else {
         mostrarErro(["email", "senha"], "senha_erro", "Resposta inválida do servidor");
       }
