@@ -91,6 +91,8 @@ if (formLogin) {
         } else {
           sessionStorage.setItem("jwt", data.token);
         }
+
+        window.location.href = "../pag_principal/principal.html";
       } else {
         mostrarErro(["email", "senha"], "senha_erro", "Resposta inválida do servidor");
       }
