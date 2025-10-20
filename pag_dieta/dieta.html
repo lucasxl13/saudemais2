@@ -1,100 +1,357 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Saúde +</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saúde + | Dieta</title>
+
   <link rel="icon" href="..\Icones\logo.png" type="image/png">
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-    <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="dieta.css">
-  </head>
+  <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
+  <link rel="stylesheet" href="dieta.css">
+
+  <!-- Chart.js para o gráfico circular -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
 <body>
+  <!-- Sidebar (mantida) -->
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
 
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
+  <div class="container-backdieta">
+    <!-- Cabeçalho motivacional -->
+    <header class="header-motivacional">
+      <div class="saudacao">
+        <h2 id="titulo-pagina">🍎 Dieta da Semana</h2>
+        <p id="subtitulo-semana">Semana 0 — 00/00 a 00/00</p>
+        <p id="frase-motivacional">Você está mais perto do seu objetivo do que ontem!</p>
+      </div>
+      <div class="avatar-aluno">
+        <i class="bi bi-person-circle"></i>
+        <span id="nome-aluno">Olá, Aluno!</span>
+      </div>
+    </header>
 
-    <div class="container-backdieta">
+    <!-- Painel de calorias + gráfico -->
+    <section id="painel-calorias" class="card-bloco">
+      <div class="calorias-texto">
+        <h4>Resumo Calórico Semanal</h4>
+        <p>Meta estimada: <strong id="meta-kcal">0 kcal</strong></p>
+        <p>Total planejado: <strong id="planejado-kcal">0 kcal</strong></p>
+        <p>Consumido: <strong id="consumido-kcal">0 kcal</strong></p>
+        <p>Restantes: <strong id="restante-kcal">0 kcal</strong></p>
+          <div id="barra-calorias-inner">
+        </div>
+      </div>
 
-      <div class="app-container">
-          <div class="calorie-ring">
-            <svg width="120" height="120">
-              <circle class="ring-bg" cx="60" cy="60" r="50" />
-              <circle class="ring-progress" cx="60" cy="60" r="50" />
-            </svg>
-            <div class="calorie-info">
-              <span id="calorie-text">0 / 2000 kcal</span>
-              <span id="calorie-remaining">Calorias restantes: 2000</span>
-            </div>
+      <div class="calorias-grafico">
+        <canvas id="graficoCalorias" width="180" height="180" aria-label="Gráfico calorias"></canvas>
+      </div>
+    </section>
+
+    <!-- Progresso de refeições -->
+    <section id="progresso-semanal" class="card-bloco">
+      <p id="progresso-texto">Progresso da semana: 0/28 refeições concluídas (0%)</p>
+      <div id="progresso-barra">
+        <div id="progresso-barra-inner"></div>
+      </div>
+    </section>
+
+    <!-- Resumo nutricional -->
+    <section id="resumo-macros" class="card-bloco">
+      <h4>Resumo Nutricional da Semana</h4>
+      <div class="macros-grid">
+        <div class="macro">
+          <span class="macro-titulo">Proteínas</span>
+          <span class="macro-valor" id="macro-proteina">0 g</span>
+        </div>
+        <div class="macro">
+          <span class="macro-titulo">Carboidratos</span>
+          <span class="macro-valor" id="macro-carbo">0 g</span>
+        </div>
+        <div class="macro">
+          <span class="macro-titulo">Gorduras</span>
+          <span class="macro-valor" id="macro-gordura">0 g</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dias da semana (expansíveis) -->
+    <section class="dias-semana">
+
+      <!-- SEGUNDA -->
+      <details open class="dia-card">
+        <summary>Segunda-feira</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-    
-        <section class="meal-list" id="meal-list">
-        </section>
-  
-      </div>
-
-        <div class="container-dieta">
-            <div class="foto-dieta">
-            <img class="img-dieta" src="img/cafemanha.jpg"></div>
-            <button id="btnAdicionar" class="btn-flutuante" data-refeicao="Café da Manhã">➕</button>
-            <div class="container-refeicao">
-                <div class="conteudo-refeicao">
-                  <h3>Café da Manhã</h3>
-                </div>
-                </div>
+          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Café da Manhã">Concluir</button>
         </div>
-            
-        <div class="container-dieta">
-            <div class="foto-dieta">
-            <img class="img-dieta" src="img/almoco.jpg"></div>
-            <div class="container-refeicao">
-              <button id="btnAdicionar2" class="btn-flutuante" data-refeicao="Almoço">➕</button>
-                <div class="conteudo-refeicao">
-                  <h3>Almoço</h3>
-                </div>
-              </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Almoço">Concluir</button>
         </div>
-
-        <div class="container-dieta">
-             <div class="foto-dieta">
-             <img class="img-dieta" src="img/cafetarde.jpg"></div>
-             <div class="container-refeicao">
-              <button id="btnAdicionar3" class="btn-flutuante" data-refeicao="Café da Tarde">➕</button>
-                <div class="conteudo-refeicao">
-                  <h3>Café da Tarde</h3>
-                </div>
-              </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Café da Tarde">Concluir</button>
         </div>
-        
-        <div class="container-dieta">
-            <div class="foto-dieta">
-            <img class="img-dieta" src="img/janta.jpg"></div>
-            <div class="container-refeicao">
-              <button id="btnAdicionar4" class="btn-flutuante" data-refeicao="Janta">➕</button>
-                <div class="conteudo-refeicao">
-                  <h3>Janta</h3>
-               </div>
-            </div>
-       </div>
-
-      <div id="modalAdicionar" class="modal-overlay">
-        <div class="modal-conteudo">
-          <span class="fechar-modal" onclick="fecharModal()">&times;</span>
-          <h2>Adicionar Refeição</h2>
-          <form id="formulario">
-            <input type="text" id="busca" placeholder="Digite o nome da refeição consumida" />
-            <button type="button" id="btnSalvar" class="btn-quadrado">Salvar</button>            
-          </form>
-          <div id="resultados"></div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Janta">Concluir</button>
         </div>
-      </div>
-      
-      
+      </details>
 
-<script type="module" src="./dieta.js"></script>
+      <!-- TERÇA -->
+      <details class="dia-card">
+        <summary>Terça-feira</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+      <!-- QUARTA -->
+      <details class="dia-card">
+        <summary>Quarta-feira</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+      <!-- QUINTA -->
+      <details class="dia-card">
+        <summary>Quinta-feira</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+      <!-- SEXTA -->
+      <details class="dia-card">
+        <summary>Sexta-feira</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+      <!-- SÁBADO -->
+      <details class="dia-card">
+        <summary>Sábado</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+      <!-- DOMINGO -->
+      <details class="dia-card">
+        <summary>Domingo</summary>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Manhã</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Café da Manhã">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Almoço</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Almoço">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Café da Tarde</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Café da Tarde">Concluir</button>
+        </div>
+        <div class="refeicao">
+          <div class="refeicao-info">
+            <h4>Janta</h4>
+            <p class="refeicao-descricao">Dieta não definida</p>
+            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+          </div>
+          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Janta">Concluir</button>
+        </div>
+      </details>
+
+    </section>
+
+    <!-- Feedback ao professor -->
+    <section id="feedback" class="card-bloco">
+      <h4>Feedback para o Professor</h4>
+      <textarea id="feedback-texto" placeholder="Ex.: Me senti melhor trocando o jantar por algo mais leve..." rows="3"></textarea>
+      <button id="feedback-enviar" class="btn-quadrado"><i class="bi bi-send"></i> Enviar</button>
+      <small class="feedback-info">Seu comentário ajuda a ajustar sua dieta. 😊</small>
+    </section>
+
+  </div>
+
+  <script type="module" src="dieta.js"></script>
 </body>
-
 </html>
