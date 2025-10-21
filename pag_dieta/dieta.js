@@ -100,9 +100,6 @@ function preencherCabecalho() {
   ];
   $("#frase-motivacional").textContent = frases[Math.floor(Math.random() * frases.length)];
 
-  // se tiver nome salvo em algum lugar, use; senão mantém "Aluno"
-  const nome = localStorage.getItem("nomeAluno") || "Aluno";
-  $("#nome-aluno").textContent = `Olá, ${nome}!`;
 }
 
 /* ============= API: buscar dieta do professor (com fallback) ============= */

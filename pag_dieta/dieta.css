@@ -24,7 +24,7 @@ body{
   min-height: fit-content;   
   height: auto !important;    
   overflow: visible !important;
-  margin-left: calc((48vw - min(1000px, 92%) + 80px) / 2);
+  margin-left: calc((66vw - min(1000px, 92%) + 80px) / 2);
   margin-bottom:3rem;
   background: var(--bg_container);
   border-radius:16px;
