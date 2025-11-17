@@ -43,7 +43,7 @@ function intervaloSemanaAtual() {
 /* ============= Dieta temporária (com macros) ============= */
 const dietaTemporaria = {
   Segunda: {
-    "Café da Manhã": { texto: "2 ovos mexidos e 1 fatia de pão integral", kcal: 300, p:20, c:28, g:12 },
+    "Café da Manhã": { texto: "2 ovos mexidos e 1 fatia de pão integral",  kcal: 300, p:20, c:28, g:12 },
     "Almoço":        { texto: "Arroz, feijão, frango grelhado e salada",   kcal: 600, p:40, c:70, g:15 },
     "Café da Tarde": { texto: "Iogurte natural e frutas vermelhas",        kcal: 250, p:12, c:30, g:8  },
     "Janta":         { texto: "Sopa de legumes e torradas integrais",      kcal: 400, p:18, c:45, g:10 },
@@ -99,7 +99,6 @@ function preencherCabecalho() {
     "Cada refeição é uma oportunidade de cuidar de você."
   ];
   $("#frase-motivacional").textContent = frases[Math.floor(Math.random() * frases.length)];
-
 }
 
 /* ============= API: buscar dieta do professor (com fallback) ============= */
@@ -139,13 +138,14 @@ async function buscarDietaProfessor() {
 /* ============= Progresso (refeições concluídas) ============= */
 function atualizarBotao(botao, concluido) {
   if (concluido) {
-    botao.textContent = "✔ Concluído";
-    botao.style.backgroundColor = "#00e08a";
+    botao.classList.add("btn-concluido");
+    botao.innerHTML = "✔ Concluído";
   } else {
-    botao.textContent = "Concluir";
-    botao.style.backgroundColor = "var(--color1)";
+    botao.classList.remove("btn-concluido");
+    botao.innerHTML = "Concluir";
   }
 }
+
 function atualizarProgresso() {
   const total = $$("[data-dia][data-refeicao]").length;
   const concl = JSON.parse(localStorage.getItem("concluidos")) || {};
@@ -198,6 +198,10 @@ function atualizarPainelCalorias(dieta) {
   // barra horizontal
   const pct = totalPlanejado ? Math.min(100, Math.round((consumido / totalPlanejado) * 100)) : 0;
   $("#barra-calorias-inner").style.width = pct + "%";
+
+  // label de percentual no centro do gráfico
+  const pctLabel = $("#grafico-percentual");
+  if (pctLabel) pctLabel.textContent = `${pct}%`;
 
   // macros
   $("#macro-proteina").textContent = `${prot.toLocaleString()} g`;
