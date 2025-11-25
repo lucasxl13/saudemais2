@@ -169,6 +169,7 @@ body{
   font-size:.9rem;
 }
 .macro-valor{
+  color:#bbb;
   font-weight:700;
   font-size:1.1rem;
   margin-top:.15rem;
@@ -252,6 +253,7 @@ body{
   background:#181818;
   color:#fff;
   border:1px solid #2a2a2a;
+  font-size: 1.2rem;
   border-radius:10px;
   padding:.75rem;
   margin-bottom:.5rem;
