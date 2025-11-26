@@ -147,29 +147,57 @@ function preencherCabecalho() {
 
 /* ============= API ROTA ============= */
 async function buscarDietaProfessor() {
-  const container = $(".container-backdieta");
-  const loadingMsg = document.createElement("p");
+  const container = document.querySelector(".container-backdieta"); // Ajustei para JS puro para garantir compatibilidade
+  
+  let loadingMsg = document.createElement("p");
   loadingMsg.textContent = "⏳ Carregando dieta...";
   loadingMsg.style.textAlign = "center";
   loadingMsg.style.color = "#aaa";
-  container.appendChild(loadingMsg);
+  if(container) container.appendChild(loadingMsg);
 
   try {
-    const userId = localStorage.getItem("userId") || 1;
+    // 1. PEGAR O TOKEN
+    const token = sessionStorage.getItem("jwt") || (rawLocal ? JSON.parse(rawLocal).token : null);
+    if (!token) throw new Error("Token de autenticação não encontrado.");
 
+    // 2. DECODIFICAR O ID (Lógica in-line)
+    // Pega a parte do meio do JWT (payload), arruma formatação e decodifica
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    
+    const payload = JSON.parse(jsonPayload);
+    // Tenta pegar o ID (ajuste 'id' ou 'userId' conforme seu backend)
+    const userId = payload.id || payload.userId || payload.sub || payload.studentId;
+
+    if (!userId) throw new Error("Não foi possível obter o ID do usuário.");
+
+    // 3. PEGAR OU CALCULAR A SEMANA (Lógica in-line ISO 8601)
     let weekLabel = localStorage.getItem("dieta_week_label");
+    
     if (!weekLabel) {
-      const { label } = intervaloSemanaAtual();
-      weekLabel = label;
+      const date = new Date();
+      date.setHours(0, 0, 0, 0);
+      // Ajusta para a Quinta-feira da semana atual
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+      // Primeiro dia do ano
+      const week1 = new Date(date.getFullYear(), 0, 4);
+      // Cálculo matemático da semana
+      const weekNumber = 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+      
+      weekLabel = `S-${weekNumber}`;
     }
 
+    // 4. FAZER A REQUISIÇÃO
     const resp = await fetch(
       `${API_BASE_URL}/alunos/${userId}/dieta/${encodeURIComponent(weekLabel)}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Authorization": `Bearer ${token}`,
         },
       }
     );
@@ -180,8 +208,10 @@ async function buscarDietaProfessor() {
 
     const dadosApi = await resp.json();
 
-    if (dadosApi.week) {
-      localStorage.setItem("dieta_week_label", dadosApi.week);
+    if (dadosApi.week_label) {
+      localStorage.setItem("dieta_week_label", dadosApi.week_label);
+    } else {
+      localStorage.setItem("dieta_week_label", weekLabel);
     }
 
     const dietaNormalizada = converterDietaAPIParaInterna(dadosApi);
@@ -190,9 +220,10 @@ async function buscarDietaProfessor() {
     return dietaNormalizada;
 
   } catch (e) {
-    console.warn("API indisponível. Usando dieta temporária.", e);
+    console.warn("API indisponível ou erro local:", e);
     loadingMsg.remove();
-    return dietaTemporaria;
+    // Retorna null ou sua dieta temporária, conforme sua lógica
+    return typeof dietaTemporaria !== 'undefined' ? dietaTemporaria : null;
   }
 }
 
