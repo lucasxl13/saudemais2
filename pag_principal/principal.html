@@ -31,6 +31,22 @@
     </form>
   </div>
 
+  <div id="modal-conexao" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <h3>Nova solicitação de conexão!</h3>
+      
+      <div class="modal-perfil">
+        <img id="modal-avatar-prof" src="" alt="Avatar Professor" class="modal-avatar" onerror="this.src='../elementosCSS/225-default-avatar.png'">
+        <p>O professor <strong id="modal-nome-prof"></strong> quer se conectar a você.</p>
+      </div>
+
+      <div class="modal-acoes">
+        <button id="btn-recusar-conexao" class="btn-modal btn-recusar">Recusar</button>
+        <button id="btn-aceitar-conexao" class="btn-modal btn-aceitar">Aceitar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="container_principal">
     <div class="linha">
       <div class="containers_topo">

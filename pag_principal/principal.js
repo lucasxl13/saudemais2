@@ -12,10 +12,13 @@ import { configurarBotaoIncremento } from '../Funcoes/incrementoGrafico.js';
 import icones from '../Funcoes/icones.js';
 import { criarBarrasStreak } from '../Funcoes/criarBarrasStreak.js';
 import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+import * as ConexoesService from '../Funcoes/conexoes.js';
 
 inicializarNavbarETema();
 
   await verificarAutenticacao(API_BASE_URL); 
+
+  await ConexoesService.carregarEGerenciarConexoes();
 
   const { dados_usuario } = window.usuarioLogado;
   const metricas = window.usuarioLogado?.historico_metricas;
@@ -126,4 +129,3 @@ document.getElementById("container_medida").addEventListener("click", function()
 document.getElementById("container_metricas").addEventListener("click", function() {
   window.location.href = "../pag_metricas/metricas.html";
 });
-
