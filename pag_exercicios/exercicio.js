@@ -1,243 +1,292 @@
 import { API_BASE_URL } from "../Funcoes/seletorProd_local.js";
-import { gerarSidebar } from '../Funcoes/sidebar.js';
-import { verificarAutenticacao } from '../Funcoes/autenticacao.js';
-import { inicializarNavbarETema } from '../Funcoes/navbar.js';
+import { gerarSidebar } from "../Funcoes/sidebar.js";
+import { verificarAutenticacao } from "../Funcoes/autenticacao.js";
+import { inicializarNavbarETema } from "../Funcoes/navbar.js";
+
 inicializarNavbarETema();
-
-
 verificarAutenticacao(API_BASE_URL);
 gerarSidebar();
 
-const gruposMusculares = [
-  { nome: "Livre", cor: "info", emoji: "📝" },
-  { nome: "Peito", cor: "danger", emoji: "🔥" },
-  { nome: "Costas", cor: "primary", emoji: "🛡️" },
-  { nome: "Pernas", cor: "success", emoji: "🦵" },
-  { nome: "Ombros", cor: "warning", emoji: "🏋️‍♂️" },
-  { nome: "Bíceps", cor: "info", emoji: "💪" },
-  { nome: "Tríceps", cor: "secondary", emoji: "🫱" },
-  { nome: "Abdômen", cor: "dark", emoji: "🧱" },
-  { nome: "Cardio", cor: "dark", emoji: "🏃‍♂️" }
-];
+/* ====== util de datas ====== */
+const fmtBR = d => d.toLocaleDateString('pt-BR');
+const toISO = d => d.toISOString().slice(0,10);
+const fromISO = s => new Date(`${s}T00:00:00`);
 
-const opcoesPorGrupo = {
-  livre: ["Alongamento", "Corrida leve", "Mobilidade articular"],
-  peito: ["Supino reto", "Supino inclinado", "Crucifixo"],
-  costas: ["Remada curvada", "Puxada frente", "Levantamento terra"],
-  pernas: ["Agachamento", "Leg press", "Extensora"],
-  ombros: ["Desenvolvimento", "Elevação lateral", "Arnold press"],
-  bíceps: ["Rosca direta", "Rosca martelo"],
-  tríceps: ["Tríceps testa", "Tríceps pulley"],
-  abdômen: ["Abdominal reto", "Prancha", "Elevação de pernas"],
-  cardio: ["Corrida", "Ciclismo", "Escada", "Remo"]
-};
+function startOfWeek(d){
+  const x = new Date(d);
+  const day = x.getDay(); // 0 dom, 1 seg
+  const diff = (day === 0 ? -6 : 1 - day);
+  x.setDate(x.getDate() + diff);
+  x.setHours(0,0,0,0);
+  return x;
+}
+function endOfWeek(d){ const i = startOfWeek(d); const f = new Date(i); f.setDate(i.getDate()+6); return f; }
+function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+const DIA_LABELS = ["SEG","TER","QUA","QUI","SEX","SÁB","DOM"];
 
-function formatarTempo(min) {
+/* ====== estado ====== */
+const ALUNO_ID = JSON.parse(localStorage.getItem("user_aluno_id") || "2001");
+const st = { diaAtualISO: toISO(new Date()) };
+
+/* ====== storage keys (somente EXERCÍCIO) ====== */
+const keyPlano   = (id, iso)=>`plano_${id}_${iso}`;  // plano do professor
+const keyAcertos = (id, iso)=>`exec_${id}_${iso}`;   // execução do aluno
+
+/* ====== helpers ====== */
+function formatarTempo(min){
   const m = parseInt(min);
   if (isNaN(m) || m <= 0) return null;
-  const h = Math.floor(m / 60);
-  const r = m % 60;
-  return h > 0 && r > 0 ? `${h}h ${r}min` : h > 0 ? `${h}h` : `${r}min`;
+  const h = Math.floor(m/60), r = m%60;
+  return h>0 && r>0 ? `${h}h ${r}min` : h>0 ? `${h}h` : `${r}min`;
 }
-
-function extrairMinutos(texto) {
-  const minMatch = /(\d+)\s*min/.exec(texto);
-  const hrMatch = /(\d+)\s*h/.exec(texto);
-  const m = minMatch ? parseInt(minMatch[1]) : 0;
-  const h = hrMatch ? parseInt(hrMatch[1]) * 60 : 0;
+function extrairMinutos(texto){
+  const mm = /(\d+)\s*min/.exec(texto);
+  const hh = /(\d+)\s*h/.exec(texto);
+  const m = mm ? parseInt(mm[1]) : 0;
+  const h = hh ? parseInt(hh[1])*60 : 0;
   return m + h;
 }
+const num = v => (v===''||v==null)?0:Number(v);
 
-function salvarTreinosLocal() {
-  const data = {};
-  document.querySelectorAll(".grupo-card").forEach(card => {
-    const grupo = card.getAttribute("data-grupo");
-    const lista = card.querySelectorAll(".exercicio-card");
-    data[grupo] = Array.from(lista).map(cardEl => ({
-      nome: cardEl.querySelector("strong")?.textContent || "",
-      desc: cardEl.querySelector(".desc-exercicio")?.textContent || ""
-    }));
-  });
-  localStorage.setItem("treinos_salvos", JSON.stringify(data));
+/* ====== seed/fallback de plano ====== */
+const GRUPOS_DEMO = {
+  peito:  [
+    { nome:"Supino reto",      desc:"3x10 • 20kg • 10min" },
+    { nome:"Crucifixo",        desc:"3x12 • 8kg • 8min" }
+  ],
+  costas: [
+    { nome:"Remada curvada",   desc:"4x8 • 30kg • 12min" }
+  ],
+  pernas: [
+    { nome:"Agachamento",      desc:"4x6 • 40kg • 15min" }
+  ]
+};
+function getPlano(){
+  const raw = localStorage.getItem(keyPlano(ALUNO_ID, st.diaAtualISO));
+  if (!raw) return {};
+  try{ return JSON.parse(raw) || {}; }catch{ return {}; }
+}
+function setPlano(obj){
+  localStorage.setItem(keyPlano(ALUNO_ID, st.diaAtualISO), JSON.stringify(obj));
+}
+function seedPlanoExemplo(){
+  setPlano(GRUPOS_DEMO);
+}
+function getAcertos(){
+  const raw = localStorage.getItem(keyAcertos(ALUNO_ID, st.diaAtualISO));
+  if (!raw) return {};
+  try{ return JSON.parse(raw) || {}; }catch{ return {}; }
+}
+function setAcertos(obj){
+  localStorage.setItem(keyAcertos(ALUNO_ID, st.diaAtualISO), JSON.stringify(obj));
 }
 
-function carregarTreinosLocal(grupoId, container, atualizarResumo) {
-  const data = JSON.parse(localStorage.getItem("treinos_salvos")) || {};
-  const treinos = data[grupoId] || [];
-  treinos.forEach(({ nome, desc }) => {
-    const card = document.createElement("div");
-    card.className = `exercicio-card d-flex flex-column align-items-start border-${grupoId}`;
-    card.innerHTML = `
-      <strong>${nome}</strong>
-      <span class="desc-exercicio text-muted">${desc}</span>
-      <button class="btn btn-sm btn-danger mt-2">🗑️ Remover</button>
-    `;
-    card.querySelector("button").addEventListener("click", () => {
-      card.remove();
-      salvarTreinosLocal();
-      atualizarResumo();
+/* ====== barra da semana ====== */
+function renderSemanaBar(){
+  const base = fromISO(st.diaAtualISO);
+  const ini = startOfWeek(base), fim = endOfWeek(base);
+
+  document.getElementById('rangeSemana').textContent = `${fmtBR(ini)} — ${fmtBR(fim)}`;
+  const box = document.getElementById('semanaDias');
+  box.innerHTML = '';
+
+  for (let i=0;i<7;i++){
+    const d = addDays(ini,i); const iso = toISO(d);
+    const b = document.createElement('button');
+    b.className = 'alu-pill'+(iso===st.diaAtualISO?' active':'');
+    b.innerHTML = `<small>${DIA_LABELS[i]}</small><br>${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+    b.addEventListener('click', ()=>{
+      st.diaAtualISO = iso;
+      document.getElementById('dataPicker').value = iso;
+      renderSemanaBar();
+      renderPlano();
     });
-    container.appendChild(card);
-  });
-  atualizarResumo();
-}
-
-function criarCardTreino(grupo) {
-  const grupoId = grupo.nome.toLowerCase();
-  const card = document.createElement("div");
-  card.className = "card card-treino mb-4 grupo-card";
-  card.setAttribute("data-grupo", grupoId);
-
-  const opcoes = opcoesPorGrupo[grupoId] || ["Exercício genérico"];
-
-  card.innerHTML = `
-    <div class="card-body position-relative">
-      <h4 class="card-title text-${grupo.cor}">
-        <span class="emoji-grupo">${grupo.emoji}</span> ${grupo.nome}
-      </h4>
-      <div class="resumo-exercicio d-flex justify-content-between small text-muted px-1 mt-2 mb-1">
-        <span class="resumo-quantidade">0 exercícios</span>
-        <span class="resumo-tempo">⏱ 0min</span>
-      </div>
-      <div class="exercicios mt-2 lista-${grupoId}"></div>
-      <div class="form-container mt-3 d-none">
-        <form class="form-add-exercicio d-flex gap-2 flex-wrap">
-          <select class="form-select form-select-sm select-exercicio" required style="min-width:160px;">
-            <option value="">Escolher exercício</option>
-            ${opcoes.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-          </select>
-
-          <select class="form-select form-select-sm select-reps" style="width:100px;">
-            <option value="">Séries x reps</option>
-            <option value="3x12">3x12</option>
-            <option value="3x10">3x10</option>
-            <option value="4x10">4x10</option>
-          </select>
-
-          ${grupoId !== "cardio" ? `
-            <select class="form-select form-select-sm select-carga" style="width:80px;">
-              <option value="">Carga</option>
-              <option value="5kg">5kg</option>
-              <option value="10kg">10kg</option>
-              <option value="15kg">15kg</option>
-              <option value="20kg">20kg</option>
-            </select>` : `
-            <input type="text" class="form-control form-control-sm input-distancia" placeholder="Distância (km)" style="width:90px;">`
-          }
-
-          <input type="number" class="form-control form-control-sm input-tempo" placeholder="Tempo (min)" style="width:90px;">
-          <button type="submit" class="btn btn-sm btn-outline-${grupo.cor}">Adicionar</button>
-        </form>
-      </div>
-    </div>
-  `;
-
-  const select = card.querySelector(".select-exercicio");
-  const selectReps = card.querySelector(".select-reps");
-  const selectCarga = card.querySelector(".select-carga");
-  const inputDistancia = card.querySelector(".input-distancia");
-  const inputTempo = card.querySelector(".input-tempo");
-  const container = card.querySelector(`.lista-${grupoId}`);
-  const resumoQtd = card.querySelector(".resumo-quantidade");
-  const resumoTempo = card.querySelector(".resumo-tempo");
-  const formContainer = card.querySelector(".form-container");
-
-  function atualizarResumo() {
-    const cards = container.querySelectorAll(".exercicio-card");
-    const totalMin = Array.from(cards).reduce((acc, el) => acc + extrairMinutos(el.innerText), 0);
-    const tempoFormatado = formatarTempo(totalMin);
-    resumoQtd.textContent = `${cards.length} exercício${cards.length !== 1 ? "s" : ""}`;
-    resumoTempo.textContent = tempoFormatado ? `⏱ ${tempoFormatado}` : "⏱ 0min";
-    resumoQtd.classList.add("sub-titulo-exercicios");
-    resumoTempo.classList.add("sub-titulo-exercicios");
-
+    box.appendChild(b);
   }
 
-  carregarTreinosLocal(grupoId, container, atualizarResumo);
-
-  card.querySelector("form").addEventListener("submit", e => {
-    e.preventDefault();
-    const nome = select.value.trim();
-    const reps = selectReps.value.trim();
-    const cargaOuDistancia = grupoId === "cardio"
-      ? inputDistancia?.value.trim()
-      : selectCarga?.value.trim();
-    const tempo = inputTempo.value.trim();
-
-    if (!nome) return;
-
-    const partes = [];
-    if (reps) partes.push(reps);
-    if (cargaOuDistancia) partes.push(cargaOuDistancia);
-    if (tempo) {
-      const tempoFormatado = formatarTempo(tempo);
-      if (tempoFormatado) partes.push(tempoFormatado);
+  document.getElementById('dataPicker').value = st.diaAtualISO;
+}
+function bindSemana(){
+  document.getElementById('semanaAnterior').addEventListener('click', ()=>{
+    const d=fromISO(st.diaAtualISO);
+    st.diaAtualISO = toISO(addDays(startOfWeek(d), -7));
+    renderSemanaBar(); renderPlano();
+  });
+  document.getElementById('semanaSeguinte').addEventListener('click', ()=>{
+    const d=fromISO(st.diaAtualISO);
+    st.diaAtualISO = toISO(addDays(startOfWeek(d), 7));
+    renderSemanaBar(); renderPlano();
+  });
+  document.getElementById('btnHoje').addEventListener('click', ()=>{
+    st.diaAtualISO = toISO(new Date());
+    renderSemanaBar(); renderPlano();
+  });
+  document.getElementById('dataPicker').addEventListener('change', (e)=>{
+    if (e.target.value){
+      st.diaAtualISO = e.target.value;
+      renderSemanaBar(); renderPlano();
     }
+  });
+}
 
-    const descricao = partes.join(" • ");
+/* ====== render ====== */
+function renderPlano(){
+  const grupos  = getPlano();
+  const acertos = getAcertos();
 
-    const exercicioCard = document.createElement("div");
-    exercicioCard.className = `sub-titulo-exercicios exercicio-card d-flex flex-column align-items-start border-${grupoId}`;
-    exercicioCard.innerHTML = `
-      <strong>${nome}</strong>
-      <span class="sub-titulo-exercicios">${descricao}</span>
-      <button class="sub-titulo-exercicios btn btn-sm btn-danger mt-2">🗑️ Remover</button>
-    `;
+  const wrap = document.getElementById("listaGrupos");
+  wrap.innerHTML = "";
 
-    exercicioCard.querySelector("button").addEventListener("click", () => {
-      exercicioCard.remove();
-      salvarTreinosLocal();
-      atualizarResumo();
+  // se não tem plano -> mostra card "sem plano"
+  if (!grupos || Object.keys(grupos).length === 0){
+    const col = document.createElement('div'); col.className = 'col-12';
+    col.innerHTML = `
+      <div class="blank-card">
+        <h6>Nenhum plano de exercícios para ${fmtBR(fromISO(st.diaAtualISO))}</h6>
+        <p class="small mb-3">Peça ao professor para publicar o plano deste dia, ou carregue um exemplo para testar a tela.</p>
+        <button id="btnSeed" class="btn btn-sm btn-outline-success">Carregar exemplo</button>
+      </div>`;
+    wrap.appendChild(col);
+    col.querySelector('#btnSeed').addEventListener('click', ()=>{ seedPlanoExemplo(); renderPlano(); });
+    // zera resumo
+    document.getElementById("tempoTotal").textContent  = "0min";
+    document.getElementById("volumeTotal").textContent = "0 kg";
+    document.getElementById("totalDone").textContent   = "0/0";
+    document.getElementById("resumoPorGrupo").innerHTML = "";
+    return;
+  }
+
+  let totalTempo=0, totalVolume=0, totalItens=0, totalConcl=0;
+  const resumoPorGrupo = {};
+
+  Object.entries(grupos).forEach(([gid, lista])=>{
+    const col = document.createElement("div"); col.className = "col-12";
+    const card = document.createElement("div"); card.className="ex-card"; col.appendChild(card);
+    const titulo = gid.charAt(0).toUpperCase()+gid.slice(1);
+    card.innerHTML = `<h6>${titulo}</h6>`;
+
+    lista.forEach((it, idx)=>{
+      const key = `${gid}:${idx}`;
+      const done = !!acertos[key]?.done;
+
+      const tempo = acertos[key]?.tempo ?? extrairMinutos(it.desc||"") ?? 0;
+      const series= num(acertos[key]?.series);
+      const reps  = num(acertos[key]?.reps);
+      const carga = num(acertos[key]?.carga);
+      const volume= (series*reps*carga) || 0;
+
+      totalTempo += tempo;
+      totalVolume += volume;
+      totalItens += 1;
+      if (done) totalConcl += 1;
+
+      if (!resumoPorGrupo[gid]) resumoPorGrupo[gid] = { tempo:0, volume:0, concl:0, total:0 };
+      resumoPorGrupo[gid].tempo  += tempo;
+      resumoPorGrupo[gid].volume += volume;
+      resumoPorGrupo[gid].total  += 1;
+      if (done) resumoPorGrupo[gid].concl += 1;
+
+      const row = document.createElement("div");
+      row.className = "ex-item";
+      row.innerHTML = `
+        <div>
+          <strong>${it.nome}</strong>
+          <div class="meta">
+            <span class="badge badge-status ${done?'concluido':'pendente'}">${done?'Concluído':'Pendente'}</span>
+            <span class="badge bg-secondary">Tempo: ${formatarTempo(tempo)||'0min'}</span>
+            <span class="badge bg-info">Volume: ${volume} kg</span>
+          </div>
+          <div class="small text-muted mt-1">${it.desc || ''}</div>
+        </div>
+        <div class="d-flex flex-column gap-2">
+          <button class="btn btn-sm btn-outline-success" data-acertar>Acertar</button>
+        </div>
+      `;
+      row.querySelector("[data-acertar]").addEventListener("click", ()=>{
+        abrirModalAcerto({ gid, idx, nome: it.nome, sugestaoDesc: it.desc||"", atual: acertos[key]||{} });
+      });
+
+      card.appendChild(row);
     });
 
-    container.appendChild(exercicioCard);
-    select.value = "";
-    selectReps.value = "";
-    if (grupoId === "cardio") inputDistancia.value = "";
-    else if (selectCarga) selectCarga.value = "";
-    inputTempo.value = "";
-    salvarTreinosLocal();
-    atualizarResumo();
+    wrap.appendChild(col);
   });
 
-  card.addEventListener("click", e => {
-    if (!e.target.closest("form") && !e.target.classList.contains("btn")) {
-      ativarFocoGrupo(grupoId, card);
-      formContainer.classList.remove("d-none");
-    }
-  });
+  // Resumo lateral (tempo/volume/concluídos)
+  document.getElementById("tempoTotal").textContent  = formatarTempo(totalTempo) || "0min";
+  document.getElementById("volumeTotal").textContent = `${totalVolume} kg`;
+  document.getElementById("totalDone").textContent   = `${totalConcl}/${totalItens}`;
 
-  return card;
+  const boxRG = document.getElementById("resumoPorGrupo");
+  boxRG.innerHTML = "";
+  Object.entries(resumoPorGrupo).forEach(([gid, r])=>{
+    const nome = gid.charAt(0).toUpperCase()+gid.slice(1);
+    const chip = document.createElement("div");
+    chip.className = "ex-chip";
+    chip.innerHTML = `<span>${nome}</span><strong>${r.concl}/${r.total} • ${formatarTempo(r.tempo)||'0min'} • ${r.volume} kg</strong>`;
+    boxRG.appendChild(chip);
+  });
 }
 
-function ativarFocoGrupo(grupoId, card) {
-  document.querySelectorAll(".grupo-card").forEach(c => {
-    if (c !== card) c.classList.add("oculto");
-  });
-  card.classList.add("expandido");
+/* ====== modal acerto ====== */
+let bsModal;
+function abrirModalAcerto({ gid, idx, nome, sugestaoDesc, atual }){
+  document.getElementById("modalTitulo").textContent = `Acertar: ${nome}`;
+  document.getElementById("acertoNome").value   = nome;
+  document.getElementById("acertoSeries").value = atual?.series ?? '';
+  document.getElementById("acertoReps").value   = atual?.reps ?? '';
+  document.getElementById("acertoCarga").value  = atual?.carga ?? '';
+  document.getElementById("acertoTempo").value  = atual?.tempo ?? (extrairMinutos(sugestaoDesc)||'');
+  document.getElementById("acertoRPE").value    = atual?.rpe ?? '';
+  document.getElementById("acertoObs").value    = atual?.obs ?? '';
+  document.getElementById("acertoGid").value    = gid;
+  document.getElementById("acertoIdx").value    = String(idx);
 
-  if (!document.getElementById("fundoOverlay")) {
-    const overlay = document.createElement("div");
-    overlay.id = "fundoOverlay";
-    overlay.addEventListener("click", restaurarVisaoGeral);
-    document.body.appendChild(overlay);
-  }
+  const updatePreview = ()=>{
+    const s=num(document.getElementById("acertoSeries").value);
+    const r=num(document.getElementById("acertoReps").value);
+    const c=num(document.getElementById("acertoCarga").value);
+    document.getElementById("acertoVolumePreview").textContent = `${(s*r*c)||0} kg`;
+  };
+  ["acertoSeries","acertoReps","acertoCarga"].forEach(id=>{
+    document.getElementById(id).removeEventListener?.("input", updatePreview);
+    document.getElementById(id).addEventListener("input", updatePreview);
+  });
+  updatePreview();
+
+  const el = document.getElementById("modalAcerto");
+  bsModal = new bootstrap.Modal(el);
+  bsModal.show();
 }
 
-function restaurarVisaoGeral() {
-  document.querySelectorAll(".grupo-card").forEach(c => {
-    c.classList.remove("oculto", "expandido");
-    c.querySelector(".form-container")?.classList.add("d-none");
-  });
-  document.getElementById("fundoOverlay")?.remove();
-}
+document.getElementById("formAcerto").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const gid = document.getElementById("acertoGid").value;
+  const idx = document.getElementById("acertoIdx").value;
+  const key = `${gid}:${idx}`;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("gruposTreino");
-  gruposMusculares.forEach(grupo => {
-    const col = document.createElement("div");
-    col.className = "col-md-6";
-    col.appendChild(criarCardTreino(grupo));
-    container.appendChild(col);
-  });
+  const series = num(document.getElementById("acertoSeries").value);
+  const reps   = num(document.getElementById("acertoReps").value);
+  const carga  = num(document.getElementById("acertoCarga").value);
+  const tempo  = num(document.getElementById("acertoTempo").value);
+  const rpe    = num(document.getElementById("acertoRPE").value);
+  const obs    = document.getElementById("acertoObs").value.trim();
+
+  const execs = getAcertos();
+  execs[key] = {
+    series, reps, carga, tempo, rpe, obs,
+    volume: (series*reps*carga)||0,
+    done: 1, updatedAt: Date.now()
+  };
+  setAcertos(execs);
+
+  bsModal?.hide();
+  renderPlano();
+});
+
+/* ====== boot ====== */
+document.addEventListener("DOMContentLoaded", ()=>{
+  bindSemana();
+  renderSemanaBar();
+  renderPlano();
 });

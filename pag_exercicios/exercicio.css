@@ -1,179 +1,74 @@
 @import url('../index.css');
 @import url('../elementosCSS/sideBar.css');
 
+/* OFFSET pelo lado da sidebar */
+.sidebar + .alu-wrap { margin-left: 60px; }
+.sidebar.expanded + .alu-wrap { margin-left: 150px; }
 
-.card-treino {
-  z-index: 0.1;
-  background-color: var(--bg_container);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 1rem;
-}
-.exercicios-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+.alu-wrap{
+  margin-top: 5.5rem;
+  padding: 0 1rem 2rem;
+  color: var(--texto);
 }
 
-.exercicio-card {
-  background-color: var(--bg_container);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border-left: 4px solid #198754;
-  min-width: 130px;
-  max-width: 160px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-/* Cor base do card */
-.exercicio-card {
-  background-color: var(--bg_container);
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border-left: 4px solid var(--bs-success); /* será sobrescrita pela classe */
-  min-width: 130px;
-  max-width: 160px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Sobrescreve a borda pela classe Bootstrap */
-.border-danger { border-left-color: #dc3545 !important; }
-.border-primary { border-left-color: #0d6efd !important; }
-.border-success { border-left-color: #198754 !important; }
-.border-warning { border-left-color: #ffc107 !important; }
-.border-info { border-left-color: #0dcaf0 !important; }
-.border-secondary { border-left-color: #6c757d !important; }
-.border-dark { border-left-color: #212529 !important; }
-.border-light { border-left-color: #f8f9fa !important; }
-
-.grupo-card.oculto {
-  display: none;
-}
-
-.grupo-card.expandido {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  z-index: 999;
-  width: 50vw;          /* quase toda a tela */
-  height: 50vh;         /* altura grande */
-  max-width: unset;     /* remove limite anterior */
-  padding: 2rem;
-  overflow-y: auto;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
-  background-color: var(--bg_container);
+/* Cartões e grid */
+.alu-week, .alu-grid aside {
+  background: var(--bg_container);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--texto);
   border-radius: 12px;
 }
-.grupo-card.expandido .exercicios-grid {
-  max-height: 60vh;
-  overflow-y: auto;
+
+.alu-days{
+  display:flex; gap:.5rem; flex-wrap:wrap;
 }
 
-.titulo-exercicios{ 
-  font-size: 1.5rem;
-  color: var(--txtTitulo);
-  background-color: var(--bg_container);
-  padding: 0.5rem;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 1rem;
+.alu-pill{
+  padding:.4rem .7rem; border-radius:999px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.18); color:var(--texto); background:transparent;
+  font-weight:700; text-align:center; min-width:64px;
+}
+.alu-pill small{ opacity:.7; font-weight:600; }
+.alu-pill.active{ background: var(--color1); color:#001f17; border-color: var(--color1); }
+
+.alu-grid{
+  display:grid; grid-template-columns: minmax(0, 1fr) 320px; gap:1rem;
+}
+@media (max-width: 1200px){
+  .alu-grid{ grid-template-columns: 1fr; }
+}
+
+/* Cards de exercícios */
+.ex-card{
+  background: var(--bg_container);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius:12px; padding:.8rem; color:var(--texto);
+}
+.ex-card h6{ margin-bottom:.5rem; }
+
+.ex-item{
+  display:flex; justify-content:space-between; align-items:flex-start;
+  gap:.75rem; padding:.7rem; border-radius:10px;
+  background:rgba(255,255,255,.05);
+}
+.ex-item + .ex-item{ margin-top:.6rem; }
+.ex-item .meta{ font-size:.86rem; opacity:.9; display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.25rem; }
+.ex-item .badge{ border:1px solid rgba(255,255,255,.12); }
+.badge-status.pendente{ background:#6c757d; }
+.badge-status.concluido{ background:#198754; }
+
+/* Chip do resumo por grupo */
+.ex-chip{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:.75rem; padding:.45rem .6rem; border-radius:10px;
+  background: rgba(255,255,255,.06);
+}
+
+/* “Sem plano” */
+.blank-card{
+  background: rgba(255,255,255,.04);
+  border: 1px dashed rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 1rem;
   text-align: center;
 }
-
-.sub-titulo-exercicios{ 
-  font-size: 1rem;
-  color: var(--txtTitulo);
-  background-color: var(--bg_container);
-  padding: 0.5rem;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-
-
-#botaoVoltar {
-  position: fixed;
-  top: 200px; /* aqui você controla o quanto abaixa */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-}
-#fundoOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4); /* fundo escurecido */
-  z-index: 998; /* abaixo do card focado */
-}
-.btn-adicionar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-}
-.card-treino .card-body {
-  position: relative;
-}
-.card-body {
-  position: relative;
-}
-
-.btn-adicionar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-}
-.form-add-exercicio select,
-.form-add-exercicio input {
-  min-width: 120px;
-}
-/* Oculta o formulário inicialmente */
-.form-container {
-  display: none;
-}
-
-/* Mostra o formulário só quando o card está em foco (expandido) */
-.grupo-card.expandido .form-container {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .container-perfil {
-      margin-top: 5rem;
-      margin-left: 60px;
-      padding: 1rem;
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-  }
-
-  .titulo-exercicios{ 
-  font-size: 1.5rem;
-  color: var(--txtTitulo);
-  background-color: var(--bg_container);
-  padding: 0.5rem;
-  border-radius: 20px;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
-  margin-left: 60px;
-}
-
-  .card-treino {
-  position: relative;
-  z-index: -1; /* menor que o da sidebar */
-  background-color: var(--bg_container);
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  
-}
-}
-

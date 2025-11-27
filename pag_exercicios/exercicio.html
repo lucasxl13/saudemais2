@@ -1,38 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Saúde +</title>
-  <link rel="icon" href="..\Icones\logo.png" type="image/png">
-    <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
-    <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
-    <link rel="stylesheet" href="exercicio.css">
-  </head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Saúde + | Exercício</title>
+  <link rel="icon" href="../Icones/logo.png" type="image/png" />
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css" />
+  <link rel="stylesheet" href="exercicio.css" />
 </head>
+<body class="alu-check">
+  <div class="sidebar" id="sidebar">
+    <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
+  </div>
 
-<body>
-
-    <div class="sidebar" id="sidebar">
-        <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
-    </div>
-    <div class="container mt-5 pt-5">
-
-      <h2 class="text-center mb-4 titulo-exercicios">🏋️ Divisão de Treinos</h2>
-    
-      <div class="row g-4 justify-content-center" id="gruposTreino"></div>
-
-        <!-- Template para cada grupo -->
-        <div class="col-md-5" id="gruposTreino">
-          <!-- Cards vão ser inseridos aqui pelo JS -->
+  <main class="alu-wrap container">
+    <section class="card alu-week p-3 mb-3">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-light" id="semanaAnterior"><i class="bi bi-chevron-left"></i></button>
+          <button class="btn btn-sm btn-outline-light" id="btnHoje"><i class="bi bi-calendar-event"></i> Hoje</button>
+          <button class="btn btn-sm btn-outline-light" id="semanaSeguinte"><i class="bi bi-chevron-right"></i></button>
         </div>
-      
+        <strong id="rangeSemana"></strong>
+        <input type="date" id="dataPicker" class="form-control form-control-sm" />
       </div>
-      
+      <div class="alu-days mt-2" id="semanaDias"></div>
+    </section>
 
-  <script type="module" src="./exercicio.js"></script>
+    <section class="alu-grid">
+      <div>
+        <h5 class="mb-2">Plano de Exercícios do Dia</h5>
+        <div class="row g-3" id="listaGrupos"></div>
+      </div>
+
+      <aside class="card p-3">
+        <h6 class="mb-2"><i class="bi bi-clipboard2-check"></i> Resumo</h6>
+        <div class="d-flex justify-content-between small mb-1">
+          <span>Exercícios concluídos</span><strong id="totalDone">0</strong>
+        </div>
+        <div class="d-flex justify-content-between small mb-1">
+          <span>Tempo total</span><strong id="tempoTotal">0min</strong>
+        </div>
+        <div class="d-flex justify-content-between small mb-1">
+          <span>Volume total</span><strong id="volumeTotal">0 kg</strong>
+        </div>
+        <hr class="my-2"/>
+        <div id="resumoPorGrupo" class="small d-grid gap-1"></div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- Modal Acertar -->
+  <div class="modal fade" id="modalAcerto" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content" style="background: var(--bg_container); color: var(--texto); border:1px solid rgba(255,255,255,.08);">
+        <div class="modal-header">
+          <h6 class="modal-title" id="modalTitulo">Acertar exercício</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAcerto" class="row g-2">
+            <div class="col-12">
+              <label class="form-label form-label-sm">Exercício</label>
+              <input id="acertoNome" class="form-control form-control-sm" disabled />
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label form-label-sm">Séries</label>
+              <input id="acertoSeries" type="number" min="0" class="form-control form-control-sm" />
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label form-label-sm">Reps</label>
+              <input id="acertoReps" type="number" min="0" class="form-control form-control-sm" />
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="form-label form-label-sm">Carga (kg)</label>
+              <input id="acertoCarga" type="number" min="0" step="0.5" class="form-control form-control-sm" />
+            </div>
+            <div class="col-6 col-md-6">
+              <label class="form-label form-label-sm">Tempo (min)</label>
+              <input id="acertoTempo" type="number" min="0" class="form-control form-control-sm" />
+            </div>
+            <div class="col-6 col-md-6">
+              <label class="form-label form-label-sm">RPE (1–10)</label>
+              <input id="acertoRPE" type="number" min="1" max="10" class="form-control form-control-sm" />
+            </div>
+            <div class="col-12">
+              <label class="form-label form-label-sm">Observações</label>
+              <textarea id="acertoObs" rows="2" class="form-control form-control-sm" placeholder="Como foi a execução?"></textarea>
+            </div>
+
+            <div class="col-12 mt-2 d-flex justify-content-between align-items-center">
+              <div class="small text-muted">Volume estimado: <strong id="acertoVolumePreview">0 kg</strong></div>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="btnSalvarAcerto" type="submit" class="btn btn-sm btn-success">
+                  <i class="bi bi-check2-circle"></i> Salvar & Concluir
+                </button>
+              </div>
+            </div>
+            <input type="hidden" id="acertoGid" />
+            <input type="hidden" id="acertoIdx" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="exercicio.js"></script>
+  <script src="../componentes/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
