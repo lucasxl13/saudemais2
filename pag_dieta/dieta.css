@@ -192,7 +192,7 @@ body{
 
 .refeicao{
   display:flex; justify-content:space-between; align-items:center;
-  gap:1rem; padding:1rem; border-top:1px solid #333;
+  gap:1rem; padding:1rem; 
 }
 .refeicao-info h4{ margin:0; }
 .refeicao-info .refeicao-descricao{ margin:.25rem 0 .15rem; }

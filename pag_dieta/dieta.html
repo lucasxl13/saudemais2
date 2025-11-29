@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="..\componentes\bootstrap\css\bootstrap.min.css">
   <link rel="stylesheet" href="../componentes/bootstrap/css/bootstrap-icons.css">
   <link rel="stylesheet" href="dieta.css">
-
 </head>
 
 <body>
-  <!-- Sidebar (mantida) -->
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <ul class="nav flex-column itens__sidebar" id="sidebarMenu"></ul>
   </div>
 
   <div class="container-backdieta">
+
     <!-- Cabeçalho motivacional -->
     <header class="header-motivacional">
       <div class="saudacao">
@@ -28,21 +28,21 @@
       </div>
     </header>
 
-    <!-- Painel de calorias + gráfico -->
+    <!-- Painel de calorias -->
     <section id="painel-calorias" class="card-bloco">
       <div class="calorias-texto">
         <h4>Resumo Calórico Semanal</h4>
-        <p>Meta estimada: <strong id="meta-kcal">0 kcal</strong></p>
         <p>Total planejado: <strong id="planejado-kcal">0 kcal</strong></p>
         <p>Consumido: <strong id="consumido-kcal">0 kcal</strong></p>
         <p>Restantes: <strong id="restante-kcal">0 kcal</strong></p>
+      </div>
     </section>
 
-    <!-- Progresso de refeições -->
+        <!-- Progresso de refeições -->
     <section id="progresso-semanal" class="card-bloco">
       <p id="progresso-texto">Progresso da semana: 0/28 refeições concluídas (0%)</p>
       <div id="progresso-barra">
-        <div id="progresso-barra-inner" style="width: 36%; background-color: rgb(255, 209, 102);"></div>
+        <div id="progresso-barra-inner" style="width: 0%; background-color: rgb(255, 209, 102);"></div>
       </div>
     </section>
 
@@ -65,293 +65,492 @@
       </div>
     </section>
 
-    <!-- Dias da semana (expansíveis) -->
+    <!-- Dias da semana -->
     <section class="dias-semana">
 
       <!-- SEGUNDA -->
       <details open class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+               class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 
+            0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 
+            0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 
+            0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 
+            0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 
+            0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 
+            15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 
+            0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Segunda-feira
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Segunda" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
-      <!-- TERÇA -->
+            <!-- TERÇA -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/> 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 
+            1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 
+            0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 
+            0h.522a.25.25 0 0 1 .25.238l.233 
+            5.14a.128.128 0 0 0 .256-.006V.25A.25.25 
+            0 0 1 6.75 0h.29a.5.5 0 0 1 
+            .498.458l.423 5.07a1.69 1.69 0 0 
+            1-1.059 1.711l-.053.022a.92.92 
+            0 0 0-.58.884L6.47 15a.971.971 
+            0 1 1-1.942 0l.202-6.855a.92.92 
+            0 0 0-.58-.884l-.053-.022a1.69 1.69 
+            0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Terça-feira
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Terça" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Terça" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Terça" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Terça" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
       <!-- QUARTA -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 
+            .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 
+            0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 
+            0 0 1 5.24 0h.522a.25.25 0 0 1 
+            .25.238l.233 5.14a.128.128 0 0 
+            0 .256-.006V.25A.25.25 0 0 1 6.75 
+            0h.29a.5.5 0 0 1 .498.458l.423 
+            5.07a1.69 1.69 0 0 1-1.059 
+            1.711l-.053.022a.92.92 0 0 
+            0-.58.884L6.47 15a.971.971 
+            0 1 1-1.942 0l.202-6.855a.92.92 
+            0 0 0-.58-.884l-.053-.022a1.69 
+            1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Quarta-feira
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Quarta" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
-      <!-- QUINTA -->
+            <!-- QUINTA -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 
+            1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 
+            0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 
+            .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 
+            0 0 1 5.24 0h.522a.25.25 0 0 1 
+            .25.238l.233 5.14a.128.128 0 0 0 
+            .256-.006V.25A.25.25 0 0 1 
+            6.75 0h.29a.5.5 0 0 1 .498.458l.423 
+            5.07a1.69 1.69 0 0 1-1.059 
+            1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 
+            15a.971.971 0 1 1-1.942 
+            0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 
+            1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Quinta-feira
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Quinta" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
       <!-- SEXTA -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 
+            1 .13 1 1.003v5.5a.5.5 0 0 0 
+            .5.5h1a.5.5 0 0 0 .5-.5zM4.25 
+            0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 
+            0 0 1 5.24 0h.522a.25.25 
+            0 0 1 .25.238l.233 5.14a.128.128 
+            0 0 0 .256-.006V.25A.25.25 
+            0 0 1 6.75 0h.29a.5.5 0 0 1 
+            .498.458l.423 5.07a1.69 1.69 0 0 
+            1-1.059 1.711l-.053.022a.92.92 
+            0 0 0-.58.884L6.47 15a.971.971 
+            0 1 1-1.942 0l.202-6.855a.92.92 
+            0 0 0-.58-.884l-.053-.022a1.69 
+            1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Sexta-feira
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Sexta" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
       <!-- SÁBADO -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 
+            1 .13 1 1.003v5.5a.5.5 0 0 0 
+            .5.5h1a.5.5 0 0 0 .5-.5zM4.25 
+            0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 
+            0 0 1 5.24 0h.522a.25.25 0 0 1 
+            .25.238l.233 5.14a.128.128 0 0 0 
+            .256-.006V.25A.25.25 0 0 1 6.75 
+            0h.29a.5.5 0 0 1 .498.458l.423 
+            5.07a1.69 1.69 0 0 1-1.059 
+            1.711l-.053.022a.92.92 0 0 
+            0-.58.884L6.47 15a.971.971 
+            0 1 1-1.942 0l.202-6.855a.92.92 
+            0 0 0-.58-.884l-.053-.022a1.69 
+            1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Sábado
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
           <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
+            <ul class="refeicao-alimentos"></ul>
             <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
           </div>
-          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Sábado" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
-      <!-- DOMINGO -->
+            <!-- DOMINGO -->
       <details class="dia-card">
         <summary>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
-            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 1 .13 1 1.003v5.5a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5zM4.25 0a.25.25 0 0 1 .25.25v5.122a.128.128 0 0 0 .256.006l.233-5.14A.25.25 0 0 1 5.24 0h.522a.25.25 0 0 1 .25.238l.233 5.14a.128.128 0 0 0 .256-.006V.25A.25.25 0 0 1 6.75 0h.29a.5.5 0 0 1 .498.458l.423 5.07a1.69 1.69 0 0 1-1.059 1.711l-.053.022a.92.92 0 0 0-.58.884L6.47 15a.971.971 0 1 1-1.942 0l.202-6.855a.92.92 0 0 0-.58-.884l-.053-.022a1.69 1.69 0 0 1-1.059-1.712L3.462.458A.5.5 0 0 1 3.96 0z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+               fill="currentColor" class="bi bi-fork-knife" viewBox="0 0 16 16">
+            <path d="M13 .5c0-.276-.226-.506-.498-.465-1.703.257-2.94 
+            2.012-3 8.462a.5.5 0 0 0 .498.5c.56.01 
+            1 .13 1 1.003v5.5a.5.5 0 0 0 
+            .5.5h1a.5.5 0 0 0 .5-.5zM4.25 
+            0a.25.25 0 0 1 .25.25v5.122a.128.128 
+            0 0 0 .256.006l.233-5.14A.25.25 
+            0 0 1 5.24 0h.522a.25.25 
+            0 0 1 .25.238l.233 5.14a.128.128 
+            0 0 0 .256-.006V.25A.25.25 
+            0 0 1 6.75 0h.29a.5.5 0 0 1 
+            .498.458l.423 5.07a1.69 1.69 0 0 
+            1-1.059 1.711l-.053.022a.92.92 
+            0 0 0-.58.884L6.47 15a.971.971 
+            0 1 1-1.942 0l.202-6.855a.92.92 
+            0 0 0-.58-.884l-.053-.022a1.69 
+            1.69 0 0 1-1.059-1.712L3.462.458A.5.5 
+            0 0 1 3.96 0z"/>
           </svg> Domingo
         </summary>
+
+        <!-- Café da Manhã -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Manhã</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
-            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+            <ul class="refeicao-alimentos"></ul>
+            <small class="refeicao-macros">
+              kcal: — | P: —g | C: —g | G: —g
+            </small>
           </div>
           <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Café da Manhã">Concluir</button>
         </div>
+
+        <!-- Almoço -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Almoço</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
-            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+            <ul class="refeicao-alimentos"></ul>
+            <small class="refeicao-macros">
+              kcal: — | P: —g | C: —g | G: —g
+            </small>
           </div>
           <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Almoço">Concluir</button>
         </div>
+
+        <!-- Café da Tarde -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Café da Tarde</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
-            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+            <ul class="refeicao-alimentos"></ul>
+            <small class="refeicao-macros">
+              kcal: — | P: —g | C: —g | G: —g
+            </small>
           </div>
           <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Café da Tarde">Concluir</button>
         </div>
+
+        <!-- Jantar -->
         <div class="refeicao">
           <div class="refeicao-info">
             <h4>Jantar</h4>
             <p class="refeicao-descricao">Dieta não definida</p>
-            <small class="refeicao-macros">kcal: — | P: —g | C: —g | G: —g</small>
+            <ul class="refeicao-alimentos"></ul>
+            <small class="refeicao-macros">
+              kcal: — | P: —g | C: —g | G: —g
+            </small>
           </div>
-          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Janta">Concluir</button>
+          <button class="btn-quadrado" data-dia="Domingo" data-refeicao="Jantar">Concluir</button>
         </div>
       </details>
 
@@ -360,8 +559,12 @@
     <!-- Feedback ao professor -->
     <section id="feedback" class="card-bloco">
       <h4>Feedback para o Professor</h4>
-      <textarea id="feedback-texto" placeholder="Ex.: Me senti melhor trocando o jantar por algo mais leve..." rows="3"></textarea>
-      <button id="feedback-enviar" class="btn-quadrado"><i class="bi bi-send"></i> Enviar</button>
+      <textarea id="feedback-texto"
+                placeholder="Ex.: Me senti melhor trocando o jantar por algo mais leve..."
+                rows="3"></textarea>
+      <button id="feedback-enviar" class="btn-quadrado">
+        <i class="bi bi-send"></i> Enviar
+      </button>
     </section>
 
   </div>

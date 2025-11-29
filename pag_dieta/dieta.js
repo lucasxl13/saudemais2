@@ -6,54 +6,8 @@ inicializarNavbarETema();
 
 verificarAutenticacao(API_BASE_URL);
 gerarSidebar();
-/* ============= Preencher cards ============= */
-function preencherCardsComDieta(dieta) {
-  $$("[data-dia][data-refeicao]").forEach(btn => {
-    const diaAttr = btn.getAttribute("data-dia");
-    const refAttr = btn.getAttribute("data-refeicao");
 
-    const chaveDia = Object.keys(dieta)
-      .find(k => normalizarTexto(k) === normalizarTexto(diaAttr));
-
-    const refeicoes = chaveDia ? dieta[chaveDia] : null;
-
-    const chaveRef = refeicoes ? Object.keys(refeicoes)
-      .find(k => normalizarTexto(k) === normalizarTexto(refAttr)) : null;
-
-    const dado = (refeicoes && refeicoes[chaveRef]) || {
-      texto:"Dieta não definida", kcal:0, p:0, c:0, g:0
-    };
-
-    const box = btn.closest(".refeicao").querySelector(".refeicao-info");
-    box.querySelector(".refeicao-descricao").textContent = dado.texto;
-    box.querySelector(".refeicao-macros").textContent =
-      `kcal: ${dado.kcal} | P: ${dado.p}g | C: ${dado.c}g | G: ${dado.g}g`;
-  });
-}
-
-/* ============= Concluir refeições ============= */
-function ligarBotoesConcluir(dieta) {
-  const concluidos = JSON.parse(localStorage.getItem("concluidos")) || {};
-
-  $$("[data-dia][data-refeicao]").forEach(btn => {
-    const dia = btn.getAttribute("data-dia");
-    const ref = btn.getAttribute("data-refeicao");
-
-    const concluido = concluidos[dia]?.[ref] || false;
-
-    atualizarBotao(btn, concluido);
-
-    btn.onclick = () => {
-      const state = JSON.parse(localStorage.getItem("concluidos")) || {};
-      if (!state[dia]) state[dia] = {};
-      state[dia][ref] = !state[dia][ref];
-      localStorage.setItem("concluidos", JSON.stringify(state));
-      atualizarBotao(btn, state[dia][ref]);
-      atualizarProgresso();
-      atualizarPainelCalorias(dieta);
-    };
-  });
-}
+/* ===================== Helpers ===================== */
 
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
@@ -64,169 +18,165 @@ function normalizarTexto(txt) {
     .replace(/-/g, "").replace(/\s+/g, "").toLowerCase();
 }
 
-function intervaloSemanaAtual() {
+/* Mapa dias: weekday → PT */
+const MAP_WEEKDAY_PT = {
+  1: "Segunda",
+  2: "Terça",
+  3: "Quarta",
+  4: "Quinta",
+  5: "Sexta",
+  6: "Sábado",
+  7: "Domingo"
+};
+
+/* Refeições padrão */
+const REFEICOES_PADRAO = [
+  "Café da Manhã",
+  "Almoço",
+  "Café da Tarde",
+  "Jantar"
+];
+
+/* Nomes corrigidos */
+const MAP_REF_NORMALIZADO = {
+  "janta": "Jantar",
+  "jantar": "Jantar",
+  "almoco": "Almoço",
+  "almoço": "Almoço",
+  "cafe da manha": "Café da Manhã",
+  "cafe da tarde": "Café da Tarde"
+};
+
+/* ===================== Cabeçalho ===================== */
+
+function preencherCabecalho(weekLabel) {
+  const subtitulo = document.querySelector("#subtitulo-semana");
+  if (!subtitulo) return;
+
+  // se vier algo tipo "S-48" da lógica / localStorage, mostra isso
+  if (weekLabel) {
+    subtitulo.textContent = weekLabel;
+    return;
+  }
+
+  // fallback: mostra intervalo da semana atual
   const hoje = new Date();
-  const diaSemana = (hoje.getDay() + 6) % 7; 
+  const diaSemana = (hoje.getDay() + 6) % 7;
   const segunda = new Date(hoje);
   segunda.setDate(hoje.getDate() - diaSemana);
   const domingo = new Date(segunda);
   domingo.setDate(segunda.getDate() + 6);
 
-  const fmt = d => d.toLocaleDateString("pt-BR", { day:"2-digit", month:"short" });
-
-  return {
-    label: `${fmt(segunda)} – ${fmt(domingo)}`
-  };
+  const fmt = d => d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+  subtitulo.textContent = `${fmt(segunda)} — ${fmt(domingo)}`;
 }
 
-const MAP_DIAS_EN_PT = {
-  monday: "Segunda",
-  tuesday: "Terça",
-  wednesday: "Quarta",
-  thursday: "Quinta",
-  friday: "Sexta",
-  saturday: "Sábado",
-  sunday: "Domingo",
-};
+/* ===================== Conversor da API ===================== */
 
-/* ============= Dieta temporária ============= */
-const dietaTemporaria = {
-  Segunda: {
-    "Café da Manhã": { texto:"Sem dados", kcal:0, p:0, c:0, g:0 }
-  }
-};
+function converterDietaAPIParaInterna(lista) {
+  console.log("🔍 API RAW:", lista);
 
-/* ============= Conversor Structure Diet -> formato interno ============= */
-function converterDietaAPIParaInterna(dadosApi) {
-  if (!dadosApi || !dadosApi.diet) return dietaTemporaria;
+  if (!Array.isArray(lista)) return {};
 
   const interna = {};
 
-  for (const [diaEn, refeicoesArray] of Object.entries(dadosApi.diet)) {
-    const diaPt = MAP_DIAS_EN_PT[diaEn] || diaEn;
+  // inicia todos os dias com refeições padrão
+  for (let wd = 1; wd <= 7; wd++) {
+    const diaPt = MAP_WEEKDAY_PT[wd];
     interna[diaPt] = {};
 
-    refeicoesArray.forEach(ref => {
-      const titulo = ref.title || "Refeição";
-      interna[diaPt][titulo] = {
-        texto: titulo,
-        kcal: ref.calories   || 0,
-        p:    ref.protein_g  || 0,
-        c:    ref.carbs_g    || 0,
-        g:    ref.fat_g      || 0,
-        time: ref.time       || null,
-        id:   ref.id         || null
+    REFEICOES_PADRAO.forEach(ref => {
+      interna[diaPt][ref] = {
+        texto: ref,
+        kcal: 0,
+        p: 0,
+        c: 0,
+        g: 0,
+        time: null,
+        id: null,
+        alimentos: []
       };
     });
   }
 
+  // preenche dados reais
+  for (const item of lista) {
+    const diaPt = MAP_WEEKDAY_PT[item.weekday];
+    if (!diaPt) continue;
+
+    const nomeBruto = item.title;
+    const norm = normalizarTexto(nomeBruto);
+    const nomeFinal = MAP_REF_NORMALIZADO[norm] || nomeBruto;
+
+    const d = item.details || {};
+
+    interna[diaPt][nomeFinal] = {
+      texto: nomeFinal,
+      kcal: Number(d.calories || 0),
+      p: Number(d.protein_g || 0),
+      c: Number(d.carbs_g || 0),
+      g: Number(d.fat_g || 0),
+      time: d.time || null,
+      id: item.id,
+      alimentos: d.alimentos || []
+    };
+  }
+
+  console.log("✅ DIETA NORMALIZADA:", interna);
   return interna;
 }
 
-function preencherCabecalho() {
-  const weekLabel = localStorage.getItem("dieta_week_label");
+/* ===================== Preencher Cards ===================== */
 
-  if (weekLabel) {
-    $("#subtitulo-semana").textContent = weekLabel;
-  } else {
-    const { label } = intervaloSemanaAtual();
-    $("#subtitulo-semana").textContent = label;
-  }
+function preencherCardsComDieta(dieta) {
 
-  const frases = [
-    "Você está mais perto do seu objetivo do que ontem!",
-    "Consistência vence intensidade.",
-    "Hidratação e foco: o combo do sucesso!",
-    "Movimente-se, alimente-se bem, durma melhor.",
-    "Cada refeição é uma oportunidade de cuidar de você."
-  ];
+  $$("[data-dia][data-refeicao]").forEach(btn => {
+    const diaAttr = btn.getAttribute("data-dia");
+    const refAttr = btn.getAttribute("data-refeicao");
 
-  $("#frase-motivacional").textContent =
-    frases[Math.floor(Math.random() * frases.length)];
-}
+    const diaEncontrado = Object.keys(dieta)
+      .find(k => normalizarTexto(k) === normalizarTexto(diaAttr));
 
-/* ============= API ROTA ============= */
-async function buscarDietaProfessor() {
-  const container = document.querySelector(".container-backdieta"); // Ajustei para JS puro para garantir compatibilidade
-  
-  let loadingMsg = document.createElement("p");
-  loadingMsg.textContent = "⏳ Carregando dieta...";
-  loadingMsg.style.textAlign = "center";
-  loadingMsg.style.color = "#aaa";
-  if(container) container.appendChild(loadingMsg);
+    const refeicoes = diaEncontrado ? dieta[diaEncontrado] : null;
 
-  try {
-    // 1. PEGAR O TOKEN
-    const token = sessionStorage.getItem("jwt") || (rawLocal ? JSON.parse(rawLocal).token : null);
-    if (!token) throw new Error("Token de autenticação não encontrado.");
+    const refEncontrada = refeicoes
+      ? Object.keys(refeicoes).find(k =>
+          normalizarTexto(k) === normalizarTexto(refAttr)
+        )
+      : null;
 
-    // 2. DECODIFICAR O ID (Lógica in-line)
-    // Pega a parte do meio do JWT (payload), arruma formatação e decodifica
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    
-    const payload = JSON.parse(jsonPayload);
-    // Tenta pegar o ID (ajuste 'id' ou 'userId' conforme seu backend)
-    const userId = payload.id || payload.userId || payload.sub || payload.studentId;
+    const dado = (refeicoes && refeicoes[refEncontrada]) || {
+      texto:"Dieta não definida", kcal:0, p:0, c:0, g:0, alimentos:[]
+    };
 
-    if (!userId) throw new Error("Não foi possível obter o ID do usuário.");
+    const box = btn.closest(".refeicao").querySelector(".refeicao-info");
 
-    // 3. PEGAR OU CALCULAR A SEMANA (Lógica in-line ISO 8601)
-    let weekLabel = localStorage.getItem("dieta_week_label");
-    
-    if (!weekLabel) {
-      const date = new Date();
-      date.setHours(0, 0, 0, 0);
-      // Ajusta para a Quinta-feira da semana atual
-      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-      // Primeiro dia do ano
-      const week1 = new Date(date.getFullYear(), 0, 4);
-      // Cálculo matemático da semana
-      const weekNumber = 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-      
-      weekLabel = `S-${weekNumber}`;
-    }
+    // título/descrição
+    box.querySelector(".refeicao-descricao").textContent = dado.texto;
 
-    // 4. FAZER A REQUISIÇÃO
-    const resp = await fetch(
-      `${API_BASE_URL}/alunos/${userId}/dieta/${encodeURIComponent(weekLabel)}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      }
-    );
+    // macros
+    box.querySelector(".refeicao-macros").textContent =
+      `kcal: ${dado.kcal} | P: ${dado.p}g | C: ${dado.c}g | G: ${dado.g}g`;
 
-    loadingMsg.remove();
+    // alimentos
+    const ul = box.querySelector(".refeicao-alimentos");
+    if (!ul) return;
 
-    if (!resp.ok) throw new Error("Erro ao buscar dieta");
+    ul.innerHTML = "";
 
-    const dadosApi = await resp.json();
-
-    if (dadosApi.week_label) {
-      localStorage.setItem("dieta_week_label", dadosApi.week_label);
+    if (dado.alimentos.length > 0) {
+      dado.alimentos.forEach(a => {
+        const li = document.createElement("li");
+        li.textContent = `${a.nome} — ${a.quantidade_g}`;
+        ul.appendChild(li);
+      });
     } else {
-      localStorage.setItem("dieta_week_label", weekLabel);
+      ul.innerHTML = `<li style="color:#777;font-size:.85rem;">Nenhum alimento listado</li>`;
     }
-
-    const dietaNormalizada = converterDietaAPIParaInterna(dadosApi);
-
-    localStorage.setItem("dieta", JSON.stringify(dietaNormalizada));
-    return dietaNormalizada;
-
-  } catch (e) {
-    console.warn("API indisponível ou erro local:", e);
-    loadingMsg.remove();
-    // Retorna null ou sua dieta temporária, conforme sua lógica
-    return typeof dietaTemporaria !== 'undefined' ? dietaTemporaria : null;
-  }
+  });
 }
 
+/* ===================== Botões concluir ===================== */
 
 function atualizarBotao(botao, concluido) {
   if (concluido) {
@@ -238,71 +188,166 @@ function atualizarBotao(botao, concluido) {
   }
 }
 
-/* ============= Progresso ============= */
+function ligarBotoesConcluir(dieta) {
+  const concluidos = JSON.parse(localStorage.getItem("concluidos")) || {};
+
+  $$("[data-dia][data-refeicao]").forEach(btn => {
+    const dia = btn.getAttribute("data-dia");
+    const ref = btn.getAttribute("data-refeicao");
+
+    const concluido = concluidos[dia]?.[ref] || false;
+    atualizarBotao(btn, concluido);
+
+    btn.onclick = () => {
+      const state = JSON.parse(localStorage.getItem("concluidos")) || {};
+
+      if (!state[dia]) state[dia] = {};
+      state[dia][ref] = !state[dia][ref];
+
+      localStorage.setItem("concluidos", JSON.stringify(state));
+
+      atualizarBotao(btn, state[dia][ref]);
+      atualizarProgresso();
+      atualizarPainelCalorias(dieta);
+    };
+  });
+}
+
+/* ===================== Progresso ===================== */
+
 function atualizarProgresso() {
   const total = $$("[data-dia][data-refeicao]").length;
   const concl = JSON.parse(localStorage.getItem("concluidos")) || {};
+
   let done = 0;
 
-  for (const d in concl) {
-    for (const r in concl[d]) {
+  for (const d in concl)
+    for (const r in concl[d])
       if (concl[d][r]) done++;
-    }
-  }
 
-  const pct = total ? Math.round((done/total)*100) : 0;
-  $("#progresso-texto").textContent = `Progresso da semana: ${done}/${total} refeições concluídas (${pct}%)`;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  $("#progresso-texto").textContent =
+    `Progresso da semana: ${done}/${total} refeições concluídas (${pct}%)`;
+
   const barra = $("#progresso-barra-inner");
   barra.style.width = pct + "%";
-  // cor dinâmica (vermelho→amarelo→verde)
+
   if (pct < 35) barra.style.backgroundColor = "#ff6b6b";
   else if (pct < 70) barra.style.backgroundColor = "#ffd166";
   else barra.style.backgroundColor = "#66ffcc";
 }
 
-/* ============= Painel de calorias ============= */
-let grafico;
+/* ===================== Painel de calorias ===================== */
 
 function atualizarPainelCalorias(dieta) {
   const concluidos = JSON.parse(localStorage.getItem("concluidos")) || {};
 
-  let totalPlanejado = 0, consumido = 0;
+  let total = 0, consumido = 0;
   let prot=0, carb=0, gord=0;
 
   for (const dia in dieta) {
     for (const ref in dieta[dia]) {
       const item = dieta[dia][ref];
 
-      totalPlanejado += item.kcal;
-      prot  += item.p;
-      carb  += item.c;
-      gord  += item.g;
+      total += item.kcal;
+      prot += item.p;
+      carb += item.c;
+      gord += item.g;
 
       if (concluidos[dia]?.[ref]) consumido += item.kcal;
     }
   }
 
-  $("#planejado-kcal").textContent = `${totalPlanejado}`;
-  $("#consumido-kcal").textContent = `${consumido}`;
-  $("#restante-kcal").textContent  = `${totalPlanejado - consumido}`;
-  $("#macro-proteina").textContent = `${prot} g`;
-  $("#macro-carbo").textContent    = `${carb} g`;
-  $("#macro-gordura").textContent  = `${gord} g`;
+  $("#planejado-kcal").textContent = total;
+  $("#consumido-kcal").textContent = consumido;
+  $("#restante-kcal").textContent = total - consumido;
+
+  $("#macro-proteina").textContent = prot + " g";
+  $("#macro-carbo").textContent = carb + " g";
+  $("#macro-gordura").textContent = gord + " g";
 }
 
-/* ============= Feedback ============= */
+/* ===================== API ===================== */
+
+async function buscarDietaProfessor() {
+  const container = document.querySelector(".container-backdieta");
+
+  let loadingMsg = document.createElement("p");
+  loadingMsg.textContent = "⏳ Carregando dieta...";
+  loadingMsg.style.textAlign = "center";
+  loadingMsg.style.color = "#aaa";
+  if (container) container.appendChild(loadingMsg);
+
+  try {
+    const token = sessionStorage.getItem("jwt");
+    if (!token) throw new Error("Sem token");
+
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const userId = payload.id || payload.userId || payload.sub;
+
+    // tenta reaproveitar a semana salva
+    let weekLabel = localStorage.getItem("dieta_week_label");
+
+    if (!weekLabel) {
+      // cálculo da semana ISO (S-48, S-49, etc.)
+      const date = new Date();
+      date.setHours(0,0,0,0);
+      date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+      const week1 = new Date(date.getFullYear(),0,4);
+      const weekNumber =
+        1 + Math.round(((date-week1)/86400000 -3 + (week1.getDay()+6)%7)/7);
+      weekLabel = `S-${weekNumber}`;
+    }
+
+    const resp = await fetch(
+      `${API_BASE_URL}/alunos/${userId}/dieta/${weekLabel}`,
+      {
+        headers: { "Authorization": `Bearer ${token}` }
+      }
+    );
+
+    loadingMsg.remove();
+    if (!resp.ok) throw new Error("Erro API");
+
+    const dadosApi = await resp.json();
+    console.log("🔍 JSON API:", dadosApi);
+
+    // garante que S-48 fique salvo e apareça no header
+    localStorage.setItem("dieta_week_label", weekLabel);
+    preencherCabecalho(weekLabel);
+
+    return converterDietaAPIParaInterna(dadosApi);
+
+  } catch (e) {
+    console.warn("Erro ao buscar dieta:", e);
+    loadingMsg.remove();
+
+    // fallback: ainda tenta preencher o cabeçalho com o que tiver no localStorage
+    const saved = localStorage.getItem("dieta_week_label");
+    preencherCabecalho(saved || null);
+
+    return {};
+  }
+}
+
+/* ===================== Feedback ===================== */
+
 function ligarFeedback() {
-  $("#feedback-enviar").onclick = async () => {
-    const texto = ($("#feedback-texto").value || "").trim();
-    if (!texto) return alert("Escreva seu feedback antes de enviar.");
+  $("#feedback-enviar").onclick = () => {
+    const txt = ($("#feedback-texto").value || "").trim();
+    if (!txt) return alert("Escreva algo.");
     alert("Feedback enviado!");
     $("#feedback-texto").value = "";
   };
 }
 
-/* ============= Inicialização ============= */
+/* ===================== Inicialização ===================== */
+
 document.addEventListener("DOMContentLoaded", async () => {
-  preencherCabecalho();
+  // se já tiver algo salvo, já mostra antes da API responder
+  const savedWeek = localStorage.getItem("dieta_week_label");
+  if (savedWeek) preencherCabecalho(savedWeek);
 
   const dieta = await buscarDietaProfessor();
 
