@@ -314,7 +314,7 @@ async function buscarDietaProfessor() {
     console.log("🔍 JSON API:", dadosApi);
 
     // garante que S-48 fique salvo e apareça no header
-    localStorage.setItem("dieta_week_label", weekLabel);
+    // localStorage.setItem("dieta_week_label", weekLabel);
     preencherCabecalho(weekLabel);
 
     return converterDietaAPIParaInterna(dadosApi);
