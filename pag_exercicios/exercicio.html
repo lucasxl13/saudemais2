@@ -18,19 +18,29 @@
     <section class="card alu-week p-3 mb-3">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div class="d-flex gap-2">
-          <button class="btn btn-sm btn-outline-light" id="semanaAnterior"><i class="bi bi-chevron-left"></i></button>
-          <button class="btn btn-sm btn-outline-light" id="btnHoje"><i class="bi bi-calendar-event"></i> Hoje</button>
-          <button class="btn btn-sm btn-outline-light" id="semanaSeguinte"><i class="bi bi-chevron-right"></i></button>
+          <button class="btn btn-sm btn-outline-light" id="semanaAnterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-light" id="btnHoje">
+            <i class="bi bi-calendar-event"></i> Hoje
+          </button>
+          <button class="btn btn-sm btn-outline-light" id="semanaSeguinte">
+            <i class="bi bi-chevron-right"></i>
+          </button>
         </div>
         <strong id="rangeSemana"></strong>
-        <input type="date" id="dataPicker" class="form-control form-control-sm" />
       </div>
       <div class="alu-days mt-2" id="semanaDias"></div>
     </section>
 
     <section class="alu-grid">
       <div>
-        <h5 class="mb-2">Plano de Exercícios do Dia</h5>
+        <h5 class="mb-1">Plano de Exercícios do Dia</h5>
+        <!-- NOVO: título do dia selecionado -->
+        <p id="tituloDiaSelecionado" class="text-muted small mb-3">
+          Selecione um dia na semana acima
+        </p>
+        <!-- Aqui vamos renderizar os cards de exercícios do dia -->
         <div class="row g-3" id="listaGrupos"></div>
       </div>
 
@@ -51,7 +61,7 @@
     </section>
   </main>
 
-  <!-- Modal Acertar -->
+  <!-- Modal Acertar (deixa igual, não vou mexer agora) -->
   <div class="modal fade" id="modalAcerto" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content" style="background: var(--bg_container); color: var(--texto); border:1px solid rgba(255,255,255,.08);">

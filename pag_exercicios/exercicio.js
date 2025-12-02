@@ -1,292 +1,389 @@
+// exercicio.js
+
 import { API_BASE_URL } from "../Funcoes/seletorProd_local.js";
 import { gerarSidebar } from "../Funcoes/sidebar.js";
 import { verificarAutenticacao } from "../Funcoes/autenticacao.js";
 import { inicializarNavbarETema } from "../Funcoes/navbar.js";
 
+/* ========= Inicialização global ========= */
+
 inicializarNavbarETema();
 verificarAutenticacao(API_BASE_URL);
 gerarSidebar();
 
-/* ====== util de datas ====== */
-const fmtBR = d => d.toLocaleDateString('pt-BR');
-const toISO = d => d.toISOString().slice(0,10);
-const fromISO = s => new Date(`${s}T00:00:00`);
+/* ========= Helpers de data ========= */
 
-function startOfWeek(d){
-  const x = new Date(d);
-  const day = x.getDay(); // 0 dom, 1 seg
-  const diff = (day === 0 ? -6 : 1 - day);
-  x.setDate(x.getDate() + diff);
-  x.setHours(0,0,0,0);
-  return x;
-}
-function endOfWeek(d){ const i = startOfWeek(d); const f = new Date(i); f.setDate(i.getDate()+6); return f; }
-function addDays(d,n){ const x=new Date(d); x.setDate(x.getDate()+n); return x; }
-const DIA_LABELS = ["SEG","TER","QUA","QUI","SEX","SÁB","DOM"];
-
-/* ====== estado ====== */
-const ALUNO_ID = JSON.parse(localStorage.getItem("user_aluno_id") || "2001");
-const st = { diaAtualISO: toISO(new Date()) };
-
-/* ====== storage keys (somente EXERCÍCIO) ====== */
-const keyPlano   = (id, iso)=>`plano_${id}_${iso}`;  // plano do professor
-const keyAcertos = (id, iso)=>`exec_${id}_${iso}`;   // execução do aluno
-
-/* ====== helpers ====== */
-function formatarTempo(min){
-  const m = parseInt(min);
-  if (isNaN(m) || m <= 0) return null;
-  const h = Math.floor(m/60), r = m%60;
-  return h>0 && r>0 ? `${h}h ${r}min` : h>0 ? `${h}h` : `${r}min`;
-}
-function extrairMinutos(texto){
-  const mm = /(\d+)\s*min/.exec(texto);
-  const hh = /(\d+)\s*h/.exec(texto);
-  const m = mm ? parseInt(mm[1]) : 0;
-  const h = hh ? parseInt(hh[1])*60 : 0;
-  return m + h;
-}
-const num = v => (v===''||v==null)?0:Number(v);
-
-/* ====== seed/fallback de plano ====== */
-const GRUPOS_DEMO = {
-  peito:  [
-    { nome:"Supino reto",      desc:"3x10 • 20kg • 10min" },
-    { nome:"Crucifixo",        desc:"3x12 • 8kg • 8min" }
-  ],
-  costas: [
-    { nome:"Remada curvada",   desc:"4x8 • 30kg • 12min" }
-  ],
-  pernas: [
-    { nome:"Agachamento",      desc:"4x6 • 40kg • 15min" }
-  ]
+const MAP_WEEKDAY_PT = {
+  1: "Segunda",
+  2: "Terça",
+  3: "Quarta",
+  4: "Quinta",
+  5: "Sexta",
+  6: "Sábado",
+  7: "Domingo",
 };
-function getPlano(){
-  const raw = localStorage.getItem(keyPlano(ALUNO_ID, st.diaAtualISO));
-  if (!raw) return {};
-  try{ return JSON.parse(raw) || {}; }catch{ return {}; }
-}
-function setPlano(obj){
-  localStorage.setItem(keyPlano(ALUNO_ID, st.diaAtualISO), JSON.stringify(obj));
-}
-function seedPlanoExemplo(){
-  setPlano(GRUPOS_DEMO);
-}
-function getAcertos(){
-  const raw = localStorage.getItem(keyAcertos(ALUNO_ID, st.diaAtualISO));
-  if (!raw) return {};
-  try{ return JSON.parse(raw) || {}; }catch{ return {}; }
-}
-function setAcertos(obj){
-  localStorage.setItem(keyAcertos(ALUNO_ID, st.diaAtualISO), JSON.stringify(obj));
+
+function formatarDataBR(isoString) {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
 }
 
-/* ====== barra da semana ====== */
-function renderSemanaBar(){
-  const base = fromISO(st.diaAtualISO);
-  const ini = startOfWeek(base), fim = endOfWeek(base);
+// intervalo da semana a partir das datas dos exercícios
+function calcularIntervaloSemana(exercicios, fallbackLabel) {
+  if (Array.isArray(exercicios) && exercicios.length > 0) {
+    const datas = exercicios.map((e) => new Date(e.entry_date));
+    const min = new Date(Math.min(...datas));
+    const max = new Date(Math.max(...datas));
+    const f = (d) =>
+      d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+    return `${f(min)} — ${f(max)}`;
+  }
+  return fallbackLabel ? `Semana ${fallbackLabel}` : "";
+}
 
-  document.getElementById('rangeSemana').textContent = `${fmtBR(ini)} — ${fmtBR(fim)}`;
-  const box = document.getElementById('semanaDias');
-  box.innerHTML = '';
+// gera S-49, S-50 etc com base em uma data
+function getISOWeekLabel(date = new Date()) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
+  const week1 = new Date(d.getFullYear(), 0, 4);
+  const weekNumber =
+    1 +
+    Math.round(
+      ((d - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7
+    );
+  return `S-${weekNumber}`;
+}
 
-  for (let i=0;i<7;i++){
-    const d = addDays(ini,i); const iso = toISO(d);
-    const b = document.createElement('button');
-    b.className = 'alu-pill'+(iso===st.diaAtualISO?' active':'');
-    b.innerHTML = `<small>${DIA_LABELS[i]}</small><br>${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
-    b.addEventListener('click', ()=>{
-      st.diaAtualISO = iso;
-      document.getElementById('dataPicker').value = iso;
-      renderSemanaBar();
-      renderPlano();
-    });
-    box.appendChild(b);
+/* ========= Helpers de agregação ========= */
+
+function agruparPorDia(exercicios) {
+  const dias = {};
+  exercicios.forEach((ex) => {
+    if (!dias[ex.weekday]) dias[ex.weekday] = [];
+    dias[ex.weekday].push(ex);
+  });
+  return dias;
+}
+
+function num(v) {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/* ========= Estado da página ========= */
+
+let EXERCICIOS_SEMANA = [];
+let EXS_BY_DAY = {};
+let DIA_SELECIONADO = null;
+let CURRENT_WEEK_LABEL = null;
+
+/* ========= API ========= */
+
+async function buscarExerciciosProfessor(weekLabelOptional) {
+  const token = sessionStorage.getItem("jwt");
+  if (!token) throw new Error("Sem token JWT");
+
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  const userId = payload.id || payload.userId || payload.sub;
+
+  let weekLabel =
+    weekLabelOptional ||
+    localStorage.getItem("exercicios_week_label") ||
+    getISOWeekLabel();
+
+  const resp = await fetch(
+    `${API_BASE_URL}/alunos/${userId}/exercicio/${weekLabel}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  if (!resp.ok) {
+    throw new Error("Erro ao buscar exercícios");
   }
 
-  document.getElementById('dataPicker').value = st.diaAtualISO;
+  const dadosApi = await resp.json(); // é exatamente o array que você mandou
+
+  // guarda a semana atual
+  localStorage.setItem("exercicios_week_label", weekLabel);
+
+  return { weekLabel, exercicios: dadosApi };
 }
-function bindSemana(){
-  document.getElementById('semanaAnterior').addEventListener('click', ()=>{
-    const d=fromISO(st.diaAtualISO);
-    st.diaAtualISO = toISO(addDays(startOfWeek(d), -7));
-    renderSemanaBar(); renderPlano();
-  });
-  document.getElementById('semanaSeguinte').addEventListener('click', ()=>{
-    const d=fromISO(st.diaAtualISO);
-    st.diaAtualISO = toISO(addDays(startOfWeek(d), 7));
-    renderSemanaBar(); renderPlano();
-  });
-  document.getElementById('btnHoje').addEventListener('click', ()=>{
-    st.diaAtualISO = toISO(new Date());
-    renderSemanaBar(); renderPlano();
-  });
-  document.getElementById('dataPicker').addEventListener('change', (e)=>{
-    if (e.target.value){
-      st.diaAtualISO = e.target.value;
-      renderSemanaBar(); renderPlano();
+
+/* ========= Renderização ========= */
+
+function renderDiasSemana() {
+  const semanaDias = document.getElementById("semanaDias");
+  semanaDias.innerHTML = "";
+
+  EXS_BY_DAY = agruparPorDia(EXERCICIOS_SEMANA);
+
+  // escolha do dia padrão: hoje, se tiver treino; senão, o primeiro dia com treino
+  const hoje = new Date();
+  let hojeWeekday = hoje.getDay(); // 0=Dom
+  hojeWeekday = hojeWeekday === 0 ? 7 : hojeWeekday;
+
+  const diasComTreino = Object.keys(EXS_BY_DAY)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  if (!DIA_SELECIONADO) {
+    DIA_SELECIONADO = diasComTreino.includes(hojeWeekday)
+      ? hojeWeekday
+      : diasComTreino[0] || null;
+  }
+
+  // cria um botão pra cada dia da semana (1..7)
+  for (let dia = 1; dia <= 7; dia++) {
+    const label = MAP_WEEKDAY_PT[dia];
+    const listaDia = EXS_BY_DAY[dia];
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className =
+      "btn btn-sm me-1 mb-1 " +
+      (dia === DIA_SELECIONADO ? "btn-light" : "btn-outline-light");
+    btn.textContent = label;
+
+    if (!listaDia || listaDia.length === 0) {
+      btn.disabled = true;
+      btn.classList.add("btn-disabled");
+    } else {
+      btn.addEventListener("click", () => {
+        DIA_SELECIONADO = dia;
+        // atualiza estilos dos botões
+        Array.from(semanaDias.querySelectorAll("button")).forEach((b) => {
+          b.classList.remove("btn-light");
+          b.classList.add("btn-outline-light");
+        });
+        btn.classList.remove("btn-outline-light");
+        btn.classList.add("btn-light");
+
+        renderExerciciosDoDia();
+      });
     }
+
+    semanaDias.appendChild(btn);
+  }
+}
+
+function renderExerciciosDoDia() {
+  const lista = document.getElementById("listaGrupos");
+  const tituloDia = document.getElementById("tituloDiaSelecionado");
+  const resumoPorGrupo = document.getElementById("resumoPorGrupo");
+  const tempoTotalEl = document.getElementById("tempoTotal");
+  const volumeTotalEl = document.getElementById("volumeTotal");
+  const totalDoneEl = document.getElementById("totalDone");
+
+  lista.innerHTML = "";
+  resumoPorGrupo.innerHTML = "";
+
+  const exerciciosDia = EXS_BY_DAY[DIA_SELECIONADO] || [];
+
+  // título do dia
+  if (exerciciosDia.length > 0) {
+    const nomeDia = MAP_WEEKDAY_PT[DIA_SELECIONADO];
+    const dataDia = formatarDataBR(exerciciosDia[0].entry_date);
+    tituloDia.textContent = dataDia ? `${nomeDia} (${dataDia})` : nomeDia;
+
+    // também preenche o input date com o dia selecionado
+    const isoDate = exerciciosDia[0].entry_date.slice(0, 10);
+    const picker = document.getElementById("dataPicker");
+    if (picker) picker.value = isoDate;
+  } else {
+    tituloDia.textContent = "Nenhum exercício neste dia.";
+  }
+
+  let tempoTotal = 0;
+  let volumeTotal = 0;
+  const resumoGrupo = {}; // { grupo: { qtd, volume } }
+
+  exerciciosDia.forEach((ex) => {
+    const d = ex.details || {};
+    const titulo = d.title || ex.title || "Exercício";
+    const musculo = d.muscle_group || "";
+    const sets = num(d.sets);
+    const reps = num(d.reps);
+    const peso = num(d.weight);
+    const tempo = num(d.time_minutes);
+    const distancia = d.distance_km ? `${d.distance_km} km` : "";
+    const descanso = d.rest_seconds ? `${d.rest_seconds}s` : "";
+    const descricao = d.descricao || "";
+
+    const volume = sets * reps * peso;
+    volumeTotal += volume;
+    tempoTotal += tempo;
+
+    if (musculo) {
+      if (!resumoGrupo[musculo]) {
+        resumoGrupo[musculo] = { qtd: 0, volume: 0 };
+      }
+      resumoGrupo[musculo].qtd += 1;
+      resumoGrupo[musculo].volume += volume;
+    }
+
+    const col = document.createElement("div");
+    col.className = "col-12 col-md-6 col-lg-4";
+
+    col.innerHTML = `
+      <div class="card h-100 ex-card">
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <h6 class="mb-0">${titulo}</h6>
+            ${
+              musculo
+                ? `<span class="badge bg-success-subtle text-success-emphasis text-uppercase">${musculo}</span>`
+                : ""
+            }
+          </div>
+
+          <div class="text-muted mb-1">
+            ${sets || reps ? `${sets} x ${reps} reps` : ""}
+            ${peso ? ` • ${peso} kg` : ""}
+          </div>
+
+          ${
+            tempo || distancia
+              ? `
+            <div class="text-muted mb-1">
+              ${tempo ? `Tempo: ${tempo} min` : ""}
+              ${distancia ? ` • Distância: ${distancia}` : ""}
+            </div>
+          `
+              : ""
+          }
+
+          ${
+            descanso
+              ? `
+            <div class="text-muted mb-1">
+              Descanso: ${descanso}
+            </div>
+          `
+              : ""
+          }
+
+          ${
+            descricao
+              ? `
+            <p class="small mt-1 mb-2">${descricao}</p>
+          `
+              : ""
+          }
+
+          <div class="mt-auto d-flex justify-content-between align-items-center small">
+            <span>Volume: <strong>${volume} kg</strong></span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    lista.appendChild(col);
+  });
+
+  // resumo lateral
+  totalDoneEl.textContent = "0"; // ainda não controlamos "concluído"
+  tempoTotalEl.textContent = `${tempoTotal} min`;
+  volumeTotalEl.textContent = `${volumeTotal} kg`;
+
+  Object.entries(resumoGrupo).forEach(([grupo, info]) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <div class="d-flex justify-content-between">
+        <span>${grupo}</span>
+        <span>${info.qtd} ex • ${info.volume} kg</span>
+      </div>
+    `;
+    resumoPorGrupo.appendChild(div);
   });
 }
 
-/* ====== render ====== */
-function renderPlano(){
-  const grupos  = getPlano();
-  const acertos = getAcertos();
+function atualizarRangeSemana() {
+  const rangeSemana = document.getElementById("rangeSemana");
+  const texto = calcularIntervaloSemana(EXERCICIOS_SEMANA, CURRENT_WEEK_LABEL);
+  if (rangeSemana) rangeSemana.textContent = texto;
+}
 
-  const wrap = document.getElementById("listaGrupos");
-  wrap.innerHTML = "";
+/* ========= Navegação de semana ========= */
 
-  // se não tem plano -> mostra card "sem plano"
-  if (!grupos || Object.keys(grupos).length === 0){
-    const col = document.createElement('div'); col.className = 'col-12';
-    col.innerHTML = `
-      <div class="blank-card">
-        <h6>Nenhum plano de exercícios para ${fmtBR(fromISO(st.diaAtualISO))}</h6>
-        <p class="small mb-3">Peça ao professor para publicar o plano deste dia, ou carregue um exemplo para testar a tela.</p>
-        <button id="btnSeed" class="btn btn-sm btn-outline-success">Carregar exemplo</button>
-      </div>`;
-    wrap.appendChild(col);
-    col.querySelector('#btnSeed').addEventListener('click', ()=>{ seedPlanoExemplo(); renderPlano(); });
-    // zera resumo
-    document.getElementById("tempoTotal").textContent  = "0min";
-    document.getElementById("volumeTotal").textContent = "0 kg";
-    document.getElementById("totalDone").textContent   = "0/0";
-    document.getElementById("resumoPorGrupo").innerHTML = "";
+async function carregarSemana(weekLabelOptional) {
+  const { weekLabel, exercicios } = await buscarExerciciosProfessor(
+    weekLabelOptional
+  );
+  CURRENT_WEEK_LABEL = weekLabel;
+  EXERCICIOS_SEMANA = exercicios;
+  DIA_SELECIONADO = null; // força recalcular padrão
+
+  atualizarRangeSemana();
+  renderDiasSemana();
+  if (DIA_SELECIONADO !== null) {
+    renderExerciciosDoDia();
+  } else {
+    // sem treino na semana
+    document.getElementById("listaGrupos").innerHTML =
+      '<p class="text-muted small">Nenhum plano de exercícios para esta semana.</p>';
+  }
+}
+
+/* ========= Boot ========= */
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await carregarSemana(); // semana atual
+  } catch (err) {
+    console.error("Erro ao carregar exercícios:", err);
+    document.getElementById("listaGrupos").innerHTML =
+      '<p class="text-danger small">Não foi possível carregar o plano de exercícios.</p>';
     return;
   }
 
-  let totalTempo=0, totalVolume=0, totalItens=0, totalConcl=0;
-  const resumoPorGrupo = {};
+  // Botões de navegação de semana
+  const btnPrev = document.getElementById("semanaAnterior");
+  const btnNext = document.getElementById("semanaSeguinte");
+  const btnHoje = document.getElementById("btnHoje");
+  const datePicker = document.getElementById("dataPicker");
 
-  Object.entries(grupos).forEach(([gid, lista])=>{
-    const col = document.createElement("div"); col.className = "col-12";
-    const card = document.createElement("div"); card.className="ex-card"; col.appendChild(card);
-    const titulo = gid.charAt(0).toUpperCase()+gid.slice(1);
-    card.innerHTML = `<h6>${titulo}</h6>`;
-
-    lista.forEach((it, idx)=>{
-      const key = `${gid}:${idx}`;
-      const done = !!acertos[key]?.done;
-
-      const tempo = acertos[key]?.tempo ?? extrairMinutos(it.desc||"") ?? 0;
-      const series= num(acertos[key]?.series);
-      const reps  = num(acertos[key]?.reps);
-      const carga = num(acertos[key]?.carga);
-      const volume= (series*reps*carga) || 0;
-
-      totalTempo += tempo;
-      totalVolume += volume;
-      totalItens += 1;
-      if (done) totalConcl += 1;
-
-      if (!resumoPorGrupo[gid]) resumoPorGrupo[gid] = { tempo:0, volume:0, concl:0, total:0 };
-      resumoPorGrupo[gid].tempo  += tempo;
-      resumoPorGrupo[gid].volume += volume;
-      resumoPorGrupo[gid].total  += 1;
-      if (done) resumoPorGrupo[gid].concl += 1;
-
-      const row = document.createElement("div");
-      row.className = "ex-item";
-      row.innerHTML = `
-        <div>
-          <strong>${it.nome}</strong>
-          <div class="meta">
-            <span class="badge badge-status ${done?'concluido':'pendente'}">${done?'Concluído':'Pendente'}</span>
-            <span class="badge bg-secondary">Tempo: ${formatarTempo(tempo)||'0min'}</span>
-            <span class="badge bg-info">Volume: ${volume} kg</span>
-          </div>
-          <div class="small text-muted mt-1">${it.desc || ''}</div>
-        </div>
-        <div class="d-flex flex-column gap-2">
-          <button class="btn btn-sm btn-outline-success" data-acertar>Acertar</button>
-        </div>
-      `;
-      row.querySelector("[data-acertar]").addEventListener("click", ()=>{
-        abrirModalAcerto({ gid, idx, nome: it.nome, sugestaoDesc: it.desc||"", atual: acertos[key]||{} });
-      });
-
-      card.appendChild(row);
+  if (btnPrev) {
+    btnPrev.addEventListener("click", async () => {
+      if (!CURRENT_WEEK_LABEL) return;
+      const n = parseInt(CURRENT_WEEK_LABEL.split("-")[1] || "1", 10);
+      await carregarSemana(`S-${Math.max(n - 1, 1)}`);
     });
+  }
 
-    wrap.appendChild(col);
-  });
+  if (btnNext) {
+    btnNext.addEventListener("click", async () => {
+      if (!CURRENT_WEEK_LABEL) return;
+      const n = parseInt(CURRENT_WEEK_LABEL.split("-")[1] || "1", 10);
+      await carregarSemana(`S-${n + 1}`);
+    });
+  }
 
-  // Resumo lateral (tempo/volume/concluídos)
-  document.getElementById("tempoTotal").textContent  = formatarTempo(totalTempo) || "0min";
-  document.getElementById("volumeTotal").textContent = `${totalVolume} kg`;
-  document.getElementById("totalDone").textContent   = `${totalConcl}/${totalItens}`;
+  if (btnHoje) {
+    btnHoje.addEventListener("click", async () => {
+      await carregarSemana(getISOWeekLabel(new Date()));
+    });
+  }
 
-  const boxRG = document.getElementById("resumoPorGrupo");
-  boxRG.innerHTML = "";
-  Object.entries(resumoPorGrupo).forEach(([gid, r])=>{
-    const nome = gid.charAt(0).toUpperCase()+gid.slice(1);
-    const chip = document.createElement("div");
-    chip.className = "ex-chip";
-    chip.innerHTML = `<span>${nome}</span><strong>${r.concl}/${r.total} • ${formatarTempo(r.tempo)||'0min'} • ${r.volume} kg</strong>`;
-    boxRG.appendChild(chip);
-  });
-}
+  if (datePicker) {
+    datePicker.addEventListener("change", async (e) => {
+      const val = e.target.value;
+      if (!val) return;
+      const dt = new Date(`${val}T00:00:00`);
+      const label = getISOWeekLabel(dt);
+      await carregarSemana(label);
 
-/* ====== modal acerto ====== */
-let bsModal;
-function abrirModalAcerto({ gid, idx, nome, sugestaoDesc, atual }){
-  document.getElementById("modalTitulo").textContent = `Acertar: ${nome}`;
-  document.getElementById("acertoNome").value   = nome;
-  document.getElementById("acertoSeries").value = atual?.series ?? '';
-  document.getElementById("acertoReps").value   = atual?.reps ?? '';
-  document.getElementById("acertoCarga").value  = atual?.carga ?? '';
-  document.getElementById("acertoTempo").value  = atual?.tempo ?? (extrairMinutos(sugestaoDesc)||'');
-  document.getElementById("acertoRPE").value    = atual?.rpe ?? '';
-  document.getElementById("acertoObs").value    = atual?.obs ?? '';
-  document.getElementById("acertoGid").value    = gid;
-  document.getElementById("acertoIdx").value    = String(idx);
-
-  const updatePreview = ()=>{
-    const s=num(document.getElementById("acertoSeries").value);
-    const r=num(document.getElementById("acertoReps").value);
-    const c=num(document.getElementById("acertoCarga").value);
-    document.getElementById("acertoVolumePreview").textContent = `${(s*r*c)||0} kg`;
-  };
-  ["acertoSeries","acertoReps","acertoCarga"].forEach(id=>{
-    document.getElementById(id).removeEventListener?.("input", updatePreview);
-    document.getElementById(id).addEventListener("input", updatePreview);
-  });
-  updatePreview();
-
-  const el = document.getElementById("modalAcerto");
-  bsModal = new bootstrap.Modal(el);
-  bsModal.show();
-}
-
-document.getElementById("formAcerto").addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const gid = document.getElementById("acertoGid").value;
-  const idx = document.getElementById("acertoIdx").value;
-  const key = `${gid}:${idx}`;
-
-  const series = num(document.getElementById("acertoSeries").value);
-  const reps   = num(document.getElementById("acertoReps").value);
-  const carga  = num(document.getElementById("acertoCarga").value);
-  const tempo  = num(document.getElementById("acertoTempo").value);
-  const rpe    = num(document.getElementById("acertoRPE").value);
-  const obs    = document.getElementById("acertoObs").value.trim();
-
-  const execs = getAcertos();
-  execs[key] = {
-    series, reps, carga, tempo, rpe, obs,
-    volume: (series*reps*carga)||0,
-    done: 1, updatedAt: Date.now()
-  };
-  setAcertos(execs);
-
-  bsModal?.hide();
-  renderPlano();
-});
-
-/* ====== boot ====== */
-document.addEventListener("DOMContentLoaded", ()=>{
-  bindSemana();
-  renderSemanaBar();
-  renderPlano();
+      // tentar selecionar o weekday dessa data
+      let wd = dt.getDay(); // 0=Dom
+      wd = wd === 0 ? 7 : wd;
+      if (EXS_BY_DAY[wd]) {
+        DIA_SELECIONADO = wd;
+        renderDiasSemana();
+        renderExerciciosDoDia();
+      }
+    });
+  }
 });

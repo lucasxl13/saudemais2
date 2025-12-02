@@ -74,8 +74,6 @@ function preencherCabecalho(weekLabel) {
 /* ===================== Conversor da API ===================== */
 
 function converterDietaAPIParaInterna(lista) {
-  console.log("🔍 API RAW:", lista);
-
   if (!Array.isArray(lista)) return {};
 
   const interna = {};
@@ -122,7 +120,6 @@ function converterDietaAPIParaInterna(lista) {
     };
   }
 
-  console.log("✅ DIETA NORMALIZADA:", interna);
   return interna;
 }
 
@@ -311,7 +308,6 @@ async function buscarDietaProfessor() {
     if (!resp.ok) throw new Error("Erro API");
 
     const dadosApi = await resp.json();
-    console.log("🔍 JSON API:", dadosApi);
 
     // garante que S-48 fique salvo e apareça no header
     // localStorage.setItem("dieta_week_label", weekLabel);

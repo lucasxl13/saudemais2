@@ -12,12 +12,118 @@
 }
 
 /* Cartões e grid */
-.alu-week, .alu-grid aside {
-  background: var(--bg_container);
-  border: 1px solid rgba(255,255,255,.08);
-  color: var(--texto);
-  border-radius: 12px;
+/* ====== CARD DA SEMANA (TOPO) ====== */
+
+.alu-week {
+  background: color-mix(in srgb, var(--bg_container) 92%, #000 8%);
+  border-radius: 14px;
+  padding: 1.5rem !important;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.28),
+    inset 0 0 0 1px rgba(255,255,255,0.03);
+  transition: background 0.2s ease, border 0.2s ease;
 }
+
+.alu-week:hover {
+  background: color-mix(in srgb, var(--bg_container) 85%, var(--color1) 5%);
+  border-color: color-mix(in srgb, var(--color1) 50%, transparent 50%);
+}
+
+/* ====== TÍTULO DAS DATAS ====== */
+
+#rangeSemana {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color1);
+  letter-spacing: .03em;
+}
+
+/* ====== INPUT CALENDÁRIO ====== */
+
+#dataPicker {
+  max-width: 160px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--texto);
+}
+
+#dataPicker:focus {
+  background: #111;
+  border-color: var(--color1);
+  color: var(--texto);
+  box-shadow: 0 0 0 0.15rem color-mix(in srgb, var(--color1) 50%, transparent 50%);
+}
+
+/* ====== BOTÕES DE NAVEGAÇÃO ====== */
+
+.alu-week .btn.btn-outline-light {
+  border-radius: 999px;
+  padding: .35rem .65rem;
+  font-size: .85rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: var(--texto);
+  transition: 0.22s ease;
+}
+
+.alu-week .btn.btn-outline-light:hover {
+  background: color-mix(in srgb, var(--color1) 20%, transparent 80%);
+  color: var(--color1);
+  border-color: var(--color1);
+  transform: translateY(-2px);
+}
+
+/* ====== PILLS DOS DIAS ====== */
+
+.alu-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.alu-days .btn {
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--texto);
+  transition: 0.18s ease;
+}
+
+.alu-days .btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--color1);
+}
+
+.alu-days .btn.btn-light,
+.alu-days .active {
+  background: color-mix(in srgb, var(--color1) 18%, #ffffff 10%, transparent 72%);
+  border-color: var(--color1);
+  color: #02150f;
+  font-weight: 600;
+}
+
+/* ====== RESPONSIVO ====== */
+
+@media (max-width: 640px) {
+  #dataPicker {
+    max-width: none;
+    width: 100%;
+  }
+
+  .alu-week .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+    gap: .75rem;
+  }
+
+  .alu-days {
+    justify-content: center;
+  }
+}
+
 
 .alu-days{
   display:flex; gap:.5rem; flex-wrap:wrap;
@@ -72,3 +178,42 @@
   padding: 1rem;
   text-align: center;
 }
+
+/* Card de exercício mais bonito e responsivo ao tema */
+.ex-card {
+  background: color-mix(in srgb, var(--bg_container) 88%, #000 12%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    border-color 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.ex-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.45);
+  border-color: color-mix(in srgb, var(--color1) 65%, transparent 35%);
+  background: color-mix(in srgb, var(--bg_container) 80%, var(--color1) 5%);
+}
+
+.ex-card .card-body {
+  color: var(--texto);
+}
+
+/* Badge “grupo muscular” usando as cores do tema */
+.badge.bg-success-subtle {
+  background: color-mix(in srgb, var(--color1) 14%, transparent 86%);
+  border: 1px solid color-mix(in srgb, var(--color1) 70%, transparent 30%);
+  color: var(--color1);
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+/* classe auxiliar pra manter compatibilidade com o HTML */
+.text-success-emphasis {
+  color: var(--color1);
+}
+
