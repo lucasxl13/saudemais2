@@ -37,7 +37,7 @@ function resolveTargets(idsOrSelectors) {
   return out;
 }
 
-/** Mostra mensagem e aplica classe "falha" */
+/** Mostra mensagem e aplica classe "falha." */
 export function mostrarErro(campoRefs, erroId, mensagem = "") {
 
   const campos = resolveTargets(campoRefs);

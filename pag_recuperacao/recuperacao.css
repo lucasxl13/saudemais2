@@ -71,7 +71,7 @@ body {
 
 .formulario {
   display: grid;
-  grid-template-rows: auto 0.2rem; /* input + linha fixa pro erro */
+  grid-template-rows: auto 0.2rem;
   row-gap: 4px;
   margin-bottom: 0.8rem;
 }

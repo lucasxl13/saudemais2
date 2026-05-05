@@ -54,7 +54,7 @@
   transition: background-color 0.3s;
 }
 
-/* Lado esquerdo com avatar e info */
+/* Lado esquerdo com avatar e info.*/
 .perfil-header {
   flex: 1;
   display: flex;

@@ -18,7 +18,7 @@
 /* ===== SIDEBAR ===== */
 /* já importada pelo sideBar.css */
 
-/* ===== CONTAINER PRINCIPAL (estrutura base das colunas) ===== */
+/* ===== CONTAINER PRINCIPAL (estrutura base das colunas.) ===== */
 .container_principal {
   display: flex;
   justify-content: space-between;
