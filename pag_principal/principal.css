@@ -21,9 +21,6 @@
     /* REMOVIDO: visibility, opacity e transition que estavam escondendo o modal */
 }
 
-/* REMOVIDO: .modal-overlay.show (não precisamos mais disso pois o JS usa display) */
-
-/* Conteúdo do Modal */
 .modal-content {
     background-color: #fff;
     padding: 30px;
@@ -287,119 +284,11 @@
     display: block;
   }
 
-  #chatMessages {
-  padding: 10px;
-  overflow-y: auto;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-  /* Estilo base das mensagens */
-  .mensagem {
-    padding: 8px 12px;
-    border-radius: 10px;
-    max-width: 80%;
-    word-wrap: break-word;
-    animation: fadeIn 0.3s ease-in-out;
-  }
-
-  /* Mensagem do BOT (à esquerda) */
-  .bot {
-    align-self: flex-start;
-    background-color: #e0e0e0;
-    color: #333;
-  }
-
-  /* Mensagem do USUÁRIO (à direita) */
-  .usuario {
-    align-self: flex-end;
-    background-color: var(--color6);
-    color: var(--bg_container);
-  }
-
   /* Efeito suave ao aparecer */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(5px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-
-  #chatToggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: var(--color6);
-  color: var(--bg_container);
-  padding: 10px 14px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1001;
-  font-size: 24px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  #chatToggle:hover {
-    background-color: var(--color5);  /* nova cor ao passar o mouse */
-    transform: scale(1.1);            /* aumenta 10% suavemente */
-  }
-
-  #chatContainer {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 90%;
-  max-width: 350px;
-  max-height: 80vh;
-  display: none;
-  flex-direction: column;
-  background-color: var(--bg_container);
-  border: 1px solid var(--color6);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  z-index: 1000;
-}
-
-  #chatHeader {
-    background-color: var(--color6);
-    color: var(--texto);
-    padding: 10px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 10px 10px 0 0;
-  }
-
-  #chatMessages {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: var(--bg_container);
-  }
-
-
-  #chatForm {
-    display: flex;
-    border-top: 1px solid;
-  }
-
-  #chatInput {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    outline: none;
-    background-color: var(--bg_container);
-    color: var(--texto);
-  }
-
-  #chatForm button {
-    background-color: var(--color6);
-    color: var(--texto);
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-  }
-
 
   .icone_streak{
     margin-top: 1rem;
